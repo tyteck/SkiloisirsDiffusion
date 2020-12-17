@@ -1,0 +1,31 @@
+{
+    "name": "tyteck/skiloisirsdiffusion",
+    "description": "Need to speak to ski loisirs diffusion soap service ?.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "frederick tyteca",
+            "email": "frederick@tyteca.net"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "SkiloisirsDiffusion\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SkiloisirsDiffusion\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=7.5"
+    }
+}
