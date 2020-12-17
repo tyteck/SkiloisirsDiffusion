@@ -1,4 +1,4 @@
-# Siret : Validate
+# SkiloisirsDiffusion
 
 <div align="center">
     
@@ -8,26 +8,13 @@
 </div>
 
 ## Description
-Small package to validate siret number.
+Small package to talk with SkiLoisirs Diffusion Soap Service.
 
 ## Installation
-If you use composer you can simply run 
-```
-composer require tyteck/siret
-```
+soon
 
 ## Usage
-```
-use Tyteck\Siret\Siret;
-...
-if (Siret::isValid($siretNumber)){
-    // your code
-}
-```
+soon
 
 ## Todo
-* some siret are specifics and do not comply with standard validation
-    * la poste
-    * siret from monaco
-* generate fake siret number for factories
-* truly verify if siret is assigned to a company (if possible)
+soon
