@@ -7,9 +7,14 @@ class SkiLoisirsDiffusion
     /** @var string $partenaireId */
     protected $partenaireId;
 
+    /** @var SoapClientNG $soapClient */
+    protected $soapClient;
+
+
     private function __construct(string $partenaireId)
     {
         $this->partenaireId = $partenaireId;
+        $this->soapClient = new SoapClientNG(config('sld_domain_url') . '/Partenaire.svc?wsdl', ['cache_wsdl' => WSDL_CACHE_NONE]);
     }
 
     public static function create(string $partenaireId)
@@ -19,8 +24,7 @@ class SkiLoisirsDiffusion
 
     public function ETAT_SITE() :bool
     {
-        $soapclient = new SoapClientNG(config('sld_domain_url') . '/Partenaire.svc?wsdl', ['cache_wsdl' => WSDL_CACHE_NONE]);
-        $result = $soapclient->ETAT_SITE();
+        $result = $this->soapClient->ETAT_SITE();
         if ($result->ETAT_SITEResult === true) {
             return true;
         }
@@ -29,8 +33,9 @@ class SkiLoisirsDiffusion
 
     public function GET_LIEU(string $lieuId)
     {
-        $soapclient = new SoapClientNG(config('sld_domain_url') . '/Partenaire.svc?wsdl', ['cache_wsdl' => WSDL_CACHE_NONE]);
-        $result = $soapclient->GET_LIEU($this->partenaireId, $lieuId);
+        $array_param = [ 'partenaire_id' => $this->partenaireId, 'lieux_id' => $lieuId, ];
+        $result = $this->soapClient->GET_LIEU($array_param);
+        var_dump($result);die();
         return $this;
     }
 }

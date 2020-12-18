@@ -18,7 +18,7 @@ class SkiLoisirsDiffusionTest extends TestCase
         $this->assertTrue(SkiLoisirsDiffusion::create($this->partenaireId)
             ->ETAT_SITE());
     }
-
+    
     public function testGetLieu()
     {
         $lieu = SkiLoisirsDiffusion::create($this->partenaireId)->GET_LIEU('745cf374-7556-407e-aad6-57c417508e3b');
