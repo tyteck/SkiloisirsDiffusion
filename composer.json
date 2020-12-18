@@ -22,7 +22,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "SkiloisirsDiffusion\\Tests\\": "tests/"
+            "SkiLoisirsDiffusion\\Tests\\": "tests/"
         }
     },
     "require-dev": {
