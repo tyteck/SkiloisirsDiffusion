@@ -10,15 +10,16 @@ class SkiLoisirsDiffusion
     /** @var SoapClientNG $soapClient */
     protected $soapClient;
 
-    private function __construct(string $partenaireId)
+    private function __construct(string $sldDomainUrl, string $partenaireId)
     {
         $this->partenaireId = $partenaireId;
-        $this->soapClient = new SoapClientNG(sldconfig('sld_domain_url') . '/Partenaire.svc?wsdl', ['cache_wsdl' => WSDL_CACHE_NONE]);
+        $this->sldDomainUrl = $sldDomainUrl;
+        $this->soapClient = new SoapClientNG("{$this->sldDomainUrl}/Partenaire.svc?wsdl", ['cache_wsdl' => WSDL_CACHE_NONE]);
     }
 
-    public static function create(string $partenaireId)
+    public static function create(string $sldDomainUrl, string $partenaireId)
     {
-        return new static($partenaireId);
+        return new static($sldDomainUrl, $partenaireId);
     }
 
     public function ETAT_SITE() :bool

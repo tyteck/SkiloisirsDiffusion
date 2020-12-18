@@ -11,11 +11,12 @@ class SkiLoisirsDiffusionTest extends TestCase
     {
         parent::setUp();
         $this->partenaireId = sldconfig('sld_partenaire_id');
+        $this->sldDomainUrl = sldconfig('sld_domain_url');
     }
 
     public function testEtatSite()
     {
-        $this->assertTrue(SkiLoisirsDiffusion::create($this->partenaireId)
+        $this->assertTrue(SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)
             ->ETAT_SITE());
     }
 
@@ -26,7 +27,7 @@ class SkiLoisirsDiffusionTest extends TestCase
             'lieux_nom' => 'DISNEYLAND PARIS BILLETS',
             'lieux_plan' => 'https://cdn.skiloisirsdiffusion.com/image/plan_745cf374-7556-407e-aad6-57c417508e3b_0_0_0_0_20201202035517.png',
         ];
-        $result = SkiLoisirsDiffusion::create($this->partenaireId)->GET_LIEU($expectedResult['lieux_id']);
+        $result = SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)->GET_LIEU($expectedResult['lieux_id']);
 
         $this->assertIsArray($result, 'We should receive an array from GET_LIEU.');
         $this->assertEqualsCanonicalizing(
