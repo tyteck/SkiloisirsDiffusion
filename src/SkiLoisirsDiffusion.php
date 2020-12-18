@@ -2,9 +2,6 @@
 
 namespace SkiloisirsDiffusion;
 
-use DOMDocument;
-use SimpleXMLElement;
-
 class SkiLoisirsDiffusion
 {
     /** @var string $partenaireId */
@@ -17,7 +14,7 @@ class SkiLoisirsDiffusion
     private function __construct(string $partenaireId)
     {
         $this->partenaireId = $partenaireId;
-        $this->soapClient = new SoapClientNG(config('sld_domain_url') . '/Partenaire.svc?wsdl', ['cache_wsdl' => WSDL_CACHE_NONE]);
+        $this->soapClient = new SoapClientNG(sldconfig('sld_domain_url') . '/Partenaire.svc?wsdl', ['cache_wsdl' => WSDL_CACHE_NONE]);
     }
 
     public static function create(string $partenaireId)
