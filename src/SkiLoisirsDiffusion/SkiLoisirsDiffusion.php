@@ -1,6 +1,6 @@
 <?php
 
-namespace SkiloisirsDiffusion;
+namespace SkiLoisirsDiffusion;
 
 class SkiLoisirsDiffusion
 {
@@ -9,7 +9,6 @@ class SkiLoisirsDiffusion
 
     /** @var SoapClientNG $soapClient */
     protected $soapClient;
-
 
     private function __construct(string $partenaireId)
     {
@@ -33,22 +32,22 @@ class SkiLoisirsDiffusion
 
     public function GET_LIEU(string $lieuId)
     {
-        $array_param = [ 'partenaire_id' => $this->partenaireId, 'lieux_id' => $lieuId, ];
+        $array_param = ['partenaire_id' => $this->partenaireId, 'lieux_id' => $lieuId, ];
         $result = $this->soapClient->GET_LIEU($array_param);
 
         $somewhatCleaner = html_entity_decode($result->GET_LIEUResult->any);
-        
+
         $result = [];
-        if (preg_match("#<lieux_plan>(?P<lieuxPlan>[^<]*)</lieux_plan>#", $somewhatCleaner, $match)) {
-            $result['lieux_plan']=$match['lieuxPlan'];
+        if (preg_match('#<lieux_plan>(?P<lieuxPlan>[^<]*)</lieux_plan>#', $somewhatCleaner, $match)) {
+            $result['lieux_plan'] = $match['lieuxPlan'];
         }
 
-        if (preg_match("#<lieux_nom>(?P<lieuxNom>[^<]*)</lieux_nom>#", $somewhatCleaner, $match)) {
-            $result['lieux_nom']=$match['lieuxNom'];
+        if (preg_match('#<lieux_nom>(?P<lieuxNom>[^<]*)</lieux_nom>#', $somewhatCleaner, $match)) {
+            $result['lieux_nom'] = $match['lieuxNom'];
         }
 
-        if (preg_match("#<lieux_id>(?P<lieuxId>[^<]*)</lieux_id>#", $somewhatCleaner, $match)) {
-            $result['lieux_id']=$match['lieuxId'];
+        if (preg_match('#<lieux_id>(?P<lieuxId>[^<]*)</lieux_id>#', $somewhatCleaner, $match)) {
+            $result['lieux_id'] = $match['lieuxId'];
         }
 
         return $result;

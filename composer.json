@@ -10,14 +10,15 @@
         }
     ],
     "require": {
-        "vlucas/phpdotenv": "^3.6.7"
+        "vlucas/phpdotenv": "^3.6.7",
+        "ext-soap": "*"
     },
     "autoload": {
         "psr-4": {
-            "SkiloisirsDiffusion\\": "src/"
+            "SkiLoisirsDiffusion\\": "src/SkiLoisirsDiffusion"
         },
         "files": [
-            "src/helpers.php"
+            "src/SkiLoisirsDiffusion/helpers.php"
         ]
     },
     "autoload-dev": {

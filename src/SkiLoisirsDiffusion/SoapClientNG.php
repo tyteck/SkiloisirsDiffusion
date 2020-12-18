@@ -1,8 +1,8 @@
 <?php
 
-namespace SkiloisirsDiffusion;
+namespace SkiLoisirsDiffusion;
 
-use SkiloisirsDiffusion\Exceptions\SoapEmptyResponseException;
+use SkiLoisirsDiffusion\Exceptions\SoapEmptyResponseException;
 use SoapClient;
 
 class SoapClientNG extends SoapClient

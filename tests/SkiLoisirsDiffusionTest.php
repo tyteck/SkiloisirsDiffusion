@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SkiloisirsDiffusion\SkiLoisirsDiffusion;
+use SkiLoisirsDiffusion\SkiLoisirsDiffusion;
 
 class SkiLoisirsDiffusionTest extends TestCase
 {
