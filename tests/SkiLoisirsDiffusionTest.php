@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use SkiloisirsDiffusion\SkiLoisirsDiffusion;
+use stdClass;
 
 class SkiLoisirsDiffusionTest extends TestCase
 {
@@ -21,13 +22,20 @@ class SkiLoisirsDiffusionTest extends TestCase
     
     public function testGetLieu()
     {
-        $lieu = SkiLoisirsDiffusion::create($this->partenaireId)->GET_LIEU('745cf374-7556-407e-aad6-57c417508e3b');
-        $this->assertIsArray($lieu, 'We should receive an array.');
-        // disneyland paris
-        $expectedLocationName='Disneyland paris';
-        $this->assertEquals(
-            $expectedLocationName,
-            SkiLoisirsDiffusion::create($this->partenaireId)->GET_LIEU('745cf374-7556-407e-aad6-57c417508e3b')['name']
+        $expectedResult=[
+            'lieux_id' => '745cf374-7556-407e-aad6-57c417508e3b', // disneyland paris
+            'lieux_nom' => 'DISNEYLAND PARIS BILLETS',
+            'lieux_plan' => 'https://cdn.skiloisirsdiffusion.com/image/plan_745cf374-7556-407e-aad6-57c417508e3b_0_0_0_0_20201202035517.png',
+        ];
+        $result = SkiLoisirsDiffusion::create($this->partenaireId)->GET_LIEU($expectedResult['lieux_id']);
+        
+        $this->assertIsArray($result, 'We should receive an array from GET_LIEU.');
+        $this->assertEqualsCanonicalizing(
+            array_keys($expectedResult),
+            array_keys($result)
         );
+        array_map(function ($key, $expectedValue) use ($result) {
+            $this->assertEquals($expectedValue, $result[$key], "We were expecting {$expectedValue} for {$key} and we obtained {$result[$key]}");
+        }, array_keys($expectedResult), $expectedResult);
     }
 }
