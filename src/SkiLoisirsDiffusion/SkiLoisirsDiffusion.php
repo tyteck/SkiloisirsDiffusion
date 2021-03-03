@@ -2,6 +2,8 @@
 
 namespace SkiLoisirsDiffusion;
 
+use SkiloisirsDiffusion\Exceptions\SLDServiceNotAvailableException;
+
 class SkiLoisirsDiffusion
 {
     /** @var string $partenaireId */
@@ -15,6 +17,9 @@ class SkiLoisirsDiffusion
         $this->partenaireId = $partenaireId;
         $this->sldDomainUrl = $sldDomainUrl;
         $this->soapClient = new SoapClientNG("{$this->sldDomainUrl}/Partenaire.svc?wsdl", ['cache_wsdl' => WSDL_CACHE_NONE]);
+        if (!$this->ETAT_SITE()) {
+            throw new SLDServiceNotAvailableException();
+        }
     }
 
     public static function create(string $sldDomainUrl, string $partenaireId)
@@ -25,10 +30,7 @@ class SkiLoisirsDiffusion
     public function ETAT_SITE() :bool
     {
         $result = $this->soapClient->ETAT_SITE();
-        if ($result->ETAT_SITEResult === true) {
-            return true;
-        }
-        return false;
+        return $result->ETAT_SITEResult === true;
     }
 
     public function GET_LIEU(string $lieuId)
@@ -52,5 +54,32 @@ class SkiLoisirsDiffusion
         }
 
         return $result;
+    }
+
+    public function CREATION_COMMANDE()
+    {
+        $ce_id = '00000000-0000-0000-0000-000000000000';
+        $signature = 'abcdefghijklmnopqrstuvwxyz';
+        $arrayOfString = [
+            'Ligne 1',
+            'Ligne 2',
+        ];
+        $tablece = [
+            'tableau_donnees' => $arrayOfString
+        ];
+        $tableuser = [
+            'tableau_donnees' => $arrayOfString
+        ];
+        $tablecmd = [
+            'tableau_donnees' => $arrayOfString
+        ];
+        $array_param = [
+            'CE_ID' => $ce_id,
+            'SIGNATURE' => $signature,
+            'TABLE_CE' => $tablece,
+            'TABLE_UTILISATEUR' => $tableuser,
+            'TABLE_COMMANDE' => $tablecmd
+        ];
+        $testcreationcmdResult = $this->soapclient->CREATION_COMMANDE_ARRAY($array_param);
     }
 }
