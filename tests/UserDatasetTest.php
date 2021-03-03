@@ -1,0 +1,74 @@
+<?php
+
+namespace Tests;
+
+use Carbon\Carbon;
+use PHPUnit\Framework\TestCase;
+use SkiLoisirsDiffusion\Datasets\UserDataset;
+
+class UserDatasetTest extends TestCase
+{
+    /** @test */
+    public function user_dataset_schema_is_ok()
+    {
+        $schema = UserDataset::create()->schema();
+
+        $expectedKeyTypes = [
+            'id_partenaire' => 'string',
+            'utilisateurs_nom' => 'string',
+            'utilisateurs_prenom' => 'string',
+            'utilisateurs_telephone' => 'string',
+            'utilisateurs_portable' => 'string',
+            'utilisateurs_email' => 'string',
+            'utilisateurs_adresse1' => 'string',
+            'utilisateurs_codepostal' => 'string',
+            'utilisateurs_ville' => 'string',
+            'utilisateurs_pays' => 'string',
+            'utilisateurs_date_naissance' => 'dateTime',
+        ];
+
+        array_map(
+            function ($key, $type) use ($schema) {
+                $this->assertStringContainsString(
+                    '<xs:element name="' . $key . '" type="xs:' . $type . '" minOccurs="0"/>',
+                    $schema,
+                    "The key {$key} with type {$type} is not set properly."
+                );
+            },
+            array_keys($expectedKeyTypes),
+            $expectedKeyTypes
+        );
+    }
+
+    /** @test */
+    public function user_dataset_body_is_ok()
+    {
+        $expectedKeyValues = [
+            'id_partenaire' => '42',
+            'utilisateurs_nom' => 'Leroy',
+            'utilisateurs_prenom' => 'Gilbert',
+            'utilisateurs_telephone' => '0606060606',
+            'utilisateurs_portable' => '0606060606',
+            'utilisateurs_email' => 'gilbert@leroy.com',
+            'utilisateurs_adresse1' => 'chemin de la charrue endommagée',
+            'utilisateurs_codepostal' => '77300',
+            'utilisateurs_ville' => 'Tourte la charrue',
+            'utilisateurs_pays' => 'France',
+            'utilisateurs_date_naissance' => Carbon::now()->subYears(25)->format('Y-m-d\Th:i:s'),
+        ];
+
+        $body = UserDataset::create($expectedKeyValues)->body();
+
+        array_map(
+            function ($key, $value) use ($body) {
+                $this->assertStringContainsString(
+                    "<{$key}>{$value}</{$key}>",
+                    $body,
+                    "The value {$value} for {$key} is not set properly."
+                );
+            },
+            array_keys($expectedKeyValues),
+            $expectedKeyValues
+        );
+    }
+}
