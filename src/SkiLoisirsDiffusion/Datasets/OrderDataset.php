@@ -96,4 +96,9 @@ class OrderDataset
     {
         return $this->dataset->any;
     }
+
+    public function dataset()
+    {
+        return $this->dataset;
+    }
 }

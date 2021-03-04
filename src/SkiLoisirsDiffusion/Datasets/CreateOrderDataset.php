@@ -18,11 +18,15 @@ class CreateOrderDataset
     /** @var \SkiLoisirsDiffusion\Datasets\OrderDataset */
     protected $orderDataset;
 
-    private function __construct(CEDataset $ceDataset, UserDataset $userDataset, OrderDataset $orderDataset)
+    /** @var \SkiLoisirsDiffusion\Datasets\SignatureDataset */
+    protected $signatureDataset;
+
+    private function __construct(CEDataset $ceDataset, UserDataset $userDataset, OrderDataset $orderDataset, SignatureDataset $signatureDataset)
     {
         $this->ceDataset = $ceDataset;
         $this->userDataset = $userDataset;
         $this->orderDataset = $orderDataset;
+        $this->signatureDataset = $signatureDataset;
 
         $this->dataset = new stdClass();
 
@@ -34,6 +38,7 @@ class CreateOrderDataset
                 ' . $this->ceDataset->schema() . '
                 ' . $this->userDataset->schema() . '
                 ' . $this->orderDataset->schema() . '
+                ' . $this->signatureDataset->schema() . '
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -46,6 +51,7 @@ class CreateOrderDataset
     ' . $this->ceDataset->body() . '
     ' . $this->userDataset->body() . '
     ' . $this->orderDataset->body() . '
+    ' . $this->signatureDataset->body() . '
     </NewDataSet>
 </diffgr:diffgram>
 ';
@@ -64,5 +70,10 @@ class CreateOrderDataset
     public function body()
     {
         return $this->dataset->any;
+    }
+
+    public function dataset()
+    {
+        return $this->dataset;
     }
 }

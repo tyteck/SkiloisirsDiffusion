@@ -1,11 +1,10 @@
 <?php
 
-namespace Tests;
+namespace SkiLoisirsDiffusion\Tests;
 
-use PHPUnit\Framework\TestCase;
 use SkiLoisirsDiffusion\Datasets\OrderDataset;
 
-class OrderDatasetTest extends TestCase
+class OrderDatasetTest extends BaseTestCase
 {
     /** @test */
     public function user_dataset_schema_is_ok()

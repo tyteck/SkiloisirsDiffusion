@@ -5,10 +5,34 @@ namespace SkiLoisirsDiffusion\Tests;
 use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
 use SkiLoisirsDiffusion\Datasets\OrderDataset;
+use SkiLoisirsDiffusion\Datasets\SignatureDataset;
 use SkiLoisirsDiffusion\Datasets\UserDataset;
 
 class BaseTestCase extends TestCase
 {
+    public function signatureDatasetParameters():array
+    {
+        return [
+            'code_livraison' => '42',
+            'id_partenaire' => sldconfig('sld_partenaire_id'),
+            'mode_paiement' => '1',
+            'utilisateurs_adresse1' => 'chemin de la charrue endommagée',
+            'utilisateurs_adresse1' => 'adresse du chou vert',
+            'utilisateurs_adresse_nom' => 'domicile',
+            'utilisateurs_codepostal' => '77300',
+            'utilisateurs_email' => 'gerard@leroy.com',
+            'utilisateurs_nom' => 'leroy',
+            'utilisateurs_prenom' => 'gerard',
+            'utilisateurs_ville' => 'Tourte la charrue',
+            'clef_secrete' => sldconfig('clef_secrete'),
+        ];
+    }
+
+    public function createSignatureDataset(array $attributes = [])
+    {
+        return SignatureDataset::create($attributes);
+    }
+
     public function createUserDataset()
     {
         return UserDataset::create(

@@ -33,7 +33,7 @@ class CEDataset
 
         $this->dataset->any = '
 <' . $this->tablename . ' diffgr:id="' . $this->tablename . '1" msdata:rowOrder="0">
-    <ce_id>' . sldconfig('ce_id') . '</ce_id>
+    <ce_id>' . sldconfig('sld_partenaire_id') . '</ce_id>
     <ce_societe>' . sldconfig('ce_societe') . '</ce_societe>
     <ce_nom>' . sldconfig('ce_nom') . '</ce_nom>
     <ce_prenom>' . sldconfig('ce_prenom') . '</ce_prenom>

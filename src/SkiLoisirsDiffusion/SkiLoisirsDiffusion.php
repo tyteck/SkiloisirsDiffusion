@@ -2,6 +2,7 @@
 
 namespace SkiLoisirsDiffusion;
 
+use SkiLoisirsDiffusion\Datasets\CreateOrderDataset;
 use SkiloisirsDiffusion\Exceptions\SLDServiceNotAvailableException;
 
 class SkiLoisirsDiffusion
@@ -56,30 +57,15 @@ class SkiLoisirsDiffusion
         return $result;
     }
 
-    public function CREATION_COMMANDE()
+    public function CREATION_COMMANDE(CreateOrderDataset $createOrderDataset)
     {
-        $ce_id = '00000000-0000-0000-0000-000000000000';
-        $signature = 'abcdefghijklmnopqrstuvwxyz';
-        $arrayOfString = [
-            'Ligne 1',
-            'Ligne 2',
+        $arrayParams = [
+            'CE_ID' => $this->partenaireId,
+            'DS_DATA' => $createOrderDataset->dataset()
         ];
-        $tablece = [
-            'tableau_donnees' => $arrayOfString
-        ];
-        $tableuser = [
-            'tableau_donnees' => $arrayOfString
-        ];
-        $tablecmd = [
-            'tableau_donnees' => $arrayOfString
-        ];
-        $array_param = [
-            'CE_ID' => $ce_id,
-            'SIGNATURE' => $signature,
-            'TABLE_CE' => $tablece,
-            'TABLE_UTILISATEUR' => $tableuser,
-            'TABLE_COMMANDE' => $tablecmd
-        ];
-        $testcreationcmdResult = $this->soapclient->CREATION_COMMANDE_ARRAY($array_param);
+        var_dump($arrayParams);
+
+        $result = $this->soapClient->CREATION_COMMANDE($arrayParams);
+        var_dump($result);
     }
 }

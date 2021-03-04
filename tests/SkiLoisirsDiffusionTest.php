@@ -1,11 +1,12 @@
 <?php
 
-namespace Tests;
+namespace SkiLoisirsDiffusion\Tests;
 
-use PHPUnit\Framework\TestCase;
+use SkiLoisirsDiffusion\Datasets\CEDataset;
+use SkiLoisirsDiffusion\Datasets\CreateOrderDataset;
 use SkiLoisirsDiffusion\SkiLoisirsDiffusion;
 
-class SkiLoisirsDiffusionTest extends TestCase
+class SkiLoisirsDiffusionTest extends BaseTestCase
 {
     public function setUp():void
     {
@@ -37,5 +38,17 @@ class SkiLoisirsDiffusionTest extends TestCase
         array_map(function ($key, $expectedValue) use ($result) {
             $this->assertEquals($expectedValue, $result[$key], "We were expecting {$expectedValue} for {$key} and we obtained {$result[$key]}");
         }, array_keys($expectedResult), $expectedResult);
+    }
+
+    public function testCreationCommande()
+    {
+        $ceDataSet = CEDataset::create();
+        $userDataSet = $this->createUserDataset();
+        $orderDataSet = $this->createOrderDataset();
+        $signatureDataSet = $this->createSignatureDataset($this->signatureDatasetParameters());
+
+        $createOrderDataset = CreateOrderDataset::create($ceDataSet, $userDataSet, $orderDataSet, $signatureDataSet);
+        $result = SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)
+            ->CREATION_COMMANDE($createOrderDataset);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\SoapHelpers;
+namespace SkiLoisirsDiffusion\Tests\SoapHelpers;
 
 use PHPUnit\Framework\TestCase;
 use SkiLoisirsDiffusion\SoapHelpers\SoapElement;

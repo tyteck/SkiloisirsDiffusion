@@ -1,7 +1,8 @@
 <?php
 
-namespace SkiLoisirsDiffusion;
+namespace SkiLoisirsDiffusion\Datasets;
 
+use InvalidArgumentException;
 use stdClass;
 
 class SignatureDataset
@@ -9,37 +10,50 @@ class SignatureDataset
     /** @var stdClass $dataset */
     protected $dataset;
 
-    private function __construct()
+    /** @var string $tablename */
+    protected $tablename = 'signature';
+
+    private function __construct(array $attributes = [])
     {
-        throw new NotImplentedException
+        $requiredParameters = [
+            'code_livraison',
+            'id_partenaire',
+            'mode_paiement',
+            'utilisateurs_adresse1',
+            'utilisateurs_adresse_nom',
+            'utilisateurs_codepostal',
+            'utilisateurs_email',
+            'utilisateurs_nom',
+            'utilisateurs_prenom',
+            'utilisateurs_ville',
+            'clef_secrete',
+        ];
+        array_map(function ($requiredParameter) use ($attributes) {
+            if (
+                !isset($attributes[$requiredParameter]) ||
+                !strlen($attributes[$requiredParameter])
+            ) {
+                throw new InvalidArgumentException("Parameter {$requiredParameter} is required to generate signature.", 1);
+            }
+        }, $requiredParameters);
+
+        $this->signature = $this->generateSignature($attributes);
+
         $this->dataset = new stdClass();
-        
-        $this->dataset->schema = <<<EOT
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="NewDataSet">
-    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
-        <xs:complexType>
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="SIGNATURE">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="signature" type="xs:string" minOccurs="1"/>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
-            </xs:choice>
-        </xs:complexType>
-    </xs:element>
-</xs:schema>
-EOT;
+        $this->dataset->schema = '
+<xs:element name="' . $this->tablename . '">
+    <xs:complexType>
+        <xs:sequence>
+            <xs:element name="signature" type="xs:string" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:element>
+';
 
         $this->dataset->any = '
-<diffgr:diffgram xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <NewDataSet xmlns="">
-        <SIGNATURE diffgr:id="SIGNATURE1" msdata:rowOrder="0">
-            <signature>' . sldconfig('ce_id') . '</signature>
-        </SIGNATURE>
-    </NewDataSet>
-</diffgr:diffgram>
+<' . $this->tablename . ' diffgr:id="' . $this->tablename . '1" msdata:rowOrder="0">
+    <signature>' . $this->signature . '</signature>
+</' . $this->tablename . '>
 ';
     }
 
@@ -56,5 +70,25 @@ EOT;
     public function body()
     {
         return $this->dataset->any;
+    }
+
+    public function dataset()
+    {
+        return $this->dataset;
+    }
+
+    public function generateSignature($attributes)
+    {
+        return sha1(
+            array_reduce(
+                $attributes,
+                function ($carry, $attribute) {
+                    if (strlen($carry)) {
+                        $carry .= '+';
+                    }
+                    return $carry .= $attribute;
+                }
+            )
+        );
     }
 }

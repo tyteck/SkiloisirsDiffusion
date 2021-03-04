@@ -1,11 +1,10 @@
 <?php
 
-namespace Tests;
+namespace SkiLoisirsDiffusion\Tests;
 
-use PHPUnit\Framework\TestCase;
 use SkiLoisirsDiffusion\Datasets\CEDataset;
 
-class CEDatasetTest extends TestCase
+class CEDatasetTest extends BaseTestCase
 {
     /** @test */
     public function ce_dataset_schema_is_ok()
@@ -30,7 +29,7 @@ class CEDatasetTest extends TestCase
         $ceDatasetBody = CEDataset::create()->body();
 
         $expectedKeyValues = [
-            'ce_id' => sldconfig('ce_id'),
+            'ce_id' => sldconfig('sld_partenaire_id'),
             'ce_societe' => sldconfig('ce_societe'),
             'ce_nom' => sldconfig('ce_nom'),
             'ce_prenom' => sldconfig('ce_prenom'),

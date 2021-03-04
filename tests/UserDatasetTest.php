@@ -1,12 +1,11 @@
 <?php
 
-namespace Tests;
+namespace SkiLoisirsDiffusion\Tests;
 
 use Carbon\Carbon;
-use PHPUnit\Framework\TestCase;
 use SkiLoisirsDiffusion\Datasets\UserDataset;
 
-class UserDatasetTest extends TestCase
+class UserDatasetTest extends BaseTestCase
 {
     /** @test */
     public function user_dataset_schema_is_ok()
