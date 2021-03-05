@@ -15,7 +15,7 @@ class BaseTestCase extends TestCase
         return [
             'code_livraison' => '42',
             'id_partenaire' => sldconfig('sld_partenaire_id'),
-            'mode_paiement' => '1',
+            'mode_paiement' => 'FCH',
             'utilisateurs_adresse1' => 'chemin de la charrue endommagée',
             'utilisateurs_adresse1' => 'adresse du chou vert',
             'utilisateurs_adresse_nom' => 'domicile',
