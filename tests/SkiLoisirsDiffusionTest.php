@@ -27,11 +27,11 @@ class SkiLoisirsDiffusionTest extends BaseTestCase
     /** @test */
     public function get_modes_paiements()
     {
-        $this->assertTrue(true);
-        /* $this->assertTrue(
+        $this->markTestIncomplete('👉 to be done.');
+        $this->assertTrue(
             SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)
                 ->GET_MODES_PAIEMENTS()
-        ); */
+        );
     }
 
     public function testGetLieu()
@@ -55,6 +55,7 @@ class SkiLoisirsDiffusionTest extends BaseTestCase
 
     public function testCreationCommande()
     {
+        $this->markTestIncomplete('👉 Strange behavior or strange requesting❓');
         $ceDataSet = CEDataset::create();
         $userDataSet = $this->createUserDataset();
         $orderDataSet = $this->createOrderDataset();
@@ -63,5 +64,13 @@ class SkiLoisirsDiffusionTest extends BaseTestCase
         $createOrderDataset = CreateOrderDataset::create($ceDataSet, $userDataSet, $orderDataSet, $signatureDataSet);
         $result = SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)
             ->CREATION_COMMANDE($createOrderDataset);
+    }
+
+    /** @test */
+    public function ticket_place_reservation_is_ok()
+    {
+        $articleDataset = $this->createArticleDataset($this->articleDatasetParameters());
+        $result = SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)
+            ->ticketPlaceReservation($articleDataset);
     }
 }

@@ -19,7 +19,7 @@ class SignatureDatasetTest extends BaseTestCase
         $schema = $this->signatureDataset->schema();
 
         $this->assertStringContainsString(
-            '<xs:element name="signature" type="xs:string" minOccurs="0"/>',
+            '<xs:element name="signature" type="xs:string" minOccurs="0" />',
             $schema,
             'The key signature with type string is not set properly.'
         );

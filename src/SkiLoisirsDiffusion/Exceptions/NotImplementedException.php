@@ -4,7 +4,7 @@ namespace SkiloisirsDiffusion\Exceptions;
 
 use Exception;
 
-class NotImplentedException extends Exception
+class NotImplementedException extends Exception
 {
     protected $message = 'To be done.';
 }

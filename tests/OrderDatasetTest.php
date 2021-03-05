@@ -7,7 +7,7 @@ use SkiLoisirsDiffusion\Datasets\OrderDataset;
 class OrderDatasetTest extends BaseTestCase
 {
     /** @test */
-    public function user_dataset_schema_is_ok()
+    public function order_dataset_schema_is_ok()
     {
         $schema = OrderDataset::create()->schema();
 
@@ -45,7 +45,7 @@ class OrderDatasetTest extends BaseTestCase
     }
 
     /** @test */
-    public function user_dataset_body_is_ok()
+    public function order_dataset_body_is_ok()
     {
         $expectedKeyValues = [
             'nb_cheques_vacances' => '1',

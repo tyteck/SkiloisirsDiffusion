@@ -2,9 +2,10 @@
 
 namespace SkiLoisirsDiffusion\Datasets;
 
+use SkiLoisirsDiffusion\Interfaces\Dataset;
 use stdClass;
 
-class OrderDataset
+class OrderDataset implements Dataset
 {
     /** @var stdClass $dataset */
     protected $dataset;
@@ -87,17 +88,17 @@ class OrderDataset
         return new static(...$params);
     }
 
-    public function schema()
+    public function schema():string
     {
         return $this->dataset->schema;
     }
 
-    public function body()
+    public function body():string
     {
         return $this->dataset->any;
     }
 
-    public function dataset()
+    public function dataset():stdClass
     {
         return $this->dataset;
     }

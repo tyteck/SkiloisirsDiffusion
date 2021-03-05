@@ -4,6 +4,7 @@ namespace SkiLoisirsDiffusion\Tests;
 
 use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
+use SkiLoisirsDiffusion\Datasets\ArticleDataset;
 use SkiLoisirsDiffusion\Datasets\OrderDataset;
 use SkiLoisirsDiffusion\Datasets\SignatureDataset;
 use SkiLoisirsDiffusion\Datasets\UserDataset;
@@ -75,5 +76,29 @@ class BaseTestCase extends TestCase
                 'numero_commande_ticketnet' => 'not required',
             ]
         );
+    }
+
+    public function articleDatasetParameters()
+    {
+        return [
+            'code_article' => '',
+            'quantite' => '',
+            'articles_prix' => '',
+            'code_parent' => '',
+            'acompte' => '',
+            'subvention_montant' => '',
+            'subvention_payeur' => '',
+            'remise' => '',
+            'nature_client_id' => '',
+            'categorie_place_code' => '',
+            'libelle_article' => '',
+            'famille_article' => '',
+            'skier_index' => '',
+        ];
+    }
+
+    public function createArticleDataset(array $attributes = [])
+    {
+        return ArticleDataset::create($attributes);
     }
 }
