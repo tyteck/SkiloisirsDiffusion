@@ -15,10 +15,23 @@ class SkiLoisirsDiffusionTest extends BaseTestCase
         $this->sldDomainUrl = sldconfig('sld_domain_url');
     }
 
-    public function testEtatSite()
+    /** @test */
+    public function sld_status_is_ok()
     {
-        $this->assertTrue(SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)
-            ->ETAT_SITE());
+        $this->assertTrue(
+            SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)
+                ->sldStatus()
+        );
+    }
+
+    /** @test */
+    public function get_modes_paiements()
+    {
+        $this->assertTrue(true);
+        /* $this->assertTrue(
+            SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)
+                ->GET_MODES_PAIEMENTS()
+        ); */
     }
 
     public function testGetLieu()
