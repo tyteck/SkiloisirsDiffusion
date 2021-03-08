@@ -2,9 +2,10 @@
 
 namespace SkiLoisirsDiffusion;
 
+use SimpleXMLElement;
 use SkiLoisirsDiffusion\Datasets\ArticleDataset;
 use SkiLoisirsDiffusion\Datasets\CreateOrderDataset;
-use SkiloisirsDiffusion\Exceptions\NotImplementedException;
+use SkiloisirsDiffusion\Exceptions\SLDPermissionDeniedException;
 use SkiloisirsDiffusion\Exceptions\SLDServiceNotAvailableException;
 use SkiloisirsDiffusion\Exceptions\TicketPlaceReservationException;
 
@@ -21,7 +22,7 @@ class SkiLoisirsDiffusion
         $this->partenaireId = $partenaireId;
         $this->sldDomainUrl = $sldDomainUrl;
         $this->soapClient = new SoapClientNG("{$this->sldDomainUrl}/Partenaire.svc?wsdl", ['cache_wsdl' => WSDL_CACHE_NONE]);
-        if (!$this->sldStatus()) {
+        if (!$this->ETAT_SITE()) {
             throw new SLDServiceNotAvailableException();
         }
     }
@@ -31,20 +32,23 @@ class SkiLoisirsDiffusion
         return new static($sldDomainUrl, $partenaireId);
     }
 
-    public function sldStatus() :bool
+    public function ETAT_SITE(): bool
     {
         $result = $this->soapClient->ETAT_SITE();
         return $result->ETAT_SITEResult === true;
     }
 
-    public function GET_MODES_PAIEMENTS() :bool
+    public function GET_MODES_PAIEMENTS()
     {
         $result = $this->soapClient->GET_MODES_PAIEMENTS($this->partenaireId);
-        $foo = simplexml_load_string($result);
-        return $result->ETAT_SITEResult === true;
+        $body = $this->toSimpleXml($result->GET_MODES_PAIEMENTSResult->any);
+        if ($body->NewDataSet->Paiements->statut == 'false') {
+            throw new SLDPermissionDeniedException($body->NewDataSet->Paiements->message_erreur);
+        }
+        return null; // I still don't know why I get an error from SLD
     }
 
-    public function GET_LIEU(string $lieuId)
+    public function GET_LIEU(string $lieuId): array
     {
         $arrayParams = [
             'partenaire_id' => $this->partenaireId,
@@ -72,7 +76,6 @@ class SkiLoisirsDiffusion
 
     public function CREATION_COMMANDE(CreateOrderDataset $createOrderDataset)
     {
-        throw new NotImplementedException();
         $arrayParams = [
             'CE_ID' => $this->partenaireId,
             'DS_DATA' => $createOrderDataset->dataset()
@@ -107,5 +110,12 @@ class SkiLoisirsDiffusion
             throw new TicketPlaceReservationException("Reservation has failed with message {$result->message_erreur}");
         }
         return $result->numero_commande_ticketnet;
+    }
+
+    public function toSimpleXml(string $xml): SimpleXMLElement
+    {
+        return simplexml_load_string(
+            str_replace(['s:', 'diffgr:', 'xs:', 'msdata:'], '', $xml)
+        );
     }
 }

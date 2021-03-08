@@ -4,6 +4,6 @@ namespace SkiloisirsDiffusion\Exceptions;
 
 use Exception;
 
-class SLDServiceNotAvailableException extends Exception
+class SLDPermissionDeniedException extends Exception
 {
 }

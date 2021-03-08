@@ -16,18 +16,18 @@ class SkiLoisirsDiffusionTest extends BaseTestCase
     }
 
     /** @test */
-    public function sld_status_is_ok()
+    public function etat_site_is_ok()
     {
         $this->assertTrue(
             SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)
-                ->sldStatus()
+                ->ETAT_SITE()
         );
     }
 
     /** @test */
     public function get_modes_paiements()
     {
-        $this->markTestIncomplete('👉 to be done.');
+        //$this->markTestIncomplete('👉 to be done.');
         $this->assertTrue(
             SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)
                 ->GET_MODES_PAIEMENTS()
@@ -53,9 +53,10 @@ class SkiLoisirsDiffusionTest extends BaseTestCase
         }, array_keys($expectedResult), $expectedResult);
     }
 
-    public function testCreationCommande()
+    /** @test */
+    public function creation_commande_is_ok()
     {
-        $this->markTestIncomplete('👉 Strange behavior or strange requesting❓');
+        //$this->markTestIncomplete('👉 Strange behavior or strange requesting❓');
         $ceDataSet = CEDataset::create();
         $userDataSet = $this->createUserDataset();
         $orderDataSet = $this->createOrderDataset();
