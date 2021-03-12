@@ -11,7 +11,7 @@
     ],
     "require": {
         "vlucas/phpdotenv": "^3.6.7",
-        "nesbot/carbon": "^2.45"
+        "nesbot/carbon": "^2.46"
     },
     "autoload": {
         "psr-4": {

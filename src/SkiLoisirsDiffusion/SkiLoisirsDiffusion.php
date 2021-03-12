@@ -101,7 +101,7 @@ class SkiLoisirsDiffusion
             'CE_ID' => $this->partenaireId,
             'DS_DATA' => $createOrderDataset->dataset()
         ];
-
+        var_dump($arrayParams);
         $result = $this->soapClient->CREATION_COMMANDE($arrayParams);
         var_dump($result);
     }
@@ -123,7 +123,6 @@ class SkiLoisirsDiffusion
             'numero_commande_ticketnet' => $ticketnetOrderId,
             'DS_DATA' => $articleDataset->dataset()
         ];
-        var_dump($arrayParams);
 
         $result = $this->soapClient->CREATION_COMMANDE($arrayParams);
         var_dump($result);

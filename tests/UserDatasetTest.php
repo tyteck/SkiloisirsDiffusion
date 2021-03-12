@@ -12,20 +12,6 @@ class UserDatasetTest extends BaseTestCase
     {
         $schema = UserDataset::create()->schema();
 
-        $expectedKeyTypes = [
-            'id_partenaire' => 'string',
-            'utilisateurs_nom' => 'string',
-            'utilisateurs_prenom' => 'string',
-            'utilisateurs_telephone' => 'string',
-            'utilisateurs_portable' => 'string',
-            'utilisateurs_email' => 'string',
-            'utilisateurs_adresse1' => 'string',
-            'utilisateurs_codepostal' => 'string',
-            'utilisateurs_ville' => 'string',
-            'utilisateurs_pays' => 'string',
-            'utilisateurs_date_naissance' => 'dateTime',
-        ];
-
         array_map(
             function ($key, $type) use ($schema) {
                 $this->assertStringContainsString(
@@ -34,8 +20,8 @@ class UserDatasetTest extends BaseTestCase
                     "The key {$key} with type {$type} is not set properly."
                 );
             },
-            array_keys($expectedKeyTypes),
-            $expectedKeyTypes
+            array_keys($this->expectedUserDatasetSchema()),
+            $this->expectedUserDatasetSchema()
         );
     }
 

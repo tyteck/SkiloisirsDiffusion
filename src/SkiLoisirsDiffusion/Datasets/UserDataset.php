@@ -42,7 +42,7 @@ class UserDataset implements Dataset
             <xs:element name="utilisateurs_codepostal" type="xs:string" minOccurs="0"/>
             <xs:element name="utilisateurs_ville" type="xs:string" minOccurs="0"/>
             <xs:element name="utilisateurs_pays" type="xs:string" minOccurs="0"/>
-            <xs:element name="utilisateurs_date_naissance" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="date_naissance" type="xs:dateTime" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 </xs:element>

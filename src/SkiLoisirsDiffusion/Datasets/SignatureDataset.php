@@ -45,7 +45,7 @@ class SignatureDataset implements Dataset
 <xs:element name="' . $this->tablename . '">
     <xs:complexType>
         <xs:sequence>
-            <xs:element name="signature" type="xs:string" minOccurs="0" />
+            <xs:element name="signature" type="xs:string" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 </xs:element>

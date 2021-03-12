@@ -38,23 +38,23 @@ class OrderDataset implements Dataset
 <xs:element name="' . $this->tablename . '">
     <xs:complexType>
         <xs:sequence>
-            <xs:element name="nb_cheques_vacances" type="xs:string" minOccurs="0" />
-            <xs:element name="montant_total_cheques_vacances" type="xs:string" minOccurs="0" />
-            <xs:element name="mode_paiement" type="xs:string" minOccurs="0" />
-            <xs:element name="prix_livraison" type="xs:decimal" minOccurs="0" />
-            <xs:element name="code_livraison" type="xs:string" minOccurs="0" />
-            <xs:element name="commentaire" type="xs:string" minOccurs="0" />
-            <xs:element name="livraison_adresse_nom" type="xs:string" minOccurs="0" />
-            <xs:element name="livraison_adresse_1" type="xs:string" minOccurs="0" />
-            <xs:element name="livraison_adresse_2" type="xs:string" minOccurs="0" />
-            <xs:element name="livraison_codepostal" type="xs:string" minOccurs="0" />
-            <xs:element name="livraison_ville" type="xs:string" minOccurs="0" />
-            <xs:element name="livraison_pays" type="xs:string" minOccurs="0" />
-            <xs:element name="url_retour" type="xs:string" minOccurs="0" />
-            <xs:element name="url_retour_ok" type="xs:string" minOccurs="0" />
-            <xs:element name="url_retour_err" type="xs:string" minOccurs="0" />
-            <xs:element name="acompte" type="xs:decimal" minOccurs="0" />
-            <xs:element name="numero_commande_ticketnet" type="xs:string" minOccurs="0" />
+            <xs:element name="nb_cheques_vacances" type="xs:string" minOccurs="0"/>
+            <xs:element name="montant_total_cheques_vacances" type="xs:string" minOccurs="0"/>
+            <xs:element name="mode_paiement" type="xs:string" minOccurs="0"/>
+            <xs:element name="prix_livraison" type="xs:decimal" minOccurs="0"/>
+            <xs:element name="code_livraison" type="xs:string" minOccurs="0"/>
+            <xs:element name="commentaire" type="xs:string" minOccurs="0"/>
+            <xs:element name="livraison_adresse_nom" type="xs:string" minOccurs="0"/>
+            <xs:element name="livraison_adresse_1" type="xs:string" minOccurs="0"/>
+            <xs:element name="livraison_adresse_2" type="xs:string" minOccurs="0"/>
+            <xs:element name="livraison_codepostal" type="xs:string" minOccurs="0"/>
+            <xs:element name="livraison_ville" type="xs:string" minOccurs="0"/>
+            <xs:element name="livraison_pays" type="xs:string" minOccurs="0"/>
+            <xs:element name="url_retour" type="xs:string" minOccurs="0"/>
+            <xs:element name="url_retour_ok" type="xs:string" minOccurs="0"/>
+            <xs:element name="url_retour_err" type="xs:string" minOccurs="0"/>
+            <xs:element name="acompte" type="xs:decimal" minOccurs="0"/>
+            <xs:element name="numero_commande_ticketnet" type="xs:string" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 </xs:element>
