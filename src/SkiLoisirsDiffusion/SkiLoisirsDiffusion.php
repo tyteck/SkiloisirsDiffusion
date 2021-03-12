@@ -101,9 +101,9 @@ class SkiLoisirsDiffusion
             'CE_ID' => $this->partenaireId,
             'DS_DATA' => $createOrderDataset->dataset()
         ];
-        var_dump($arrayParams);
+        print_r($createOrderDataset->dataset());
         $result = $this->soapClient->CREATION_COMMANDE($arrayParams);
-        var_dump($result);
+        return $result;
     }
 
     /**
@@ -125,7 +125,6 @@ class SkiLoisirsDiffusion
         ];
 
         $result = $this->soapClient->CREATION_COMMANDE($arrayParams);
-        var_dump($result);
         if (!$result->status) {
             throw new TicketPlaceReservationException("Reservation has failed with message {$result->message_erreur}");
         }

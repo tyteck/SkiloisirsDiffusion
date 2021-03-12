@@ -10,7 +10,7 @@ class SignatureDatasetTest extends BaseTestCase
     public function setUp() :void
     {
         parent::setUp();
-        $this->signatureDataset = $this->createSignatureDataset($this->signatureDatasetParameters()) ;
+        $this->signatureDataset = $this->createSignatureDataset($this->expectedSignatureDatasetBody()) ;
     }
 
     /** @test */
@@ -30,7 +30,7 @@ class SignatureDatasetTest extends BaseTestCase
     {
         $expectedSignature = sha1(
             array_reduce(
-                $this->signatureDatasetParameters(),
+                $this->expectedSignatureDatasetBody(),
                 function ($carry, $requiredParameter) {
                     if (strlen($carry)) {
                         $carry .= '+';

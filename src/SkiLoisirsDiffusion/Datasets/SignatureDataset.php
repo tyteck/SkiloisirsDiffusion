@@ -63,19 +63,24 @@ class SignatureDataset implements Dataset
         return new static(...$params);
     }
 
-    public function schema():string
+    public function schema(): string
     {
         return $this->dataset->schema;
     }
 
-    public function body():string
+    public function body(): string
     {
         return $this->dataset->any;
     }
 
-    public function dataset():stdClass
+    public function dataset(): stdClass
     {
         return $this->dataset;
+    }
+
+    public function signature(): string
+    {
+        return $this->signature;
     }
 
     public function generateSignature($attributes)

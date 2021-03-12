@@ -7,24 +7,8 @@ class ArticleDatasetTest extends BaseTestCase
     /** @test */
     public function article_dataset_schema_is_ok()
     {
-        $articleDataset = $this->createArticleDataset($this->articleDatasetParameters());
+        $articleDataset = $this->createArticleDataset($this->expectedArticleDatasetBody());
         $schema = $articleDataset->schema();
-
-        $expectedKeyTypes = [
-            'code_article' => 'string',
-            'quantite' => 'int',
-            'articles_prix' => 'decimal',
-            'code_parent' => 'string',
-            'acompte' => 'decimal',
-            'subvention_montant' => 'string',
-            'subvention_payeur' => 'string',
-            'remise' => 'decimal',
-            'nature_client_id' => 'string',
-            'categorie_place_code' => 'string',
-            'libelle_article' => 'string',
-            'famille_article' => 'string',
-            'skier_index' => 'int',
-        ];
 
         array_map(
             function ($key, $type) use ($schema) {
@@ -34,17 +18,15 @@ class ArticleDatasetTest extends BaseTestCase
                     "The key {$key} with type {$type} is not set properly."
                 );
             },
-            array_keys($expectedKeyTypes),
-            $expectedKeyTypes
+            array_keys($this->expectedArticleDatasetSchema()),
+            $this->expectedArticleDatasetSchema()
         );
     }
 
     /** @test */
     public function article_dataset_body_is_ok()
     {
-        $expectedKeyValues = $this->articleDatasetParameters();
-
-        $articleDataset = $this->createArticleDataset($this->articleDatasetParameters());
+        $articleDataset = $this->createArticleDataset($this->expectedArticleDatasetBody());
         $body = $articleDataset->body();
 
         array_map(
@@ -55,8 +37,8 @@ class ArticleDatasetTest extends BaseTestCase
                     "The value {$value} for {$key} is not set properly."
                 );
             },
-            array_keys($expectedKeyValues),
-            $expectedKeyValues
+            array_keys($this->expectedArticleDatasetBody()),
+            $this->expectedArticleDatasetBody()
         );
     }
 }

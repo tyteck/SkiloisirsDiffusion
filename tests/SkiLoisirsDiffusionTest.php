@@ -83,7 +83,7 @@ class SkiLoisirsDiffusionTest extends BaseTestCase
         $ceDataSet = CEDataset::create();
         $userDataSet = $this->createUserDataset();
         $orderDataSet = $this->createOrderDataset();
-        $signatureDataSet = $this->createSignatureDataset($this->signatureDatasetParameters());
+        $signatureDataSet = $this->createSignatureDataset();
 
         $createOrderDataset = CreateOrderDataset::create($ceDataSet, $userDataSet, $orderDataSet, $signatureDataSet);
         $result = SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)
@@ -93,8 +93,9 @@ class SkiLoisirsDiffusionTest extends BaseTestCase
     /** @test */
     public function ticket_place_reservation_is_ok()
     {
-        $articleDataset = $this->createArticleDataset($this->articleDatasetParameters());
+        $this->markTestIncomplete('to be done');
+        /* $articleDataset = $this->createArticleDataset($this->articleDatasetParameters());
         $result = SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)
-            ->ticketPlaceReservation($articleDataset);
+            ->ticketPlaceReservation($articleDataset); */
     }
 }

@@ -11,7 +11,7 @@ use SkiLoisirsDiffusion\Datasets\UserDataset;
 
 class BaseTestCase extends TestCase
 {
-    public function signatureDatasetParameters():array
+    public function expectedSignatureDatasetBody():array
     {
         return [
             'code_livraison' => '42',
@@ -29,9 +29,9 @@ class BaseTestCase extends TestCase
         ];
     }
 
-    public function createSignatureDataset(array $attributes = [])
+    public function createSignatureDataset()
     {
-        return SignatureDataset::create($attributes);
+        return SignatureDataset::create($this->expectedSignatureDatasetBody());
     }
 
     public function createUserDataset()
@@ -44,7 +44,12 @@ class BaseTestCase extends TestCase
         return OrderDataset::create($this->expectedOrderDatasetBody());
     }
 
-    public function articleDatasetParameters()
+    public function createArticleDataset()
+    {
+        return ArticleDataset::create($this->expectedArticleDatasetBody());
+    }
+
+    public function expectedArticleDatasetBody()
     {
         return [
             'code_article' => '',
@@ -63,6 +68,25 @@ class BaseTestCase extends TestCase
         ];
     }
 
+    public function expectedArticleDatasetSchema()
+    {
+        return [
+            'code_article' => 'string',
+            'quantite' => 'int',
+            'articles_prix' => 'decimal',
+            'code_parent' => 'string',
+            'acompte' => 'decimal',
+            'subvention_montant' => 'string',
+            'subvention_payeur' => 'string',
+            'remise' => 'decimal',
+            'nature_client_id' => 'string',
+            'categorie_place_code' => 'string',
+            'libelle_article' => 'string',
+            'famille_article' => 'string',
+            'skier_index' => 'int',
+        ];
+    }
+
     public function expectedUserDatasetSchema()
     {
         return [
@@ -72,7 +96,9 @@ class BaseTestCase extends TestCase
             'utilisateurs_telephone' => 'string',
             'utilisateurs_portable' => 'string',
             'utilisateurs_email' => 'string',
+            'utilisateurs_adresse_nom' => 'string',
             'utilisateurs_adresse1' => 'string',
+            'utilisateurs_adresse2' => 'string',
             'utilisateurs_codepostal' => 'string',
             'utilisateurs_ville' => 'string',
             'utilisateurs_pays' => 'string',
@@ -90,6 +116,38 @@ class BaseTestCase extends TestCase
             'ce_email' => 'string',
             'ce_codepostal' => 'string',
             'ce_ville' => 'string',
+        ];
+    }
+
+    public function expectedCeDatasetBody()
+    {
+        return [
+            'ce_id' => sldconfig('sld_partenaire_id'),
+            'ce_societe' => sldconfig('ce_societe'),
+            'ce_nom' => sldconfig('ce_nom'),
+            'ce_prenom' => sldconfig('ce_prenom'),
+            'ce_email' => sldconfig('ce_email'),
+            'ce_codepostal' => sldconfig('ce_codepostal'),
+            'ce_ville' => sldconfig('ce_ville'),
+        ];
+    }
+
+    public function expectedUserDatasetBody()
+    {
+        return [
+            'id_partenaire' => '42',
+            'utilisateurs_nom' => 'Leroy',
+            'utilisateurs_prenom' => 'Gilbert',
+            'utilisateurs_telephone' => '0606060606',
+            'utilisateurs_portable' => '0606060606',
+            'utilisateurs_email' => 'gilbert@leroy.com',
+            'utilisateurs_adresse_nom' => 'par la bas',
+            'utilisateurs_adresse1' => 'chemin de la charrue endommagée',
+            'utilisateurs_adresse2' => 'entrée b',
+            'utilisateurs_codepostal' => '77300',
+            'utilisateurs_ville' => 'Tourte la charrue',
+            'utilisateurs_pays' => 'France',
+            'date_naissance' => Carbon::now()->subYears(25)->format('Y-m-d\Th:i:s'),
         ];
     }
 
@@ -113,41 +171,10 @@ class BaseTestCase extends TestCase
             'url_retour_err' => 'string',
             'acompte' => 'decimal',
             'numero_commande_ticketnet' => 'string',
-        ];
-    }
-
-    public function expectedCeDatasetBody()
-    {
-        return [
-            'ce_id' => sldconfig('sld_partenaire_id'),
-            'ce_societe' => sldconfig('ce_societe'),
-            'ce_nom' => sldconfig('ce_nom'),
-            'ce_prenom' => sldconfig('ce_prenom'),
-            'ce_email' => sldconfig('ce_email'),
-            'ce_codepostal' => sldconfig('ce_codepostal'),
-            'ce_ville' => sldconfig('ce_ville'),
-        ];
-    }
-
-    public function createArticleDataset(array $attributes = [])
-    {
-        return ArticleDataset::create($attributes);
-    }
-
-    public function expectedUserDatasetBody()
-    {
-        return [
-            'id_partenaire' => '42',
-            'utilisateurs_nom' => 'Leroy',
-            'utilisateurs_prenom' => 'Gilbert',
-            'utilisateurs_telephone' => '0606060606',
-            'utilisateurs_portable' => '0606060606',
-            'utilisateurs_email' => 'gilbert@leroy.com',
-            'utilisateurs_adresse1' => 'chemin de la charrue endommagée',
-            'utilisateurs_codepostal' => '77300',
-            'utilisateurs_ville' => 'Tourte la charrue',
-            'utilisateurs_pays' => 'France',
-            'utilisateurs_date_naissance' => Carbon::now()->subYears(25)->format('Y-m-d\Th:i:s'),
+            'frais_gestion_payeur' => 'string',
+            'frais_port_payeur' => 'string',
+            'remise_frais_port' => 'string',
+            'numero_commande_distributeur' => 'string',
         ];
     }
 
@@ -160,6 +187,7 @@ class BaseTestCase extends TestCase
             'prix_livraison' => '1.9',
             'code_livraison' => 'AYB',
             'commentaire' => 'not required',
+            'livraison_adresse_societe' => 'Leroy',
             'livraison_adresse_nom' => 'Gilbert Leroy',
             'livraison_adresse_1' => 'chemin de la charrue endommagée',
             'livraison_adresse_2' => '',
@@ -171,6 +199,10 @@ class BaseTestCase extends TestCase
             'url_retour_err' => 'not required',
             'acompte' => 'not required',
             'numero_commande_ticketnet' => 'not required',
+            'frais_gestion_payeur' => 'not required',
+            'frais_port_payeur' => 'not required',
+            'remise_frais_port' => 'not required',
+            'numero_commande_distributeur' => 'not required',
         ];
     }
 }

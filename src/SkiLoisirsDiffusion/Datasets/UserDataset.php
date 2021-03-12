@@ -21,11 +21,13 @@ class UserDataset implements Dataset
         $this->utilisateurs_telephone = $attributes['utilisateurs_telephone'] ?? '';
         $this->utilisateurs_portable = $attributes['utilisateurs_portable'] ?? '';
         $this->utilisateurs_email = $attributes['utilisateurs_email'] ?? '';
+        $this->utilisateurs_adresse_nom = $attributes['utilisateurs_adresse_nom'] ?? '';
         $this->utilisateurs_adresse1 = $attributes['utilisateurs_adresse1'] ?? '';
+        $this->utilisateurs_adresse2 = $attributes['utilisateurs_adresse2'] ?? '';
         $this->utilisateurs_codepostal = $attributes['utilisateurs_codepostal'] ?? '';
         $this->utilisateurs_ville = $attributes['utilisateurs_ville'] ?? '';
         $this->utilisateurs_pays = $attributes['utilisateurs_pays'] ?? '';
-        $this->utilisateurs_date_naissance = $attributes['utilisateurs_date_naissance'] ?? '';
+        $this->date_naissance = $attributes['date_naissance'] ?? '';
 
         $this->dataset = new stdClass();
         $this->dataset->schema = '
@@ -38,7 +40,9 @@ class UserDataset implements Dataset
             <xs:element name="utilisateurs_telephone" type="xs:string" minOccurs="0"/>
             <xs:element name="utilisateurs_portable" type="xs:string" minOccurs="0"/>
             <xs:element name="utilisateurs_email" type="xs:string" minOccurs="0"/>
+            <xs:element name="utilisateurs_adresse_nom" type="xs:string" minOccurs="0"/>
             <xs:element name="utilisateurs_adresse1" type="xs:string" minOccurs="0"/>
+            <xs:element name="utilisateurs_adresse2" type="xs:string" minOccurs="0"/>
             <xs:element name="utilisateurs_codepostal" type="xs:string" minOccurs="0"/>
             <xs:element name="utilisateurs_ville" type="xs:string" minOccurs="0"/>
             <xs:element name="utilisateurs_pays" type="xs:string" minOccurs="0"/>
@@ -56,11 +60,13 @@ class UserDataset implements Dataset
     <utilisateurs_telephone>' . $this->utilisateurs_telephone . '</utilisateurs_telephone>
     <utilisateurs_portable>' . $this->utilisateurs_portable . '</utilisateurs_portable>
     <utilisateurs_email>' . $this->utilisateurs_email . '</utilisateurs_email>
+    <utilisateurs_adresse_nom>' . $this->utilisateurs_adresse_nom . '</utilisateurs_adresse_nom>
     <utilisateurs_adresse1>' . $this->utilisateurs_adresse1 . '</utilisateurs_adresse1>
+    <utilisateurs_adresse2>' . $this->utilisateurs_adresse2 . '</utilisateurs_adresse2>
     <utilisateurs_codepostal>' . $this->utilisateurs_codepostal . '</utilisateurs_codepostal>
     <utilisateurs_ville>' . $this->utilisateurs_ville . '</utilisateurs_ville>
     <utilisateurs_pays>' . $this->utilisateurs_pays . '</utilisateurs_pays>
-    <utilisateurs_date_naissance>' . $this->utilisateurs_date_naissance . '</utilisateurs_date_naissance>
+    <date_naissance>' . $this->date_naissance . '</date_naissance>
 </' . $this->tablename . '>
 ';
     }
