@@ -27,11 +27,34 @@ class SkiLoisirsDiffusionTest extends BaseTestCase
     /** @test */
     public function get_modes_paiements()
     {
-        //$this->markTestIncomplete('👉 to be done.');
-        $this->assertTrue(
-            SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)
-                ->GET_MODES_PAIEMENTS()
-        );
+        $keysToCheck = ['id', 'code', 'reglement'];
+        $expectedResults = [
+            [
+                'id' => '2f8fcd84-0dc0-44eb-b217-e9b99a77983b',
+                'code' => 'CB',
+                'reglement' => 'CB1'
+            ],
+            [
+                'id' => 'e1ec4ce3-2fc7-4bd2-af10-a8e934e4244f',
+                'code' => 'CHQ',
+                'reglement' => 'C01'
+            ],
+            [
+                'id' => '79834c63-51af-4826-b45b-ff0539c5d7a4',
+                'code' => 'FCH',
+                'reglement' => 'C01'
+            ],
+        ];
+
+        $results = SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)->GET_MODES_PAIEMENTS();
+        $this->assertCount(3, $results);
+        array_map(function ($key) use ($results, $expectedResults) {
+            $this->assertEqualsCanonicalizing(
+                array_map(function ($item) use ($key) { return $item[$key];}, $expectedResults),
+                array_map(function ($item) use ($key) { return $item[$key];}, $results),
+                "Non expected result for key : {$key}"
+            );
+        }, $keysToCheck);
     }
 
     public function testGetLieu()

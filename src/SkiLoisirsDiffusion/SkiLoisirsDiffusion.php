@@ -38,14 +38,35 @@ class SkiLoisirsDiffusion
         return $result->ETAT_SITEResult === true;
     }
 
-    public function GET_MODES_PAIEMENTS()
+    public function GET_MODES_PAIEMENTS(): array
     {
-        $result = $this->soapClient->GET_MODES_PAIEMENTS($this->partenaireId);
+        $arrayParams = [
+            'partenaire_id' => $this->partenaireId,
+        ];
+        $result = $this->soapClient->GET_MODES_PAIEMENTS($arrayParams);
+
         $body = $this->toSimpleXml($result->GET_MODES_PAIEMENTSResult->any);
+
         if ($body->NewDataSet->Paiements->statut == 'false') {
             throw new SLDPermissionDeniedException($body->NewDataSet->Paiements->message_erreur);
         }
-        return null; // I still don't know why I get an error from SLD
+
+        $results = [];
+        foreach ($body->NewDataSet->Paiements as $paiement) {
+            $paiementId = (string)$paiement->paiements_id;
+            $results[$paiementId] = [
+                'id' => $paiementId,
+                'code' => trim($paiement->paiements_code),
+                'reglement' => (string)$paiement->paiements_reglement,
+                'redirect' => (string)$paiement->paiements_redirection,
+                'name_fr' => (string)$paiement->paiements_nom_fr,
+                'name_en' => (string)$paiement->paiements_nom_en,
+                'description_fr' => (string)$paiement->paiements_indic_fr,
+                'description_en' => (string)$paiement->paiements_indic_en,
+                'ordre' => (string)$paiement->paiements_ordre,
+            ];
+        }
+        return $results; // I still don't know why I get an error from SLD
     }
 
     public function GET_LIEU(string $lieuId): array
