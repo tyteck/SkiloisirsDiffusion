@@ -2,6 +2,7 @@
 
 namespace Skiloisirs\Tests;
 
+use SkiLoisirsDiffusion\Datasets\DatasetField;
 use SkiLoisirsDiffusion\Datasets\MakeDataset;
 use SkiLoisirsDiffusion\Tests\BaseTestCase;
 use stdClass;
@@ -9,24 +10,12 @@ use stdClass;
 class MakeDatasetTest extends BaseTestCase
 {
     /** @test */
-    public function duplicate_field_is_not_allowed()
-    {
-        $dataset = MakeDataset::create(
-            [
-                'field1' => ['type' => 'string', 'minOccurs' => 0],
-            ]
-        )->dataset();
-        $this->assertInstanceOf(stdClass::class, $dataset);
-    }
-
-    /** @test */
     public function simple_one_is_ok()
     {
-        $dataset = MakeDataset::create(
-            [
-                'field1' => ['type' => 'string', 'minOccurs' => 0],
-            ]
-        )->dataset();
-        $this->assertInstanceOf(stdClass::class, $dataset);
+        $streetAddressField = DatasetField::create('streetnumber', 'string', 'rue de la petite crèmerie');
+        $createdDataset = MakeDataset::init('address')->addField($streetAddressField);
+        $this->assertInstanceOf(stdClass::class, $createdDataset->dataset());
+
+        dump($createdDataset->schema(), $createdDataset->body());
     }
 }
