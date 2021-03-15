@@ -101,7 +101,7 @@ class SkiLoisirsDiffusion
             'CE_ID' => $this->partenaireId,
             'DS_DATA' => $createOrderDataset->dataset()
         ];
-        print_r($createOrderDataset->dataset());
+        dump($arrayParams);
         $result = $this->soapClient->CREATION_COMMANDE($arrayParams);
         return $result;
     }
