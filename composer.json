@@ -15,19 +15,19 @@
     },
     "autoload": {
         "psr-4": {
-            "SkiLoisirsDiffusion\\": "src/SkiLoisirsDiffusion"
+            "SkiLoisirsDiffusion\\": "src"
         },
         "files": [
-            "src/SkiLoisirsDiffusion/helpers.php"
+            "src/helpers.php"
         ]
     },
     "autoload-dev": {
         "psr-4": {
-            "SkiLoisirsDiffusion\\Tests\\": "tests/"
+            "SkiLoisirsDiffusion\\Tests\\": "tests"
         }
     },
     "require-dev": {
-        "phpunit/phpunit": ">=7.5",
+        "phpunit/phpunit": "^9.0",
         "symfony/var-dumper": "^5.2"
     }
 }

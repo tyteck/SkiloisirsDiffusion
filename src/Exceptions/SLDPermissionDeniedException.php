@@ -1,6 +1,6 @@
 <?php
 
-namespace SkiloisirsDiffusion\Exceptions;
+namespace SkiLoisirsDiffusion\Exceptions;
 
 use Exception;
 

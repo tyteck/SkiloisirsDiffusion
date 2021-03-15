@@ -5,9 +5,9 @@ namespace SkiLoisirsDiffusion;
 use SimpleXMLElement;
 use SkiLoisirsDiffusion\Datasets\ArticleDataset;
 use SkiLoisirsDiffusion\Datasets\CreateOrderDataset;
-use SkiloisirsDiffusion\Exceptions\SLDPermissionDeniedException;
-use SkiloisirsDiffusion\Exceptions\SLDServiceNotAvailableException;
-use SkiloisirsDiffusion\Exceptions\TicketPlaceReservationException;
+use SkiLoisirsDiffusion\Exceptions\SLDPermissionDeniedException;
+use SkiLoisirsDiffusion\Exceptions\SLDServiceNotAvailableException;
+use SkiLoisirsDiffusion\Exceptions\TicketPlaceReservationException;
 
 class SkiLoisirsDiffusion
 {
