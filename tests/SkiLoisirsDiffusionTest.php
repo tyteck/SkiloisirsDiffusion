@@ -25,7 +25,7 @@ class SkiLoisirsDiffusionTest extends TestCase
         $expectedResult = [
             'lieux_id' => '745cf374-7556-407e-aad6-57c417508e3b', // disneyland paris
             'lieux_nom' => 'DISNEYLAND PARIS BILLETS',
-            'lieux_plan' => 'https://cdn.skiloisirsdiffusion.com/image/plan_745cf374-7556-407e-aad6-57c417508e3b_0_0_0_0_20201202035517.png',
+            'lieux_plan' => 'https://cdn.skiloisirsdiffusion.com/image/plan_745cf374-7556-407e-aad6-57c417508e3b_0_0_0_0_20210119090624.png',
         ];
         $result = SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)->GET_LIEU($expectedResult['lieux_id']);
 
