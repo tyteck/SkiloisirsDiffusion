@@ -2,6 +2,7 @@
 
 namespace SkiLoisirsDiffusion\Datasets;
 
+use InvalidArgumentException;
 use SkiLoisirsDiffusion\Exceptions\TableNameShouldNotBeEmptyException;
 
 class DatasetTable
@@ -25,11 +26,11 @@ class DatasetTable
         return new static(...$params);
     }
 
-    public function renderSchema()
+    public function renderSchema(): string
     {
         $schema = '<xs:element name="' . $this->tableName . '">' . PHP_EOL . '<xs:complexType>' . PHP_EOL . '<xs:sequence>' . PHP_EOL;
         $schema .= array_reduce(
-            $this->fields,
+            $this->datasetFields,
             function ($carry, DatasetField $datasetField) {
                 if (strlen($carry)) {
                     $carry .= PHP_EOL;
@@ -38,13 +39,14 @@ class DatasetTable
             }
         );
         $schema .= PHP_EOL . '</xs:sequence>' . PHP_EOL . '</xs:complexType>' . PHP_EOL . '</xs:element>';
+        return $schema;
     }
 
-    public function renderBody()
+    public function renderBody(): string
     {
-        $body = '<' . $this->tablename . ' diffgr:id="' . $this->tablename . '1" msdata:rowOrder="0">';
+        $body = '<NOM_TABLE diffgr:id="' . $this->tableName . '" msdata:rowOrder="0">';
         $body .= array_reduce(
-            $this->fields,
+            $this->datasetFields,
             function ($carry, DatasetField $datasetField) {
                 if (strlen($carry)) {
                     $carry .= PHP_EOL;
@@ -52,12 +54,30 @@ class DatasetTable
                 return $carry .= $datasetField->renderBody();
             }
         );
-        $body .= '</tablename>';
+        $body .= '</NOM_TABLE>';
         return  $body;
     }
 
     public function addDatasetField(DatasetField $datasetField)
     {
         $this->datasetFields[] = $datasetField;
+        return $this;
+    }
+
+    public function datasetFields(): array
+    {
+        return $this->datasetFields;
+    }
+
+    public function addDatasetFields(array $datasetFields)
+    {
+        array_map(function ($datasetField) {
+            if (!(is_object($datasetField) && get_class($datasetField) == 'SkiLoisirsDiffusion\Datasets\DatasetField')) {
+                throw new InvalidArgumentException('addDatasetFields accept only array of datasetField::class');
+            }
+            $this->addDatasetField($datasetField);
+        }, $datasetFields);
+
+        return $this;
     }
 }

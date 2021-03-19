@@ -51,10 +51,12 @@ class DatasetFieldTest extends BaseTestCase
     {
         $expectedFieldName = 'field1';
         $expectedFieldType = 'xs:string';
+        $expectedValue = 'value1';
         $expectedMinOccurs = 10;
-        $datasetField = DatasetField::create($expectedFieldName, 'string', 'value1', $expectedMinOccurs);
+        $datasetField = DatasetField::create($expectedFieldName, 'string', $expectedValue, $expectedMinOccurs);
         $this->assertEquals($expectedFieldName, $datasetField->fieldName());
         $this->assertEquals($expectedFieldType, $datasetField->fieldType());
+        $this->assertEquals($expectedValue, $datasetField->fieldValue());
         $this->assertEquals($expectedMinOccurs, $datasetField->fieldMinOccurs());
     }
 

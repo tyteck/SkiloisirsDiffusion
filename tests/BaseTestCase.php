@@ -211,12 +211,21 @@ class BaseTestCase extends TestCase
     {
         $fieldName = 'field' . rand(1, 1000);
         $fieldTypes = DatasetField::allowedFieldTypes();
-        $fieldType = $fieldTypes[rand(0, count($fieldTypes))];
+        $fieldType = $fieldTypes[rand(0, (count($fieldTypes) - 1))];
         switch ($fieldType) {
             case 'string': $fieldValue = 'lorem ipsum'; break;
             case 'dateTime': $fieldValue = Carbon::now()->subDay(); break;
             case 'decimal': $fieldValue = 29.90; break;
         }
         return DatasetField::create($fieldName, $fieldType, $fieldValue);
+    }
+
+    public function createManyDatasetFields(int $numberOfDataset)
+    {
+        $datasetFields = [];
+        for ($i = 0;$i < $numberOfDataset;$i++) {
+            $datasetFields[] = $this->createDatasetField();
+        }
+        return $datasetFields;
     }
 }

@@ -69,6 +69,11 @@ class DatasetField
         return $this->fieldType;
     }
 
+    public function fieldValue()
+    {
+        return $this->fieldValue;
+    }
+
     public function fieldMinOccurs()
     {
         return $this->fieldMinOccurs;
