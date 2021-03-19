@@ -110,4 +110,12 @@ class DatasetFieldTest extends BaseTestCase
             $datasetField->renderBody()
         );
     }
+
+    /** @test */
+    public function allowed_field_types_is_ok()
+    {
+        $datasetFieldTypes = DatasetField::allowedFieldTypes();
+        $this->assertIsArray($datasetFieldTypes);
+        $this->assertEqualsCanonicalizing(['string', 'dateTime', 'decimal'], $datasetFieldTypes);
+    }
 }

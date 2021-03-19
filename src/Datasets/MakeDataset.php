@@ -32,6 +32,20 @@ class MakeDataset
         return $this;
     }
 
+    public function schemaPrologue(): string
+    {
+        return '
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="NewDataSet">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+        <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+        ' . $this->tableSchemas() . '
+        </xs:choice>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>';
+    }
+
     public function schema()
     {
         $schema = '

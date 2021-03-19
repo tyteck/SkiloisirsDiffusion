@@ -5,6 +5,7 @@ namespace SkiLoisirsDiffusion\Tests;
 use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
 use SkiLoisirsDiffusion\Datasets\ArticleDataset;
+use SkiLoisirsDiffusion\Datasets\DatasetField;
 use SkiLoisirsDiffusion\Datasets\OrderDataset;
 use SkiLoisirsDiffusion\Datasets\SignatureDataset;
 use SkiLoisirsDiffusion\Datasets\UserDataset;
@@ -204,5 +205,18 @@ class BaseTestCase extends TestCase
             'remise_frais_port' => 'not required',
             'numero_commande_distributeur' => 'not required',
         ];
+    }
+
+    public function createDatasetField()
+    {
+        $fieldName = 'field' . rand(1, 1000);
+        $fieldTypes = DatasetField::allowedFieldTypes();
+        $fieldType = $fieldTypes[rand(0, count($fieldTypes))];
+        switch ($fieldType) {
+            case 'string': $fieldValue = 'lorem ipsum'; break;
+            case 'dateTime': $fieldValue = Carbon::now()->subDay(); break;
+            case 'decimal': $fieldValue = 29.90; break;
+        }
+        return DatasetField::create($fieldName, $fieldType, $fieldValue);
     }
 }

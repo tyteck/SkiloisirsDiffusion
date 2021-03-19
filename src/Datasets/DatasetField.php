@@ -27,7 +27,7 @@ class DatasetField
     protected $fieldValue;
 
     /** @var array $allowedFieldTypes */
-    protected $allowedFieldTypes = ['string', 'decimal', 'dateTime'];
+    protected static $allowedFieldTypes = ['string', 'decimal', 'dateTime'];
 
     private function __construct(string $fieldName, string $fieldType, $fieldValue, int $fieldMinOccurs = 0, bool $fieldRequired = true)
     {
@@ -36,16 +36,16 @@ class DatasetField
         }
         $this->fieldName = $fieldName;
 
-        if (!in_array($fieldType, $this->allowedFieldTypes)) {
-            throw new FieldTypeNotAllowedException("Field type {$fieldType} not allowed. Are allowed : " . implode(', ', $this->allowedFieldTypes));
+        if (!in_array($fieldType, self::allowedFieldTypes())) {
+            throw new FieldTypeNotAllowedException("Field type {$fieldType} not allowed. Are allowed : " . implode(', ', self::allowedFieldTypes()));
         }
         $this->fieldType = "xs:{$fieldType}";
 
         if ($fieldMinOccurs < 0) {
-            throw new FieldMinOccursShouldBeGreaterThanZeroException("Field type {$fieldType} not allowed. Are allowed : " . implode(', ', $this->allowedFieldTypes));
+            throw new FieldMinOccursShouldBeGreaterThanZeroException("Field type {$fieldType} not allowed. Are allowed : " . implode(', ', self::allowedFieldTypes()));
         }
         $this->fieldMinOccurs = $fieldMinOccurs;
-        
+
         $this->fieldValue = $fieldValue;
         if (!$this->isValueMatchingType()) {
             throw new FieldValueDoesNotMatchWithTypeException("We were expecting type {$fieldType} and we got {$fieldValue}.");
@@ -108,5 +108,10 @@ class DatasetField
             $this->fieldValue = $isItADate->format(sldconfig('datetime_format'));
             return true;
         }
+    }
+
+    public static function allowedFieldTypes()
+    {
+        return self::$allowedFieldTypes;
     }
 }
