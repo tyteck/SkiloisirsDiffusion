@@ -9,15 +9,11 @@ class MakeDataset
     /** @var stdClass $dataset */
     protected stdClass $dataset;
 
-    /** @var array $fields */
-    protected array $fields = [];
+    /** @var array $datasetTables */
+    protected array $datasetTables = [];
 
-    /** @var string $tableName */
-    protected string $tableName;
-
-    private function __construct(string $tableName)
+    private function __construct()
     {
-        $this->tableName = $tableName;
         $this->dataset = new stdClass();
     }
 
@@ -26,71 +22,49 @@ class MakeDataset
         return new static(...$params);
     }
 
-    public function addField(DatasetField $field): self
+    public function addDatasetTable(DatasetTable $datasetTable): self
     {
-        $this->fields[] = $field;
+        $this->datasetTables[] = $datasetTable;
         return $this;
-    }
-
-    public function schemaPrologue(): string
-    {
-        return '
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="NewDataSet">
-    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
-        <xs:complexType>
-        <xs:choice minOccurs="0" maxOccurs="unbounded">
-        ' . $this->tableSchemas() . '
-        </xs:choice>
-        </xs:complexType>
-    </xs:element>
-</xs:schema>';
     }
 
     public function schema()
     {
-        $schema = '
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="NewDataSet">
-    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
-        <xs:complexType>
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="' . $this->tableName . '">
-                    <xs:complexType>
-                        <xs:sequence>' . PHP_EOL;
-        $schema .= array_reduce(
-            $this->fields,
-            function ($carry, DatasetField $datasetField) {
-                if (strlen($carry)) {
-                    $carry .= PHP_EOL;
+        $schema = '<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="NewDataSet">' . PHP_EOL .
+            '<xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">' . PHP_EOL .
+            '<xs:complexType>' . PHP_EOL .
+            '<xs:choice minOccurs="0" maxOccurs="unbounded">' . PHP_EOL;
+        if (count($this->datasetTables)) {
+            $schema .= array_reduce(
+                $this->datasetTables,
+                function ($carry, DatasetTable $datasetTable) {
+                    if (strlen($carry)) {
+                        $carry .= PHP_EOL;
+                    }
+                    return $carry .= $datasetTable->renderSchema();
                 }
-                return $carry .= $datasetField->renderSchema();
-            }
-        );
-
-        $schema .= '   
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
-            </xs:choice>
-        </xs:complexType>
-    </xs:element>
-</xs:schema>';
+            ) . PHP_EOL;
+        }
+        $schema .= '</xs:choice>' . PHP_EOL . '</xs:complexType>' . PHP_EOL . '</xs:element>' . PHP_EOL . '</xs:schema>';
         return  $schema;
     }
 
     public function body()
     {
-        $body = '<' . $this->tablename . ' diffgr:id="' . $this->tablename . '1" msdata:rowOrder="0">';
-        $body .= array_reduce(
-            $this->fields,
-            function ($carry, DatasetField $datasetField) {
-                if (strlen($carry)) {
-                    $carry .= PHP_EOL;
+        $body = '<diffgr:diffgram xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">' . PHP_EOL
+        . '<NewDataSet xmlns="">' . PHP_EOL;
+        if (count($this->datasetTables)) {
+            $body .= array_reduce(
+                $this->datasetTables,
+                function ($carry, DatasetTable $datasetTable) {
+                    if (strlen($carry)) {
+                        $carry .= PHP_EOL;
+                    }
+                    return $carry .= $datasetTable->renderBody();
                 }
-                return $carry .= $datasetField->renderBody();
-            }
-        );
-        $body .= '</tablename>';
-        return  $body;
+            ) . PHP_EOL;
+        }
+        return $body .= '</NewDataSet>' . PHP_EOL . '</diffgr:diffgram>';
     }
 
     public function dataset()

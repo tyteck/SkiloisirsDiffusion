@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
 use SkiLoisirsDiffusion\Datasets\ArticleDataset;
 use SkiLoisirsDiffusion\Datasets\DatasetField;
+use SkiLoisirsDiffusion\Datasets\DatasetTable;
 use SkiLoisirsDiffusion\Datasets\OrderDataset;
 use SkiLoisirsDiffusion\Datasets\SignatureDataset;
 use SkiLoisirsDiffusion\Datasets\UserDataset;
@@ -227,5 +228,66 @@ class BaseTestCase extends TestCase
             $datasetFields[] = $this->createDatasetField();
         }
         return $datasetFields;
+    }
+
+    public function createDatasetTable($datasetTableName, $nbDatasetFields)
+    {
+        return DatasetTable::create($datasetTableName)
+            ->addDatasetFields(
+                $this->createManyDatasetFields($nbDatasetFields)
+            );
+    }
+
+    public function createDatasetTables($nbDatasetTables)
+    {
+        $datasetTables = [];
+        for ($i = 0;$i < $nbDatasetTables;$i++) {
+            $datasetTableName = 'table' . rand(1, 1000);
+            $nbDatasetFields = rand(1, 5);
+            $datasetTables[] = DatasetTable::create($datasetTableName)
+                ->addDatasetFields(
+                    $this->createManyDatasetFields($nbDatasetFields)
+                );
+        }
+        return $datasetTables;
+    }
+
+    public function datasetFieldsSchemaToString(array $datasetFields)
+    {
+        $datasetFieldsAsString = '';
+        if (count($datasetFields)) {
+            $datasetFieldsAsString .= array_reduce(
+                $datasetFields,
+                function ($carry, DatasetField $datasetField) {
+                    if (strlen($carry)) {
+                        $carry .= PHP_EOL;
+                    }
+                    return $carry .= $datasetField->renderSchema();
+                }
+            );
+        }
+        return $datasetFieldsAsString;
+    }
+
+    public function datasetFieldsBodyToString(array $datasetFields)
+    {
+        $datasetFieldsAsString = '';
+        if (count($datasetFields)) {
+            $datasetFieldsAsString .= array_reduce(
+                $datasetFields,
+                function ($carry, DatasetField $datasetField) {
+                    if (strlen($carry)) {
+                        $carry .= PHP_EOL;
+                    }
+                    return $carry .= $datasetField->renderBody();
+                }
+            );
+        }
+        return $datasetFieldsAsString;
+    }
+
+    public function datasetTablesToSchemaString(array $datasetTables)
+    {
+        //code
     }
 }

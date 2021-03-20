@@ -29,31 +29,35 @@ class DatasetTable
     public function renderSchema(): string
     {
         $schema = '<xs:element name="' . $this->tableName . '">' . PHP_EOL . '<xs:complexType>' . PHP_EOL . '<xs:sequence>' . PHP_EOL;
-        $schema .= array_reduce(
-            $this->datasetFields,
-            function ($carry, DatasetField $datasetField) {
-                if (strlen($carry)) {
-                    $carry .= PHP_EOL;
+        if (count($this->datasetFields)) {
+            $schema .= array_reduce(
+                $this->datasetFields,
+                function ($carry, DatasetField $datasetField) {
+                    if (strlen($carry)) {
+                        $carry .= PHP_EOL;
+                    }
+                    return $carry .= $datasetField->renderSchema();
                 }
-                return $carry .= $datasetField->renderSchema();
-            }
-        );
-        $schema .= PHP_EOL . '</xs:sequence>' . PHP_EOL . '</xs:complexType>' . PHP_EOL . '</xs:element>';
+            ) . PHP_EOL;
+        }
+        $schema .= '</xs:sequence>' . PHP_EOL . '</xs:complexType>' . PHP_EOL . '</xs:element>';
         return $schema;
     }
 
     public function renderBody(): string
     {
-        $body = '<NOM_TABLE diffgr:id="' . $this->tableName . '" msdata:rowOrder="0">';
-        $body .= array_reduce(
-            $this->datasetFields,
-            function ($carry, DatasetField $datasetField) {
-                if (strlen($carry)) {
-                    $carry .= PHP_EOL;
+        $body = '<NOM_TABLE diffgr:id="' . $this->tableName . '" msdata:rowOrder="0">' . PHP_EOL;
+        if (count($this->datasetFields)) {
+            $body .= array_reduce(
+                $this->datasetFields,
+                function ($carry, DatasetField $datasetField) {
+                    if (strlen($carry)) {
+                        $carry .= PHP_EOL;
+                    }
+                    return $carry .= $datasetField->renderBody();
                 }
-                return $carry .= $datasetField->renderBody();
-            }
-        );
+            ) . PHP_EOL;
+        }
         $body .= '</NOM_TABLE>';
         return  $body;
     }

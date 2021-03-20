@@ -3,7 +3,6 @@
 namespace Skiloisirs\Tests;
 
 use InvalidArgumentException;
-use SkiLoisirsDiffusion\Datasets\DatasetField;
 use SkiLoisirsDiffusion\Datasets\DatasetTable;
 use SkiLoisirsDiffusion\Exceptions\TableNameShouldNotBeEmptyException;
 use SkiLoisirsDiffusion\Tests\BaseTestCase;
@@ -31,24 +30,28 @@ class DatasetTableTest extends BaseTestCase
     public function render_empty_schema_is_ok()
     {
         $expectedTableName = 'user';
-        $schema = DatasetTable::create($expectedTableName)->renderSchema();
 
-        $this->assertStringContainsString('<xs:element name="' . $expectedTableName . '">', $schema);
-        $this->assertStringContainsString('<xs:complexType>', $schema);
-        $this->assertStringContainsString('<xs:sequence>', $schema);
-        $this->assertStringContainsString('</xs:sequence>', $schema);
-        $this->assertStringContainsString('</xs:complexType>', $schema);
-        $this->assertStringContainsString('</xs:element>', $schema);
+        $expectedSchema = <<<EOT
+<xs:element name="$expectedTableName">
+<xs:complexType>
+<xs:sequence>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+EOT;
+        $this->assertEquals($expectedSchema, $schema = DatasetTable::create($expectedTableName)->renderSchema());
     }
 
     /** @test */
     public function render_empty_body_is_ok()
     {
         $expectedTableName = 'user';
-        $body = DatasetTable::create($expectedTableName)->renderBody();
+        $expectedBody = <<<EOT
+<NOM_TABLE diffgr:id="{$expectedTableName}" msdata:rowOrder="0">
+</NOM_TABLE>
+EOT;
 
-        $this->assertStringContainsString('<NOM_TABLE diffgr:id="' . $expectedTableName . '" msdata:rowOrder="0">', $body);
-        $this->assertStringContainsString('</NOM_TABLE>', $body);
+        $this->assertEquals($expectedBody, DatasetTable::create($expectedTableName)->renderBody());
     }
 
     /** @test */
@@ -56,15 +59,16 @@ class DatasetTableTest extends BaseTestCase
     {
         $expectedTableName = 'user';
         $datasetField = $this->createDatasetField();
-        $schema = DatasetTable::create($expectedTableName)->addDatasetField($datasetField)->renderSchema();
-
-        $this->assertStringContainsString('<xs:element name="' . $expectedTableName . '">', $schema);
-        $this->assertStringContainsString('<xs:complexType>', $schema);
-        $this->assertStringContainsString('<xs:sequence>', $schema);
-        $this->assertStringContainsString('<xs:element name="' . $datasetField->fieldName() . '" type="' . $datasetField->fieldType() . '" minOccurs="' . $datasetField->fieldMinOccurs() . '"/>', $schema);
-        $this->assertStringContainsString('</xs:sequence>', $schema);
-        $this->assertStringContainsString('</xs:complexType>', $schema);
-        $this->assertStringContainsString('</xs:element>', $schema);
+        $expectedSchema = <<<EOT
+<xs:element name="$expectedTableName">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="{$datasetField->fieldName()}" type="{$datasetField->fieldType()}" minOccurs="{$datasetField->fieldMinOccurs()}"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+EOT;
+        $this->assertEquals($expectedSchema, DatasetTable::create($expectedTableName)->addDatasetField($datasetField)->renderSchema());
     }
 
     /** @test */
@@ -72,11 +76,13 @@ class DatasetTableTest extends BaseTestCase
     {
         $expectedTableName = 'user';
         $datasetField = $this->createDatasetField();
-        $body = DatasetTable::create($expectedTableName)->addDatasetField($datasetField)->renderBody();
 
-        $this->assertStringContainsString('<NOM_TABLE diffgr:id="' . $expectedTableName . '" msdata:rowOrder="0">', $body);
-        $this->assertStringContainsString('<' . $datasetField->fieldName() . '>' . $datasetField->fieldValue() . '</' . $datasetField->fieldName() . '>', $body);
-        $this->assertStringContainsString('</NOM_TABLE>', $body);
+        $expectedBody = <<<EOT
+<NOM_TABLE diffgr:id="{$expectedTableName}" msdata:rowOrder="0">
+<{$datasetField->fieldName()}>{$datasetField->fieldValue()}</{$datasetField->fieldName()}>
+</NOM_TABLE>
+EOT;
+        $this->assertEquals($expectedBody, DatasetTable::create($expectedTableName)->addDatasetField($datasetField)->renderBody());
     }
 
     /** @test */
@@ -97,20 +103,18 @@ class DatasetTableTest extends BaseTestCase
         $datasetTable = DatasetTable::create($expectedTableName)->addDatasetFields($datasetFields);
         $this->assertCount($expectedDatasetFieldNumber, $datasetTable->datasetFields());
 
+        $expectedSchema = <<<EOT
+<xs:element name="$expectedTableName">
+<xs:complexType>
+<xs:sequence>
+{$this->datasetFieldsSchemaToString($datasetFields)}
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+EOT;
+
         /** check schema  */
-        $schema = $datasetTable->renderSchema();
-        $this->assertStringContainsString('<xs:element name="' . $expectedTableName . '">', $schema);
-        $this->assertStringContainsString('<xs:complexType>', $schema);
-        $this->assertStringContainsString('<xs:sequence>', $schema);
-        array_map(function (DatasetField $datasetField) use ($schema) {
-            $this->assertStringContainsString(
-                '<xs:element name="' . $datasetField->fieldName() . '" type="' . $datasetField->fieldType() . '" minOccurs="' . $datasetField->fieldMinOccurs() . '"/>',
-                $schema
-            );
-        }, $datasetFields);
-        $this->assertStringContainsString('</xs:sequence>', $schema);
-        $this->assertStringContainsString('</xs:complexType>', $schema);
-        $this->assertStringContainsString('</xs:element>', $schema);
+        $this->assertEquals($expectedSchema, $datasetTable->renderSchema());
     }
 
     /** @test */
@@ -124,14 +128,11 @@ class DatasetTableTest extends BaseTestCase
         $datasetTable = DatasetTable::create($expectedTableName)->addDatasetFields($datasetFields);
         $this->assertCount($expectedDatasetFieldNumber, $datasetTable->datasetFields());
 
-        $body = $datasetTable->renderBody();
-        $this->assertStringContainsString('<NOM_TABLE diffgr:id="' . $expectedTableName . '" msdata:rowOrder="0">', $body);
-        array_map(function (DatasetField $datasetField) use ($body) {
-            $this->assertStringContainsString(
-                '<' . $datasetField->fieldName() . '>' . $datasetField->fieldValue() . '</' . $datasetField->fieldName() . '>',
-                $body
-            );
-        }, $datasetFields);
-        $this->assertStringContainsString('</NOM_TABLE>', $body);
+        $expectedBody = <<<EOT
+<NOM_TABLE diffgr:id="{$expectedTableName}" msdata:rowOrder="0">
+{$this->datasetFieldsBodyToString($datasetFields)}
+</NOM_TABLE>
+EOT;
+        $this->assertEquals($expectedBody, $datasetTable->renderBody());
     }
 }

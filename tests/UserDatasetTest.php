@@ -6,6 +6,12 @@ use SkiLoisirsDiffusion\Datasets\UserDataset;
 
 class UserDatasetTest extends BaseTestCase
 {
+    public function setUp() :void
+    {
+        parent::setUp();
+        $this->markTestSkipped('deprecated');
+    }
+
     /** @test */
     public function user_dataset_schema_is_ok()
     {

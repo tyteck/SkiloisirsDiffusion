@@ -6,6 +6,12 @@ use SkiLoisirsDiffusion\Datasets\CEDataset;
 
 class CEDatasetTest extends BaseTestCase
 {
+    public function setUp() :void
+    {
+        parent::setUp();
+        $this->markTestSkipped('deprecated');
+    }
+
     /** @test */
     public function ce_dataset_schema_is_ok()
     {

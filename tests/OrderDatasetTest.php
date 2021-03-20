@@ -6,6 +6,12 @@ use SkiLoisirsDiffusion\Datasets\OrderDataset;
 
 class OrderDatasetTest extends BaseTestCase
 {
+    public function setUp() :void
+    {
+        parent::setUp();
+        $this->markTestSkipped('deprecated');
+    }
+    
     /** @test */
     public function order_dataset_schema_is_ok()
     {
