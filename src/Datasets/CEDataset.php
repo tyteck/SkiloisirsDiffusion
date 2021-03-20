@@ -2,47 +2,29 @@
 
 namespace SkiLoisirsDiffusion\Datasets;
 
-use SkiLoisirsDiffusion\Interfaces\Dataset;
-use stdClass;
-
-class CEDataset implements Dataset
+class CEDataset
 {
-    /** @var stdClass $dataset */
-    protected $dataset;
+    /** @var \SkiLoisirsDiffusion\Datasets\DatasetTable $datasetTable */
+    protected $datasetTable;
 
     /** @var string $tablename */
-    protected $tablename = 'ce';
+    protected $tableName = 'ce';
+
+    /** @var array $datasetFields */
+    protected $datasetFields = [];
+
+    protected $attributes = [/** ce_id, */'ce_societe', 'ce_nom', 'ce_prenom', 'ce_email', 'ce_codepostal', 'ce_ville'];
 
     private function __construct()
     {
-        $this->dataset = new stdClass();
-        $this->dataset->schema = '
-<xs:element name="' . $this->tablename . '">
-    <xs:complexType>
-        <xs:sequence>
-            <xs:element name="ce_id" type="xs:string" minOccurs="0"/>
-            <xs:element name="ce_societe" type="xs:string" minOccurs="0"/>
-            <xs:element name="ce_nom" type="xs:string" minOccurs="0"/>
-            <xs:element name="ce_prenom" type="xs:string" minOccurs="0"/>
-            <xs:element name="ce_email" type="xs:string" minOccurs="0"/>
-            <xs:element name="ce_codepostal" type="xs:string" minOccurs="0"/>
-            <xs:element name="ce_ville" type="xs:string" minOccurs="0"/>
-        </xs:sequence>
-    </xs:complexType>
-</xs:element>
-';
+        $this->datasetFields = array_merge(
+            [DatasetField::create('ce_id', 'string', sldconfig('sld_partenaire_id'))],
+            $this->datasetFields = array_map(function ($attributeName) {
+                return DatasetField::create($attributeName, 'string', sldconfig($attributeName));
+            }, $this->attributes)
+        );
 
-        $this->dataset->any = '
-<' . $this->tablename . ' diffgr:id="' . $this->tablename . '1" msdata:rowOrder="0">
-    <ce_id>' . sldconfig('sld_partenaire_id') . '</ce_id>
-    <ce_societe>' . sldconfig('ce_societe') . '</ce_societe>
-    <ce_nom>' . sldconfig('ce_nom') . '</ce_nom>
-    <ce_prenom>' . sldconfig('ce_prenom') . '</ce_prenom>
-    <ce_email>' . sldconfig('ce_email') . '</ce_email>
-    <ce_codepostal>' . sldconfig('ce_codepostal') . '</ce_codepostal>
-    <ce_ville>' . sldconfig('ce_ville') . '</ce_ville>
-</' . $this->tablename . '>
-';
+        $this->datasetTable = DatasetTable::create($this->tableName)->addDatasetFields($this->datasetFields);
     }
 
     public static function create(...$params)
@@ -52,16 +34,11 @@ class CEDataset implements Dataset
 
     public function schema():string
     {
-        return $this->dataset->schema;
+        return $this->datasetTable->renderSchema();
     }
 
     public function body():string
     {
-        return $this->dataset->any;
-    }
-
-    public function dataset():stdClass
-    {
-        return $this->dataset;
+        return $this->datasetTable->renderBody();
     }
 }

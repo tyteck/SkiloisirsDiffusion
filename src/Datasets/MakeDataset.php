@@ -2,6 +2,7 @@
 
 namespace SkiLoisirsDiffusion\Datasets;
 
+use InvalidArgumentException;
 use stdClass;
 
 class MakeDataset
@@ -28,14 +29,33 @@ class MakeDataset
         return $this;
     }
 
-    public function schema()
+    public function addDatasetTables(array $datasetTables = [])
     {
-        $schema = '<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="NewDataSet">' . PHP_EOL .
+        array_map(function ($datasetTable) {
+            if (!(is_object($datasetTable) && get_class($datasetTable) == 'SkiLoisirsDiffusion\Datasets\DatasetTable')) {
+                throw new InvalidArgumentException('addDatasetTables accept only array of datasetTable::class');
+            }
+            $this->addDatasetTable($datasetTable);
+        }, $datasetTables);
+
+        return $this;
+    }
+
+    public function render()
+    {
+        $this->renderSchema();
+        $this->renderBody();
+        return $this;
+    }
+
+    protected function renderSchema()
+    {
+        $this->dataset->schema = '<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="NewDataSet">' . PHP_EOL .
             '<xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">' . PHP_EOL .
             '<xs:complexType>' . PHP_EOL .
             '<xs:choice minOccurs="0" maxOccurs="unbounded">' . PHP_EOL;
         if (count($this->datasetTables)) {
-            $schema .= array_reduce(
+            $this->dataset->schema .= array_reduce(
                 $this->datasetTables,
                 function ($carry, DatasetTable $datasetTable) {
                     if (strlen($carry)) {
@@ -45,16 +65,21 @@ class MakeDataset
                 }
             ) . PHP_EOL;
         }
-        $schema .= '</xs:choice>' . PHP_EOL . '</xs:complexType>' . PHP_EOL . '</xs:element>' . PHP_EOL . '</xs:schema>';
-        return  $schema;
+        $this->dataset->schema .= '</xs:choice>' . PHP_EOL . '</xs:complexType>' . PHP_EOL . '</xs:element>' . PHP_EOL . '</xs:schema>';
+        return $this;
     }
 
-    public function body()
+    public function schema()
     {
-        $body = '<diffgr:diffgram xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">' . PHP_EOL
+        return $this->dataset->schema;
+    }
+
+    protected function renderBody()
+    {
+        $this->dataset->any = '<diffgr:diffgram xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">' . PHP_EOL
         . '<NewDataSet xmlns="">' . PHP_EOL;
         if (count($this->datasetTables)) {
-            $body .= array_reduce(
+            $this->dataset->any .= array_reduce(
                 $this->datasetTables,
                 function ($carry, DatasetTable $datasetTable) {
                     if (strlen($carry)) {
@@ -64,11 +89,27 @@ class MakeDataset
                 }
             ) . PHP_EOL;
         }
-        return $body .= '</NewDataSet>' . PHP_EOL . '</diffgr:diffgram>';
+        return $this->dataset->any .= '</NewDataSet>' . PHP_EOL . '</diffgr:diffgram>';
+    }
+
+    /** alias for any */
+    public function body()
+    {
+        return $this->any();
+    }
+
+    public function any()
+    {
+        return $this->dataset()->any;
     }
 
     public function dataset()
     {
         return $this->dataset;
+    }
+
+    public function datasetTables()
+    {
+        return $this->datasetTables;
     }
 }

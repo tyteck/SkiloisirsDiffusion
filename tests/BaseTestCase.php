@@ -286,8 +286,22 @@ class BaseTestCase extends TestCase
         return $datasetFieldsAsString;
     }
 
-    public function datasetTablesToSchemaString(array $datasetTables)
+    public function datasetTablesToString(array $datasetTables, bool $INeedSchema = true)
     {
-        //code
+        $result = '';
+        if (count($datasetTables)) {
+            $method = $INeedSchema === true ? 'renderSchema' : 'renderBody';
+
+            $result .= array_reduce(
+                $datasetTables,
+                function ($carry, DatasetTable $datasetTable) use ($method) {
+                    if (strlen($carry)) {
+                        $carry .= PHP_EOL;
+                    }
+                    return $carry .= $datasetTable->$method();
+                }
+            );
+        }
+        return $result;
     }
 }

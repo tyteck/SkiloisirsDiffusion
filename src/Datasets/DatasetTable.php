@@ -21,9 +21,9 @@ class DatasetTable
         $this->tableName = $tableName;
     }
 
-    public static function create(...$params)
+    public static function create(string $tableName)
     {
-        return new static(...$params);
+        return new static($tableName);
     }
 
     public function renderSchema(): string

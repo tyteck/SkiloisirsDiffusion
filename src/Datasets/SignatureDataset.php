@@ -3,16 +3,15 @@
 namespace SkiLoisirsDiffusion\Datasets;
 
 use InvalidArgumentException;
-use SkiLoisirsDiffusion\Interfaces\Dataset;
-use stdClass;
+use SkiLoisirsDiffusion\Interfaces\DatasetTableContract;
 
-class SignatureDataset implements Dataset
+class SignatureDataset implements DatasetTableContract
 {
-    /** @var stdClass $dataset */
-    protected $dataset;
+    /** @var \SkiLoisirsDiffusion\Datasets\DatasetTable $datasetTable */
+    protected $datasetTable;
 
     /** @var string $tablename */
-    protected $tablename = 'signature';
+    protected $tableName = 'signature';
 
     private function __construct(array $attributes = [])
     {
@@ -38,24 +37,9 @@ class SignatureDataset implements Dataset
             }
         }, $requiredParameters);
 
-        $this->signature = $this->generateSignature($attributes);
-
-        $this->dataset = new stdClass();
-        $this->dataset->schema = '
-<xs:element name="' . $this->tablename . '">
-    <xs:complexType>
-        <xs:sequence>
-            <xs:element name="signature" type="xs:string" minOccurs="0"/>
-        </xs:sequence>
-    </xs:complexType>
-</xs:element>
-';
-
-        $this->dataset->any = '
-<' . $this->tablename . ' diffgr:id="' . $this->tablename . '1" msdata:rowOrder="0">
-    <signature>' . $this->signature . '</signature>
-</' . $this->tablename . '>
-';
+        $this->datasetTable = DatasetTable::create($this->tableName)->addDatasetField(
+            DatasetField::create('signature', 'string', $this->generateSignature($attributes))
+        );
     }
 
     public static function create(...$params)
@@ -65,17 +49,12 @@ class SignatureDataset implements Dataset
 
     public function schema(): string
     {
-        return $this->dataset->schema;
+        return $this->datasetTable->renderSchema();
     }
 
     public function body(): string
     {
-        return $this->dataset->any;
-    }
-
-    public function dataset(): stdClass
-    {
-        return $this->dataset;
+        return $this->datasetTable->renderBody();
     }
 
     public function signature(): string
