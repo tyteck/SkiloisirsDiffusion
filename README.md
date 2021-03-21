@@ -8,13 +8,25 @@
 </div>
 
 ## Description
-Small package to talk with SkiLoisirs Diffusion Soap Service.
+The goal of this lib is to help developers to interact with SkiLoisirsDiffusion SOAP API.
+This api require lot of data and I hope this help will help.
 
 ## Installation
-soon
+```
+composer require tyteck/skiloisirsdiffusion
+```
 
 ## Usage
-soon
+First of all you should fill a .env (or config file) vithe the value as showed in `.env-sample`.
+
+Here are some examples.
+
+### ETAT_SITE
+```
+SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)->ETAT_SITE()
+```
+Will return true if Skiloisirs Diffusion servers are online.
 
 ## Todo
-soon
+Actually I'm trying to make dataset creation as easy as possible. I'm not used to consume SOAP APIs so it's a little fight with myself.
+Any help appreciated.
