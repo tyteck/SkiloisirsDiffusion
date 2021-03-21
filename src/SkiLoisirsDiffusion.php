@@ -8,6 +8,7 @@ use SkiLoisirsDiffusion\Datasets\CreateOrderDataset;
 use SkiLoisirsDiffusion\Exceptions\SLDPermissionDeniedException;
 use SkiLoisirsDiffusion\Exceptions\SLDServiceNotAvailableException;
 use SkiLoisirsDiffusion\Exceptions\TicketPlaceReservationException;
+use stdClass;
 
 class SkiLoisirsDiffusion
 {
@@ -136,5 +137,15 @@ class SkiLoisirsDiffusion
         return simplexml_load_string(
             str_replace(['s:', 'diffgr:', 'xs:', 'msdata:'], '', $xml)
         );
+    }
+
+    public function TEST_DATASET(stdClass $dataset)
+    {
+        $arrayParams = [
+            'DS_DATA' => $dataset
+        ];
+
+        $result = $this->soapClient->TEST_DATASET($arrayParams);
+        dump($result);
     }
 }

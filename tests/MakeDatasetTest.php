@@ -90,7 +90,7 @@ EOT;
     {
         $expectedDatasetTableName = 'truck';
         $datasetTable = $this->createDatasetTable($expectedDatasetTableName, 4);
-        $expectedDatasetFieldsSchemaString = $this->datasetFieldsSchemaToString($datasetTable->datasetFields());
+        $expectedDatasetFieldsSchemaString = $this->datasetFieldsToString($datasetTable->datasetFields(), true);
         $expectedSchema = <<<EOT
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="NewDataSet">
 <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
@@ -118,7 +118,7 @@ EOT;
     {
         $expectedDatasetTableName = 'truck';
         $datasetTable = $this->createDatasetTable($expectedDatasetTableName, 3);
-        $expectedDatasetFieldsBodyString = $this->datasetFieldsBodyToString($datasetTable->datasetFields());
+        $expectedDatasetFieldsBodyString = $this->datasetFieldsToString($datasetTable->datasetFields(), false);
         $expectedBody = <<<EOT
 <diffgr:diffgram xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
 <NewDataSet xmlns="">

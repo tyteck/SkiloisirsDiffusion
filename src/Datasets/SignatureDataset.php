@@ -29,10 +29,7 @@ class SignatureDataset implements DatasetTableContract
             'clef_secrete',
         ];
         array_map(function ($requiredParameter) use ($attributes) {
-            if (
-                !isset($attributes[$requiredParameter]) ||
-                !strlen($attributes[$requiredParameter])
-            ) {
+            if (!isset($attributes[$requiredParameter]) || !strlen($attributes[$requiredParameter])) {
                 throw new InvalidArgumentException("Parameter {$requiredParameter} is required to generate signature.", 1);
             }
         }, $requiredParameters);

@@ -252,34 +252,18 @@ class BaseTestCase extends TestCase
         return $datasetTables;
     }
 
-    public function datasetFieldsSchemaToString(array $datasetFields)
+    public function datasetFieldsToString(array $datasetFields, bool $INeedSchema = true)
     {
         $datasetFieldsAsString = '';
         if (count($datasetFields)) {
+            $method = $INeedSchema === true ? 'renderSchema' : 'renderBody';
             $datasetFieldsAsString .= array_reduce(
                 $datasetFields,
-                function ($carry, DatasetField $datasetField) {
+                function ($carry, DatasetField $datasetField) use ($method) {
                     if (strlen($carry)) {
                         $carry .= PHP_EOL;
                     }
-                    return $carry .= $datasetField->renderSchema();
-                }
-            );
-        }
-        return $datasetFieldsAsString;
-    }
-
-    public function datasetFieldsBodyToString(array $datasetFields)
-    {
-        $datasetFieldsAsString = '';
-        if (count($datasetFields)) {
-            $datasetFieldsAsString .= array_reduce(
-                $datasetFields,
-                function ($carry, DatasetField $datasetField) {
-                    if (strlen($carry)) {
-                        $carry .= PHP_EOL;
-                    }
-                    return $carry .= $datasetField->renderBody();
+                    return $carry .= $datasetField->$method();
                 }
             );
         }
@@ -303,5 +287,21 @@ class BaseTestCase extends TestCase
             );
         }
         return $result;
+    }
+
+    public function createCeDatasetTable(): DatasetTable
+    {
+        return DatasetTable::create('ce')
+            ->addDatasetFields(
+                [
+                    DatasetField::create('ce_id', 'string', sldconfig('sld_partenaire_id')),
+                    DatasetField::create('ce_societe', 'string', sldconfig('ce_societe')),
+                    DatasetField::create('ce_nom', 'string', sldconfig('ce_nom')),
+                    DatasetField::create('ce_prenom', 'string', sldconfig('ce_prenom')),
+                    DatasetField::create('ce_email', 'string', sldconfig('ce_email')),
+                    DatasetField::create('ce_codepostal', 'string', sldconfig('ce_codepostal')),
+                    DatasetField::create('ce_ville', 'string', sldconfig('ce_ville')),
+                ]
+            );
     }
 }

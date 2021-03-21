@@ -107,7 +107,7 @@ EOT;
 <xs:element name="$expectedTableName">
 <xs:complexType>
 <xs:sequence>
-{$this->datasetFieldsSchemaToString($datasetFields)}
+{$this->datasetFieldsToString($datasetFields, true)}
 </xs:sequence>
 </xs:complexType>
 </xs:element>
@@ -130,7 +130,7 @@ EOT;
 
         $expectedBody = <<<EOT
 <NOM_TABLE diffgr:id="{$expectedTableName}" msdata:rowOrder="0">
-{$this->datasetFieldsBodyToString($datasetFields)}
+{$this->datasetFieldsToString($datasetFields, false)}
 </NOM_TABLE>
 EOT;
         $this->assertEquals($expectedBody, $datasetTable->renderBody());

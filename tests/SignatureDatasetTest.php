@@ -2,6 +2,8 @@
 
 namespace SkiLoisirsDiffusion\Tests;
 
+use SkiLoisirsDiffusion\Datasets\SignatureDataset;
+
 class SignatureDatasetTest extends BaseTestCase
 {
     /** @var \SkiloisirsDiffusion\Datasets\SignatureDataset $signatureDataset */
@@ -16,12 +18,19 @@ class SignatureDatasetTest extends BaseTestCase
     /** @test */
     public function signature_dataset_schema_is_ok()
     {
-        $schema = $this->signatureDataset->schema();
+        $expectedSchema = <<<EOT
+<xs:element name="signature">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="signature" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+EOT;
 
-        $this->assertStringContainsString(
-            '<xs:element name="signature" type="xs:string" minOccurs="0"/>',
-            $schema,
-            'The key signature with type string is not set properly.'
+        $this->assertEquals(
+            $expectedSchema,
+            SignatureDataset::create()->schema()
         );
     }
 
