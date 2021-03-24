@@ -120,4 +120,15 @@ class DatasetFieldTest extends BaseTestCase
         $this->assertIsArray($datasetFieldTypes);
         $this->assertEqualsCanonicalizing(['string', 'dateTime', 'decimal'], $datasetFieldTypes);
     }
+
+    /** @test */
+    public function empty_field_not_required_should_be_ok()
+    {
+        $datasetField = DatasetField::create('field1', 'string', '', 0, false);
+        $this->assertEquals(
+            '<xs:element name="field1" type="xs:string" minOccurs="0"/>',
+            $datasetField->renderSchema()
+        );
+        $this->assertEquals('<field1></field1>', $datasetField->renderBody());
+    }
 }

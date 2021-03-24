@@ -46,12 +46,11 @@ class DatasetField
         }
         $this->fieldMinOccurs = $fieldMinOccurs;
 
+        $this->fieldRequired = $fieldRequired;
         $this->fieldValue = $fieldValue;
         if (!$this->isValueMatchingType()) {
             throw new FieldValueDoesNotMatchWithTypeException("We were expecting type {$fieldType} and we got {$fieldValue}.");
         }
-
-        $this->fieldRequired = $fieldRequired;
     }
 
     public static function create(...$params)
@@ -94,8 +93,12 @@ class DatasetField
         return "<{$this->fieldName()}>{$this->fieldValue}</{$this->fieldName()}>";
     }
 
-    public function isValueMatchingType()
+    public function isValueMatchingType(): bool
     {
+        if (!$this->fieldRequired()) {
+            return true;
+        }
+
         if ($this->fieldType() == 'xs:string') {
             return strlen($this->fieldValue);
         }
