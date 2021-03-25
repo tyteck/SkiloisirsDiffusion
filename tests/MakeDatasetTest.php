@@ -76,8 +76,8 @@ EOT;
         $expectedBody = <<<EOT
 <diffgr:diffgram xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
 <NewDataSet xmlns="">
-<NOM_TABLE diffgr:id="{$expectedDatasetTableName}" msdata:rowOrder="0">
-</NOM_TABLE>
+<{$expectedDatasetTableName} diffgr:id="{$expectedDatasetTableName}1" msdata:rowOrder="0">
+</{$expectedDatasetTableName}>
 </NewDataSet>
 </diffgr:diffgram>
 EOT;
@@ -122,9 +122,9 @@ EOT;
         $expectedBody = <<<EOT
 <diffgr:diffgram xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
 <NewDataSet xmlns="">
-<NOM_TABLE diffgr:id="{$expectedDatasetTableName}" msdata:rowOrder="0">
+<{$expectedDatasetTableName} diffgr:id="{$expectedDatasetTableName}1" msdata:rowOrder="0">
 {$expectedDatasetFieldsBodyString}
-</NOM_TABLE>
+</{$expectedDatasetTableName}>
 </NewDataSet>
 </diffgr:diffgram>
 EOT;

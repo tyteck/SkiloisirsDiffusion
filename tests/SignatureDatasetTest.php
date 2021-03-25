@@ -63,9 +63,9 @@ EOT;
     public function signature_dataset_body_is_ok()
     {
         $expectedBody = <<<EOT
-<NOM_TABLE diffgr:id="signature" msdata:rowOrder="0">
+<signature diffgr:id="signature1" msdata:rowOrder="0">
 <signature>{$this->signature}</signature>
-</NOM_TABLE>
+</signature>
 EOT;
         $this->assertEquals($expectedBody, $this->signatureDatasetTable->renderBody());
     }

@@ -47,8 +47,8 @@ EOT;
     {
         $expectedTableName = 'user';
         $expectedBody = <<<EOT
-<NOM_TABLE diffgr:id="{$expectedTableName}" msdata:rowOrder="0">
-</NOM_TABLE>
+<{$expectedTableName} diffgr:id="{$expectedTableName}1" msdata:rowOrder="0">
+</{$expectedTableName}>
 EOT;
 
         $this->assertEquals($expectedBody, DatasetTable::create($expectedTableName)->renderBody());
@@ -78,9 +78,9 @@ EOT;
         $datasetField = $this->createDatasetField();
 
         $expectedBody = <<<EOT
-<NOM_TABLE diffgr:id="{$expectedTableName}" msdata:rowOrder="0">
+<{$expectedTableName} diffgr:id="{$expectedTableName}1" msdata:rowOrder="0">
 <{$datasetField->fieldName()}>{$datasetField->fieldValue()}</{$datasetField->fieldName()}>
-</NOM_TABLE>
+</{$expectedTableName}>
 EOT;
         $this->assertEquals($expectedBody, DatasetTable::create($expectedTableName)->addDatasetField($datasetField)->renderBody());
     }
@@ -129,9 +129,9 @@ EOT;
         $this->assertCount($expectedDatasetFieldNumber, $datasetTable->datasetFields());
 
         $expectedBody = <<<EOT
-<NOM_TABLE diffgr:id="{$expectedTableName}" msdata:rowOrder="0">
+<{$expectedTableName} diffgr:id="{$expectedTableName}1" msdata:rowOrder="0">
 {$this->datasetFieldsToString($datasetFields, false)}
-</NOM_TABLE>
+</{$expectedTableName}>
 EOT;
         $this->assertEquals($expectedBody, $datasetTable->renderBody());
     }

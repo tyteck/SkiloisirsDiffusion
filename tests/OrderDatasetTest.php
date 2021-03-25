@@ -29,8 +29,8 @@ class OrderDatasetTest extends BaseTestCase
                     DatasetField::create('commentaire', 'string', $this->order['commentaire'], 0, false),
                     DatasetField::create('livraison_adresse_societe', 'string', $this->order['livraison_adresse_societe']),
                     DatasetField::create('livraison_adresse_nom', 'string', $this->order['livraison_adresse_nom']),
-                    DatasetField::create('livraison_adresse_1', 'string', $this->order['livraison_adresse_1']),
-                    DatasetField::create('livraison_adresse_2', 'string', $this->order['livraison_adresse_2']),
+                    DatasetField::create('livraison_adresse1', 'string', $this->order['livraison_adresse1']),
+                    DatasetField::create('livraison_adresse2', 'string', $this->order['livraison_adresse2']),
                     DatasetField::create('livraison_codepostal', 'string', $this->order['livraison_codepostal']),
                     DatasetField::create('livraison_ville', 'string', $this->order['livraison_ville']),
                     DatasetField::create('livraison_pays', 'string', $this->order['livraison_pays'], 0, false),
@@ -62,8 +62,8 @@ class OrderDatasetTest extends BaseTestCase
 <xs:element name="commentaire" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_adresse_societe" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_adresse_nom" type="xs:string" minOccurs="0"/>
-<xs:element name="livraison_adresse_1" type="xs:string" minOccurs="0"/>
-<xs:element name="livraison_adresse_2" type="xs:string" minOccurs="0"/>
+<xs:element name="livraison_adresse1" type="xs:string" minOccurs="0"/>
+<xs:element name="livraison_adresse2" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_codepostal" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_ville" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_pays" type="xs:string" minOccurs="0"/>
@@ -87,7 +87,7 @@ EOT;
     public function order_dataset_body_is_ok()
     {
         $expectedBody = <<<EOT
-<NOM_TABLE diffgr:id="commande" msdata:rowOrder="0">
+<commande diffgr:id="commande1" msdata:rowOrder="0">
 <nb_cheques_vacances>{$this->order['nb_cheques_vacances']}</nb_cheques_vacances>
 <montant_total_cheques_vacances>{$this->order['montant_total_cheques_vacances']}</montant_total_cheques_vacances>
 <mode_paiement>{$this->order['mode_paiement']}</mode_paiement>
@@ -96,8 +96,8 @@ EOT;
 <commentaire>{$this->order['commentaire']}</commentaire>
 <livraison_adresse_societe>{$this->order['livraison_adresse_societe']}</livraison_adresse_societe>
 <livraison_adresse_nom>{$this->order['livraison_adresse_nom']}</livraison_adresse_nom>
-<livraison_adresse_1>{$this->order['livraison_adresse_1']}</livraison_adresse_1>
-<livraison_adresse_2>{$this->order['livraison_adresse_2']}</livraison_adresse_2>
+<livraison_adresse1>{$this->order['livraison_adresse1']}</livraison_adresse1>
+<livraison_adresse2>{$this->order['livraison_adresse2']}</livraison_adresse2>
 <livraison_codepostal>{$this->order['livraison_codepostal']}</livraison_codepostal>
 <livraison_ville>{$this->order['livraison_ville']}</livraison_ville>
 <livraison_pays>{$this->order['livraison_pays']}</livraison_pays>
@@ -110,7 +110,7 @@ EOT;
 <frais_port_payeur>{$this->order['frais_port_payeur']}</frais_port_payeur>
 <remise_frais_port>{$this->order['remise_frais_port']}</remise_frais_port>
 <numero_commande_distributeur>{$this->order['numero_commande_distributeur']}</numero_commande_distributeur>
-</NOM_TABLE>
+</commande>
 EOT;
         $this->assertEquals($expectedBody, $this->orderDatasetTable->renderBody());
     }
