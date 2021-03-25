@@ -22,9 +22,9 @@ class CreateOrderDataset implements Dataset
     /** @var \SkiLoisirsDiffusion\Datasets\SignatureDataset */
     protected $signatureDataset;
 
-    private function __construct(CEDataset $ceDataset, UserDataset $userDataset, OrderDataset $orderDataset, SignatureDataset $signatureDataset)
+    private function __construct(UserDataset $userDataset, OrderDataset $orderDataset, SignatureDataset $signatureDataset)
     {
-        $this->ceDataset = $ceDataset;
+        $this->ceDataset = CeDatasetTable::create();
         $this->userDataset = $userDataset;
         $this->orderDataset = $orderDataset;
         $this->signatureDataset = $signatureDataset;

@@ -22,10 +22,13 @@ class UserDatasetTest extends BaseTestCase
             ->addDatasetFields(
                 [
                     DatasetField::create('id_partenaire', 'string', $this->user['id_partenaire']),
+                    DatasetField::create('utilisateurs_societe', 'string', $this->user['utilisateurs_societe'], 0, false),
+                    DatasetField::create('utilisateurs_civilite', 'string', $this->user['utilisateurs_civilite'], 0, false),
                     DatasetField::create('utilisateurs_nom', 'string', $this->user['utilisateurs_nom']),
                     DatasetField::create('utilisateurs_prenom', 'string', $this->user['utilisateurs_prenom']),
                     DatasetField::create('utilisateurs_telephone', 'string', $this->user['utilisateurs_telephone']),
                     DatasetField::create('utilisateurs_portable', 'string', $this->user['utilisateurs_portable']),
+                    DatasetField::create('utilisateurs_fax', 'string', $this->user['utilisateurs_fax'], 0, false),
                     DatasetField::create('utilisateurs_email', 'string', $this->user['utilisateurs_email']),
                     DatasetField::create('utilisateurs_adresse_nom', 'string', $this->user['utilisateurs_adresse_nom']),
                     DatasetField::create('utilisateurs_adresse1', 'string', $this->user['utilisateurs_adresse1']),
@@ -33,7 +36,7 @@ class UserDatasetTest extends BaseTestCase
                     DatasetField::create('utilisateurs_codepostal', 'string', $this->user['utilisateurs_codepostal']),
                     DatasetField::create('utilisateurs_ville', 'string', $this->user['utilisateurs_ville']),
                     DatasetField::create('utilisateurs_pays', 'string', $this->user['utilisateurs_pays']),
-                    DatasetField::create('date_naissance', 'dateTime', $this->user['date_naissance']),
+                    DatasetField::create('utilisateurs_date_naissance', 'dateTime', $this->user['utilisateurs_date_naissance']),
                 ]
             );
     }
@@ -46,10 +49,13 @@ class UserDatasetTest extends BaseTestCase
 <xs:complexType>
 <xs:sequence>
 <xs:element name="id_partenaire" type="xs:string" minOccurs="0"/>
+<xs:element name="utilisateurs_societe" type="xs:string" minOccurs="0"/>
+<xs:element name="utilisateurs_civilite" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_nom" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_prenom" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_telephone" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_portable" type="xs:string" minOccurs="0"/>
+<xs:element name="utilisateurs_fax" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_email" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_adresse_nom" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_adresse1" type="xs:string" minOccurs="0"/>
@@ -57,7 +63,7 @@ class UserDatasetTest extends BaseTestCase
 <xs:element name="utilisateurs_codepostal" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_ville" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_pays" type="xs:string" minOccurs="0"/>
-<xs:element name="date_naissance" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="utilisateurs_date_naissance" type="xs:dateTime" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
@@ -69,12 +75,15 @@ EOT;
     public function user_dataset_body_is_ok()
     {
         $expectedBody = <<<EOT
-<NOM_TABLE diffgr:id="utilisateur" msdata:rowOrder="0">
+<utilisateur diffgr:id="utilisateur1" msdata:rowOrder="0">
 <id_partenaire>{$this->user['id_partenaire']}</id_partenaire>
+<utilisateurs_societe>{$this->user['utilisateurs_societe']}</utilisateurs_societe>
+<utilisateurs_civilite>{$this->user['utilisateurs_civilite']}</utilisateurs_civilite>
 <utilisateurs_nom>{$this->user['utilisateurs_nom']}</utilisateurs_nom>
 <utilisateurs_prenom>{$this->user['utilisateurs_prenom']}</utilisateurs_prenom>
 <utilisateurs_telephone>{$this->user['utilisateurs_telephone']}</utilisateurs_telephone>
 <utilisateurs_portable>{$this->user['utilisateurs_portable']}</utilisateurs_portable>
+<utilisateurs_fax>{$this->user['utilisateurs_fax']}</utilisateurs_fax>
 <utilisateurs_email>{$this->user['utilisateurs_email']}</utilisateurs_email>
 <utilisateurs_adresse_nom>{$this->user['utilisateurs_adresse_nom']}</utilisateurs_adresse_nom>
 <utilisateurs_adresse1>{$this->user['utilisateurs_adresse1']}</utilisateurs_adresse1>
@@ -82,8 +91,8 @@ EOT;
 <utilisateurs_codepostal>{$this->user['utilisateurs_codepostal']}</utilisateurs_codepostal>
 <utilisateurs_ville>{$this->user['utilisateurs_ville']}</utilisateurs_ville>
 <utilisateurs_pays>{$this->user['utilisateurs_pays']}</utilisateurs_pays>
-<date_naissance>{$this->user['date_naissance']}</date_naissance>
-</NOM_TABLE>
+<utilisateurs_date_naissance>{$this->user['utilisateurs_date_naissance']}</utilisateurs_date_naissance>
+</utilisateur>
 EOT;
         $this->assertEquals($expectedBody, $this->userDatasetTable->renderBody());
     }

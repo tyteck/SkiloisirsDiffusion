@@ -12,10 +12,13 @@ class UserFactory
         $faker = Faker::create('fr_FR');
         return [
             'id_partenaire' => $attributes['id_partenaire'] ?? '42',
+            'utilisateurs_societe' => $faker->company,
+            'utilisateurs_civilite' => $faker->boolean ? 'Mme' : 'M.',
             'utilisateurs_nom' => $faker->lastName,
             'utilisateurs_prenom' => $faker->firstName,
             'utilisateurs_telephone' => $faker->phoneNumber,
             'utilisateurs_portable' => $faker->phoneNumber,
+            'utilisateurs_fax' => $faker->phoneNumber,
             'utilisateurs_email' => $faker->safeEmail,
             'utilisateurs_adresse_nom' => $faker->title,
             'utilisateurs_adresse1' => $faker->streetAddress,
@@ -23,7 +26,7 @@ class UserFactory
             'utilisateurs_codepostal' => $faker->postcode,
             'utilisateurs_ville' => $faker->city,
             'utilisateurs_pays' => 'France',
-            'date_naissance' => Carbon::now()->subYears(rand(20, 50))->format('Y-m-d\Th:i:s'),
+            'utilisateurs_date_naissance' => Carbon::now()->subYears(rand(20, 50))->format('Y-m-d\Th:i:s'),
         ];
     }
 }

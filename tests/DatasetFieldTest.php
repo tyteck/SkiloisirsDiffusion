@@ -131,4 +131,15 @@ class DatasetFieldTest extends BaseTestCase
         );
         $this->assertEquals('<field1></field1>', $datasetField->renderBody());
     }
+
+     /** @test */
+     public function null_field_not_required_should_be_ok()
+     {
+         $datasetField = DatasetField::create('field1', 'string', null, 0, false);
+         $this->assertEquals(
+             '<xs:element name="field1" type="xs:string" minOccurs="0"/>',
+             $datasetField->renderSchema()
+         );
+         $this->assertEquals('<field1></field1>', $datasetField->renderBody());
+     }
 }

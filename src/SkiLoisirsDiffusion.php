@@ -4,7 +4,7 @@ namespace SkiLoisirsDiffusion;
 
 use SimpleXMLElement;
 use SkiLoisirsDiffusion\Datasets\ArticleDataset;
-use SkiLoisirsDiffusion\Datasets\CreateOrderDataset;
+use SkiLoisirsDiffusion\Exceptions\SLDGenericException;
 use SkiLoisirsDiffusion\Exceptions\SLDPermissionDeniedException;
 use SkiLoisirsDiffusion\Exceptions\SLDServiceNotAvailableException;
 use SkiLoisirsDiffusion\Exceptions\TicketPlaceReservationException;
@@ -96,14 +96,20 @@ class SkiLoisirsDiffusion
         return $result;
     }
 
-    public function CREATION_COMMANDE(CreateOrderDataset $createOrderDataset)
+    public function CREATION_COMMANDE(stdClass $createOrderDataset)
     {
         $arrayParams = [
             'CE_ID' => $this->partenaireId,
-            'DS_DATA' => $createOrderDataset->dataset()
+            'DS_DATA' => $createOrderDataset
         ];
-        dump($arrayParams);
+
         $result = $this->soapClient->CREATION_COMMANDE($arrayParams);
+        $body = $this->toSimpleXml($result->CREATION_COMMANDEResult->any);
+
+        if ($body->NewDataSet->Paiements->statut == 'false') {
+            throw new SLDGenericException($body->NewDataSet->Commande->message_erreur);
+        }
+
         return $result;
     }
 

@@ -2,9 +2,7 @@
 
 namespace SkiLoisirsDiffusion\Tests;
 
-use SkiLoisirsDiffusion\Datasets\CEDataset;
-use SkiLoisirsDiffusion\Datasets\DatasetField;
-use SkiLoisirsDiffusion\Datasets\DatasetTable;
+use SkiLoisirsDiffusion\Datasets\CeDatasetTable;
 
 class CEDatasetTest extends BaseTestCase
 {
@@ -14,18 +12,7 @@ class CEDatasetTest extends BaseTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->ceDatasetTable = DatasetTable::create('ce')
-            ->addDatasetFields(
-                [
-                    DatasetField::create('ce_id', 'string', sldconfig('sld_partenaire_id')),
-                    DatasetField::create('ce_societe', 'string', sldconfig('ce_societe')),
-                    DatasetField::create('ce_nom', 'string', sldconfig('ce_nom')),
-                    DatasetField::create('ce_prenom', 'string', sldconfig('ce_prenom')),
-                    DatasetField::create('ce_email', 'string', sldconfig('ce_email')),
-                    DatasetField::create('ce_codepostal', 'string', sldconfig('ce_codepostal')),
-                    DatasetField::create('ce_ville', 'string', sldconfig('ce_ville')),
-                ]
-            );
+        $this->ceDatasetTable = CeDatasetTable::create();
     }
 
     /** @test */
@@ -37,11 +24,19 @@ class CEDatasetTest extends BaseTestCase
 <xs:sequence>
 <xs:element name="ce_id" type="xs:string" minOccurs="0"/>
 <xs:element name="ce_societe" type="xs:string" minOccurs="0"/>
+<xs:element name="ce_civilite" type="xs:string" minOccurs="0"/>
 <xs:element name="ce_nom" type="xs:string" minOccurs="0"/>
 <xs:element name="ce_prenom" type="xs:string" minOccurs="0"/>
+<xs:element name="ce_telephone" type="xs:string" minOccurs="0"/>
+<xs:element name="ce_portable" type="xs:string" minOccurs="0"/>
+<xs:element name="ce_fax" type="xs:string" minOccurs="0"/>
 <xs:element name="ce_email" type="xs:string" minOccurs="0"/>
+<xs:element name="ce_adresse_nom" type="xs:string" minOccurs="0"/>
+<xs:element name="ce_adresse1" type="xs:string" minOccurs="0"/>
+<xs:element name="ce_adresse2" type="xs:string" minOccurs="0"/>
 <xs:element name="ce_codepostal" type="xs:string" minOccurs="0"/>
 <xs:element name="ce_ville" type="xs:string" minOccurs="0"/>
+<xs:element name="ce_pays" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
@@ -52,15 +47,32 @@ EOT;
     /** @test */
     public function ce_dataset_body_is_ok()
     {
-        $expectedBody = '<NOM_TABLE diffgr:id="ce" msdata:rowOrder="0">' . PHP_EOL
-            . '<ce_id>' . sldconfig('sld_partenaire_id') . '</ce_id>' . PHP_EOL
-            . '<ce_societe>' . sldconfig('ce_societe') . '</ce_societe>' . PHP_EOL
-            . '<ce_nom>' . sldconfig('ce_nom') . '</ce_nom>' . PHP_EOL
-            . '<ce_prenom>' . sldconfig('ce_prenom') . '</ce_prenom>' . PHP_EOL
-            . '<ce_email>' . sldconfig('ce_email') . '</ce_email>' . PHP_EOL
-            . '<ce_codepostal>' . sldconfig('ce_codepostal') . '</ce_codepostal>' . PHP_EOL
-            . '<ce_ville>' . sldconfig('ce_ville') . '</ce_ville>' . PHP_EOL
-            . '</NOM_TABLE>';
+        $ce_id = sldconfig('sld_partenaire_id');
+        $ce_societe = sldconfig('ce_societe');
+        $ce_nom = sldconfig('ce_nom');
+        $ce_prenom = sldconfig('ce_prenom');
+        $ce_email = sldconfig('ce_email');
+        $ce_codepostal = sldconfig('ce_codepostal');
+        $ce_ville = sldconfig('ce_ville');
+        $expectedBody = <<<EOT
+<ce diffgr:id="ce1" msdata:rowOrder="0">
+<ce_id>{$ce_id}</ce_id>
+<ce_societe>{$ce_societe}</ce_societe>
+<ce_civilite></ce_civilite>
+<ce_nom>{$ce_nom}</ce_nom>
+<ce_prenom>{$ce_prenom}</ce_prenom>
+<ce_telephone></ce_telephone>
+<ce_portable></ce_portable>
+<ce_fax></ce_fax>
+<ce_email>{$ce_email}</ce_email>
+<ce_adresse_nom></ce_adresse_nom>
+<ce_adresse1></ce_adresse1>
+<ce_adresse2></ce_adresse2>
+<ce_codepostal>{$ce_codepostal}</ce_codepostal>
+<ce_ville>{$ce_ville}</ce_ville>
+<ce_pays></ce_pays>
+</ce>
+EOT;
 
         $this->assertEquals($expectedBody, $this->ceDatasetTable->renderBody());
     }

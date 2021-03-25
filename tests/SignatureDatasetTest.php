@@ -2,17 +2,45 @@
 
 namespace SkiLoisirsDiffusion\Tests;
 
-use SkiLoisirsDiffusion\Datasets\SignatureDataset;
+use SkiLoisirsDiffusion\Datasets\DatasetField;
+use SkiLoisirsDiffusion\Datasets\DatasetTable;
+use SkiLoisirsDiffusion\Tests\Factory\OrderFactory;
+use SkiLoisirsDiffusion\Tests\Factory\UserFactory;
 
 class SignatureDatasetTest extends BaseTestCase
 {
-    /** @var \SkiloisirsDiffusion\Datasets\SignatureDataset $signatureDataset */
-    protected $signatureDataset;
+    /** @var \SkiloisirsDiffusion\Datasets\DatasetTable $signatureDatasetTable */
+    protected DatasetTable $signatureDatasetTable;
+
+    protected string $signature;
 
     public function setUp() :void
     {
         parent::setUp();
-        $this->signatureDataset = $this->createSignatureDataset($this->expectedSignatureDatasetBody()) ;
+        $order = OrderFactory::create();
+        $user = UserFactory::create();
+
+        $createSignatureParameters = [
+            'code_livraison' => $order['code_livraison'],
+            'id_partenaire' => $user['id_partenaire'],
+            'mode_paiement' => $order['mode_paiement'],
+            'utilisateurs_adresse1' => $user['utilisateurs_adresse1'],
+            'utilisateurs_adresse_nom' => $user['utilisateurs_adresse_nom'],
+            'utilisateurs_codepostal' => $user['utilisateurs_codepostal'],
+            'utilisateurs_email' => $user['utilisateurs_email'],
+            'utilisateurs_nom' => $user['utilisateurs_nom'],
+            'utilisateurs_prenom' => $user['utilisateurs_prenom'],
+            'utilisateurs_ville' => $user['utilisateurs_ville'],
+            'clef_secrete' => sldconfig('clef_secrete'),
+        ];
+        $this->signature = generateSignature($createSignatureParameters);
+
+        $this->signatureDatasetTable = DatasetTable::create('signature')
+            ->addDatasetFields(
+                [
+                    DatasetField::create('signature', 'string', $this->signature),
+                ]
+            );
     }
 
     /** @test */
@@ -28,31 +56,17 @@ class SignatureDatasetTest extends BaseTestCase
 </xs:element>
 EOT;
 
-        $this->assertEquals(
-            $expectedSchema,
-            SignatureDataset::create()->schema()
-        );
+        $this->assertEquals($expectedSchema, $this->signatureDatasetTable->renderSchema());
     }
 
     /** @test */
     public function signature_dataset_body_is_ok()
     {
-        $expectedSignature = sha1(
-            array_reduce(
-                $this->expectedSignatureDatasetBody(),
-                function ($carry, $requiredParameter) {
-                    if (strlen($carry)) {
-                        $carry .= '+';
-                    }
-                    return $carry .= $requiredParameter;
-                }
-            )
-        );
-
-        $this->assertStringContainsString(
-            "<signature>{$expectedSignature}</signature>",
-            $this->signatureDataset->body(),
-            "The value {$expectedSignature} for signature is not set properly."
-        );
+        $expectedBody = <<<EOT
+<NOM_TABLE diffgr:id="signature" msdata:rowOrder="0">
+<signature>{$this->signature}</signature>
+</NOM_TABLE>
+EOT;
+        $this->assertEquals($expectedBody, $this->signatureDatasetTable->renderBody());
     }
 }

@@ -53,9 +53,9 @@ class DatasetField
         }
     }
 
-    public static function create(...$params)
+    public static function create(string $fieldName, string $fieldType, $fieldValue, int $fieldMinOccurs = 0, bool $fieldRequired = true)
     {
-        return new static(...$params);
+        return new static($fieldName, $fieldType, $fieldValue, $fieldMinOccurs, $fieldRequired);
     }
 
     public function fieldName()

@@ -13,6 +13,9 @@ class MakeDataset
     /** @var array $datasetTables */
     protected array $datasetTables = [];
 
+    /** @var int $rowOrder */
+    protected int $rowOrder = 0;
+
     private function __construct()
     {
         $this->dataset = new stdClass();
@@ -85,7 +88,7 @@ class MakeDataset
                     if (strlen($carry)) {
                         $carry .= PHP_EOL;
                     }
-                    return $carry .= $datasetTable->renderBody();
+                    return $carry .= $datasetTable->renderBody($this->rowOrder++);
                 }
             ) . PHP_EOL;
         }

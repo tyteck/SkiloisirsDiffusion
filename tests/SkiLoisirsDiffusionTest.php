@@ -2,8 +2,6 @@
 
 namespace SkiLoisirsDiffusion\Tests;
 
-use SkiLoisirsDiffusion\Datasets\CEDataset;
-use SkiLoisirsDiffusion\Datasets\CreateOrderDataset;
 use SkiLoisirsDiffusion\SkiLoisirsDiffusion;
 
 class SkiLoisirsDiffusionTest extends BaseTestCase
@@ -74,20 +72,6 @@ class SkiLoisirsDiffusionTest extends BaseTestCase
         array_map(function ($key, $expectedValue) use ($result) {
             $this->assertEquals($expectedValue, $result[$key], "We were expecting {$expectedValue} for {$key} and we obtained {$result[$key]}");
         }, array_keys($expectedResult), $expectedResult);
-    }
-
-    /** @test */
-    public function creation_commande_is_ok()
-    {
-        //$this->markTestIncomplete('👉 Strange behavior or strange requesting❓');
-        $ceDataSet = CEDataset::create();
-        $userDataSet = $this->createUserDataset();
-        $orderDataSet = $this->createOrderDataset();
-        $signatureDataSet = $this->createSignatureDataset();
-
-        $createOrderDataset = CreateOrderDataset::create($ceDataSet, $userDataSet, $orderDataSet, $signatureDataSet);
-        $result = SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)
-            ->CREATION_COMMANDE($createOrderDataset);
     }
 
     /** @test */
