@@ -1,11 +1,10 @@
 <?php
 
-namespace Tests\Unit;
+namespace SkiLoisirsDiffusion\Tests;
 
-use PHPUnit\Framework\TestCase;
 use SkiLoisirsDiffusion\SkiLoisirsDiffusion;
 
-class SkiLoisirsDiffusionTest extends TestCase
+class SkiLoisirsDiffusionTest extends BaseTestCase
 {
     public function setUp():void
     {
@@ -14,10 +13,46 @@ class SkiLoisirsDiffusionTest extends TestCase
         $this->sldDomainUrl = sldconfig('sld_domain_url');
     }
 
-    public function testEtatSite()
+    /** @test */
+    public function etat_site_is_ok()
     {
-        $this->assertTrue(SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)
-            ->ETAT_SITE());
+        $this->assertTrue(
+            SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)
+                ->ETAT_SITE()
+        );
+    }
+
+    /** @test */
+    public function get_modes_paiements()
+    {
+        $keysToCheck = ['id', 'code', 'reglement'];
+        $expectedResults = [
+            [
+                'id' => '2f8fcd84-0dc0-44eb-b217-e9b99a77983b',
+                'code' => 'CB',
+                'reglement' => 'CB1'
+            ],
+            [
+                'id' => 'e1ec4ce3-2fc7-4bd2-af10-a8e934e4244f',
+                'code' => 'CHQ',
+                'reglement' => 'C01'
+            ],
+            [
+                'id' => '79834c63-51af-4826-b45b-ff0539c5d7a4',
+                'code' => 'FCH',
+                'reglement' => 'C01'
+            ],
+        ];
+
+        $results = SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)->GET_MODES_PAIEMENTS();
+        $this->assertCount(3, $results);
+        array_map(function ($key) use ($results, $expectedResults) {
+            $this->assertEqualsCanonicalizing(
+                array_map(function ($item) use ($key) { return $item[$key];}, $expectedResults),
+                array_map(function ($item) use ($key) { return $item[$key];}, $results),
+                "Non expected result for key : {$key}"
+            );
+        }, $keysToCheck);
     }
 
     public function testGetLieu()
@@ -37,5 +72,14 @@ class SkiLoisirsDiffusionTest extends TestCase
         array_map(function ($key, $expectedValue) use ($result) {
             $this->assertEquals($expectedValue, $result[$key], "We were expecting {$expectedValue} for {$key} and we obtained {$result[$key]}");
         }, array_keys($expectedResult), $expectedResult);
+    }
+
+    /** @test */
+    public function ticket_place_reservation_is_ok()
+    {
+        $this->markTestIncomplete('to be done');
+        /* $articleDataset = $this->createArticleDataset($this->articleDatasetParameters());
+        $result = SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)
+            ->ticketPlaceReservation($articleDataset); */
     }
 }
