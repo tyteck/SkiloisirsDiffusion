@@ -113,7 +113,7 @@ class DatasetField
             } catch (InvalidFormatException $exception) {
                 return false;
             }
-            $this->fieldValue = $isItADate->format(sldconfig('datetime_format'));
+            $this->fieldValue = $isItADate->toDateTimeLocalString();
             return true;
         }
     }
