@@ -100,7 +100,7 @@ class DatasetField
         }
 
         if ($this->fieldType() == 'xs:string') {
-            return strlen($this->fieldValue);
+            return strlen($this->fieldValue) >= 0;
         }
 
         if ($this->fieldType() == 'xs:decimal') {

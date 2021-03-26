@@ -96,7 +96,10 @@ class SkiLoisirsDiffusion
         return $result;
     }
 
-    public function CREATION_COMMANDE(stdClass $createOrderDataset)
+    /**
+     * @return string order number newly created
+     */
+    public function CREATION_COMMANDE(stdClass $createOrderDataset): string
     {
         $arrayParams = [
             'CE_ID' => $this->partenaireId,
@@ -106,11 +109,11 @@ class SkiLoisirsDiffusion
         $result = $this->soapClient->CREATION_COMMANDE($arrayParams);
         $body = $this->toSimpleXml($result->CREATION_COMMANDEResult->any);
 
-        if ($body->NewDataSet->Paiements->statut == 'false') {
+        if ($body->NewDataSet->Commande->statut == 'false') {
             throw new SLDGenericException($body->NewDataSet->Commande->message_erreur);
         }
 
-        return $result;
+        return $body->NewDataSet->Commande->commandes_numero;
     }
 
     /**

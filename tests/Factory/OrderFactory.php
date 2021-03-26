@@ -3,6 +3,7 @@
 namespace SkiLoisirsDiffusion\Tests\Factory;
 
 use Faker\Factory as Faker;
+use SkiLoisirsDiffusion\Livraisons;
 
 class OrderFactory
 {
@@ -10,17 +11,22 @@ class OrderFactory
     {
         $faker = Faker::create('fr_FR');
 
-        $codeLivraisons = [
-            'LS20G',
-            'LS50G',
-        ];
+        $codeLivraison = $attributes['code_livraison'] ?? null;
+        $prixLivraison = $attributes['prix_livraison'] ?? null;
+
+        if ($codeLivraison === null || $prixLivraison === null) {
+            $deliveryModes = Livraisons::init(sldconfig('sld_domain_url'))->fromRemote()->deliveryModes();
+            $randomIndex = rand(0, count($deliveryModes) - 1);
+            $codeLivraison = $deliveryModes[$randomIndex]['code_livraison'];
+            $prixLivraison = $deliveryModes[$randomIndex]['prix_livraison'];
+        }
 
         return [
             'nb_cheques_vacances' => $attributes['nb_cheques_vacances'] ?? rand(0, 2),
             'montant_total_cheques_vacances' => $attributes['montant_total_cheques_vacances'] ?? $faker->randomFloat(2),
             'mode_paiement' => $attributes['mode_paiement'] ?? 'FCH',
-            'prix_livraison' => $attributes['prix_livraison'] ?? 6.5,
-            'code_livraison' => $attributes['code_livraison'] ?? $codeLivraisons[rand(0, count($codeLivraisons) - 1)],
+            'prix_livraison' => $prixLivraison,
+            'code_livraison' => $codeLivraison,
             'commentaire' => $attributes['commentaire'] ?? 'commentaire',
             'livraison_adresse_societe' => $attributes['livraison_adresse_societe'] ?? $faker->company,
             'livraison_adresse_nom' => $attributes['livraison_adresse_nom'] ?? $faker->lastName,

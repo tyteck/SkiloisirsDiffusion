@@ -75,9 +75,9 @@ class CreateOrderDatasetTest extends BaseTestCase
     /** @test */
     public function creation_commande_is_ok()
     {
-        $result = SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))
+        $orderNumber = SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))
             ->CREATION_COMMANDE($this->orderDataset->dataset());
-        $this->assertTrue($result);
+        $this->assertGreaterThan(0, $orderNumber);
     }
 
     public function getUserDatasetTable(): DatasetTable
@@ -108,7 +108,12 @@ class CreateOrderDatasetTest extends BaseTestCase
 
     public function getOrderDatasetTable(): DatasetTable
     {
-        $this->order = OrderFactory::create();
+        $this->order = OrderFactory::create(
+            [
+                'code_livraison' => 'LS100G',
+                'prix_livraison' => 6.0, // <livraisons_puttc>6,0000</livraisons_puttc>
+            ]
+        );
         return DatasetTable::create('commande')
             ->addDatasetFields(
                 [
