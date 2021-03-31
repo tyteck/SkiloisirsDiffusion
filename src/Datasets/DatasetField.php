@@ -49,7 +49,7 @@ class DatasetField
         $this->fieldRequired = $fieldRequired;
         $this->fieldValue = $fieldValue;
         if (!$this->isValueMatchingType()) {
-            throw new FieldValueDoesNotMatchWithTypeException("We were expecting type {$fieldType} and we got {$fieldValue}.");
+            throw new FieldValueDoesNotMatchWithTypeException("Field {$fieldName} is expecting type {$fieldType} and we got {$fieldValue}.");
         }
     }
 
