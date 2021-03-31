@@ -3,9 +3,10 @@
 namespace SkiLoisirsDiffusion\Tests;
 
 use SkiLoisirsDiffusion\Datasets\CeDatasetTable;
-use SkiLoisirsDiffusion\Datasets\DatasetField;
-use SkiLoisirsDiffusion\Datasets\DatasetTable;
 use SkiLoisirsDiffusion\Datasets\MakeDataset;
+use SkiLoisirsDiffusion\Factories\OrderDatasetTableFactory;
+use SkiLoisirsDiffusion\Factories\SignatureFactory;
+use SkiLoisirsDiffusion\Factories\UserDatasetTableFactory;
 use SkiLoisirsDiffusion\SkiLoisirsDiffusion;
 use SkiLoisirsDiffusion\Tests\Factory\OrderFactory;
 use SkiLoisirsDiffusion\Tests\Factory\UserFactory;
@@ -35,17 +36,20 @@ class CreateOrderDatasetTest extends BaseTestCase
     public function setUp() :void
     {
         parent::setUp();
-        $this->ceDataSetTable = CeDatasetTable::create();
-        $this->userDatasetTable = $this->getUserDatasetTable();
-        $this->orderDataSetTable = $this->getOrderDatasetTable();
-        $this->signatureDataSetTable = $this->getSignatureDatasetTable();
+
+        $this->user = UserFactory::create();
+        $this->order = OrderFactory::create(['code_livraison' => 'LS100G', 'prix_livraison' => 6.0]);
+
+        $signatureFactory = SignatureFactory::create($this->order, $this->user, sldconfig('clef_secrete'));
+        $this->signature = $signatureFactory->signature();
+        $this->signatureDataSetTable = $signatureFactory->datasetTable();
 
         $this->orderDataset = MakeDataset::init()->addDatasetTables(
             [
-                $this->ceDataSetTable,
-                $this->userDatasetTable,
-                $this->orderDataSetTable,
-                $this->signatureDataSetTable,
+                CeDatasetTable::create(),
+                UserDatasetTableFactory::create($this->user),
+                OrderDatasetTableFactory::create($this->order),
+                $signatureFactory->datasetTable(),
             ]
         )->render();
     }
@@ -78,94 +82,6 @@ class CreateOrderDatasetTest extends BaseTestCase
         $orderNumber = SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))
             ->CREATION_COMMANDE($this->orderDataset->dataset());
         $this->assertGreaterThan(0, $orderNumber);
-    }
-
-    public function getUserDatasetTable(): DatasetTable
-    {
-        $this->user = UserFactory::create();
-        return DatasetTable::create('utilisateur')
-            ->addDatasetFields(
-                [
-                    DatasetField::create('id_partenaire', 'string', $this->user['id_partenaire']),
-                    DatasetField::create('utilisateurs_societe', 'string', $this->user['utilisateurs_societe'], 0, false),
-                    DatasetField::create('utilisateurs_civilite', 'string', $this->user['utilisateurs_civilite'], 0, false),
-                    DatasetField::create('utilisateurs_nom', 'string', $this->user['utilisateurs_nom']),
-                    DatasetField::create('utilisateurs_prenom', 'string', $this->user['utilisateurs_prenom']),
-                    DatasetField::create('utilisateurs_telephone', 'string', $this->user['utilisateurs_telephone']),
-                    DatasetField::create('utilisateurs_portable', 'string', $this->user['utilisateurs_portable']),
-                    DatasetField::create('utilisateurs_fax', 'string', $this->user['utilisateurs_fax'], 0, false),
-                    DatasetField::create('utilisateurs_email', 'string', $this->user['utilisateurs_email']),
-                    DatasetField::create('utilisateurs_adresse_nom', 'string', $this->user['utilisateurs_adresse_nom']),
-                    DatasetField::create('utilisateurs_adresse1', 'string', $this->user['utilisateurs_adresse1']),
-                    DatasetField::create('utilisateurs_adresse2', 'string', $this->user['utilisateurs_adresse2']),
-                    DatasetField::create('utilisateurs_codepostal', 'string', $this->user['utilisateurs_codepostal']),
-                    DatasetField::create('utilisateurs_ville', 'string', $this->user['utilisateurs_ville']),
-                    DatasetField::create('utilisateurs_pays', 'string', $this->user['utilisateurs_pays']),
-                    DatasetField::create('utilisateurs_date_naissance', 'dateTime', $this->user['utilisateurs_date_naissance']),
-                ]
-            );
-    }
-
-    public function getOrderDatasetTable(): DatasetTable
-    {
-        $this->order = OrderFactory::create(
-            [
-                'code_livraison' => 'LS100G',
-                'prix_livraison' => 6.0, // <livraisons_puttc>6,0000</livraisons_puttc>
-            ]
-        );
-        return DatasetTable::create('commande')
-            ->addDatasetFields(
-                [
-                    DatasetField::create('nb_cheques_vacances', 'string', $this->order['nb_cheques_vacances']),
-                    DatasetField::create('montant_total_cheques_vacances', 'string', $this->order['montant_total_cheques_vacances']),
-                    DatasetField::create('mode_paiement', 'string', $this->order['mode_paiement']),
-                    DatasetField::create('prix_livraison', 'decimal', $this->order['prix_livraison']),
-                    DatasetField::create('code_livraison', 'string', $this->order['code_livraison']),
-                    DatasetField::create('commentaire', 'string', $this->order['commentaire'], 0, false),
-                    DatasetField::create('livraison_adresse_societe', 'string', $this->order['livraison_adresse_societe']),
-                    DatasetField::create('livraison_adresse_nom', 'string', $this->order['livraison_adresse_nom']),
-                    DatasetField::create('livraison_adresse1', 'string', $this->order['livraison_adresse1']),
-                    DatasetField::create('livraison_adresse2', 'string', $this->order['livraison_adresse2']),
-                    DatasetField::create('livraison_codepostal', 'string', $this->order['livraison_codepostal']),
-                    DatasetField::create('livraison_ville', 'string', $this->order['livraison_ville']),
-                    DatasetField::create('livraison_pays', 'string', $this->order['livraison_pays'], 0, false),
-                    DatasetField::create('url_retour', 'string', $this->order['url_retour'], 0, false),
-                    DatasetField::create('url_retour_ok', 'string', $this->order['url_retour_ok'], 0, false),
-                    DatasetField::create('url_retour_err', 'string', $this->order['url_retour_err'], 0, false),
-                    DatasetField::create('acompte', 'decimal', $this->order['acompte'], 0, false),
-                    DatasetField::create('numero_commande_ticketnet', 'string', $this->order['numero_commande_ticketnet'], 0, false),
-                    DatasetField::create('frais_gestion_payeur', 'string', $this->order['frais_gestion_payeur'], 0, false),
-                    DatasetField::create('frais_port_payeur', 'string', $this->order['frais_port_payeur'], 0, false),
-                    DatasetField::create('remise_frais_port', 'decimal', $this->order['remise_frais_port'], 0, false),
-                    DatasetField::create('numero_commande_distributeur', 'string', $this->order['numero_commande_distributeur'], 0, false),
-                ]
-            );
-    }
-
-    public function getSignatureDatasetTable(): DatasetTable
-    {
-        $createSignatureParameters = [
-            'code_livraison' => $this->order['code_livraison'],
-            'id_partenaire' => $this->user['id_partenaire'],
-            'mode_paiement' => $this->order['mode_paiement'],
-            'utilisateurs_adresse1' => $this->user['utilisateurs_adresse1'],
-            'utilisateurs_adresse_nom' => $this->user['utilisateurs_adresse_nom'],
-            'utilisateurs_codepostal' => $this->user['utilisateurs_codepostal'],
-            'utilisateurs_email' => $this->user['utilisateurs_email'],
-            'utilisateurs_nom' => $this->user['utilisateurs_nom'],
-            'utilisateurs_prenom' => $this->user['utilisateurs_prenom'],
-            'utilisateurs_ville' => $this->user['utilisateurs_ville'],
-            'clef_secrete' => sldconfig('clef_secrete'),
-        ];
-
-        $this->signature = generateSignature($createSignatureParameters);
-        return DatasetTable::create('signature')
-            ->addDatasetFields(
-                [
-                    DatasetField::create('signature', 'string', $this->signature),
-                ]
-            );
     }
 
     protected function expectedBody(): string
