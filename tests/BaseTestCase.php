@@ -62,6 +62,8 @@ class BaseTestCase extends TestCase
             case 'string': $fieldValue = 'lorem ipsum'; break;
             case 'dateTime': $fieldValue = Carbon::now()->subDay(); break;
             case 'decimal': $fieldValue = 29.90; break;
+            case 'int32': $fieldValue = 2846; break;
+            case 'int64': $fieldValue = 2847; break;
         }
         return DatasetField::create($fieldName, $fieldType, $fieldValue);
     }
