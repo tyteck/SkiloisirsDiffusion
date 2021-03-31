@@ -10,7 +10,7 @@ class ArticleFactory
     {
         $faker = Faker::create('fr_FR');
         return [
-            'code_article' => $attributes['code_article'] ?? $faker->regexify(),
+            'code_article' => $attributes['code_article'] ?? $faker->regexify('[a-zA-Z0-9]{4}'),
             'quantite' => $attributes['quantite'] ?? 1,
             'articles_prix' => $attributes['articles_prix'] ?? 29.9,
             'code_parent' => $attributes['code_parent'] ?? null,
