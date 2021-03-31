@@ -27,7 +27,7 @@ class DatasetField
     protected $fieldValue;
 
     /** @var array $allowedFieldTypes */
-    protected static $allowedFieldTypes = ['string', 'decimal', 'dateTime'];
+    protected static $allowedFieldTypes = ['string', 'decimal', 'dateTime', 'int32', 'int64'];
 
     private function __construct(string $fieldName, string $fieldType, $fieldValue, int $fieldMinOccurs = 0, bool $fieldRequired = true)
     {
@@ -105,6 +105,10 @@ class DatasetField
 
         if ($this->fieldType() == 'xs:decimal') {
             return is_float($this->fieldValue);
+        }
+
+        if (in_array($this->fieldType(), ['xs:int32', 'xs:int64'])) {
+            return is_integer($this->fieldValue);
         }
 
         if ($this->fieldType() == 'xs:dateTime') {
