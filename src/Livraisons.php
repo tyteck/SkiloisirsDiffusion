@@ -31,6 +31,7 @@ class Livraisons
             $this->deliveryModes[] = [
                 'code_livraison' => trim($deliveryMode->livraisons_code),
                 'prix_livraison' => (float)trim(str_replace(',', '.', $deliveryMode->livraisons_puttc)),
+                'livraisons_maximum' => (int)trim($deliveryMode->livraisons_maximum),
             ];
         }
         return $this;
