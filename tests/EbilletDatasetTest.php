@@ -3,7 +3,7 @@
 namespace SkiLoisirsDiffusion\Tests;
 
 use SkiLoisirsDiffusion\Datasets\DatasetField;
-use SkiLoisirsDiffusion\Datasets\DatasetTable;
+use SkiLoisirsDiffusion\DatasetTables\DatasetTable;
 use SkiLoisirsDiffusion\Tests\Factory\EbilletFactory;
 
 class EbilletDatasetTest extends BaseTestCase

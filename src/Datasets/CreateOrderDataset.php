@@ -2,6 +2,10 @@
 
 namespace SkiLoisirsDiffusion\Datasets;
 
+use SkiLoisirsDiffusion\DatasetTables\CeDatasetTable;
+use SkiLoisirsDiffusion\DatasetTables\OrderDatasetTable;
+use SkiLoisirsDiffusion\DatasetTables\SignatureDatasetTable;
+use SkiLoisirsDiffusion\DatasetTables\UserDatasetTable;
 use SkiLoisirsDiffusion\Interfaces\Dataset;
 use stdClass;
 
@@ -22,9 +26,9 @@ class CreateOrderDataset implements Dataset
     /** @var \SkiLoisirsDiffusion\Datasets\SignatureDataset */
     protected $signatureDataset;
 
-    private function __construct(UserDataset $userDataset, OrderDataset $orderDataset, SignatureDataset $signatureDataset)
+    private function __construct(UserDatasetTable $userDataset, OrderDatasetTable $orderDataset, SignatureDatasetTable $signatureDataset)
     {
-        $this->ceDataset = CeDatasetTable::create();
+        $this->ceDataset = CeDatasetTable::prepare()->withConfig();
         $this->userDataset = $userDataset;
         $this->orderDataset = $orderDataset;
         $this->signatureDataset = $signatureDataset;
@@ -36,10 +40,10 @@ class CreateOrderDataset implements Dataset
     <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
         <xs:complexType>
             <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                ' . $this->ceDataset->schema() . '
-                ' . $this->userDataset->schema() . '
-                ' . $this->orderDataset->schema() . '
-                ' . $this->signatureDataset->schema() . '
+                ' . $this->ceDataset->renderSchema() . '
+                ' . $this->userDataset->renderSchema() . '
+                ' . $this->orderDataset->renderSchema() . '
+                ' . $this->signatureDataset->renderSchema() . '
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -49,10 +53,10 @@ class CreateOrderDataset implements Dataset
         $this->dataset->any = '
 <diffgr:diffgram xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <NewDataSet xmlns="">
-    ' . $this->ceDataset->body() . '
-    ' . $this->userDataset->body() . '
-    ' . $this->orderDataset->body() . '
-    ' . $this->signatureDataset->body() . '
+    ' . $this->ceDataset->renderBody() . '
+    ' . $this->userDataset->renderBody() . '
+    ' . $this->orderDataset->renderBody() . '
+    ' . $this->signatureDataset->renderBody() . '
     </NewDataSet>
 </diffgr:diffgram>
 ';

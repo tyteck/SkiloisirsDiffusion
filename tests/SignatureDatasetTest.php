@@ -2,14 +2,16 @@
 
 namespace SkiLoisirsDiffusion\Tests;
 
-use SkiLoisirsDiffusion\Datasets\DatasetField;
-use SkiLoisirsDiffusion\Datasets\DatasetTable;
+use SkiLoisirsDiffusion\DatasetTables\DatasetTable;
+use SkiLoisirsDiffusion\DatasetTables\SignatureDatasetTable;
+use SkiLoisirsDiffusion\Datatypes\OrderDatatype;
+use SkiLoisirsDiffusion\Datatypes\UserDatatype;
 use SkiLoisirsDiffusion\Tests\Factory\OrderFactory;
 use SkiLoisirsDiffusion\Tests\Factory\UserFactory;
 
 class SignatureDatasetTest extends BaseTestCase
 {
-    /** @var \SkiloisirsDiffusion\Datasets\DatasetTable $signatureDatasetTable */
+    /** @var \SkiLoisirsDiffusion\DatasetTables\DatasetTable $signatureDatasetTable */
     protected DatasetTable $signatureDatasetTable;
 
     protected string $signature;
@@ -17,30 +19,25 @@ class SignatureDatasetTest extends BaseTestCase
     public function setUp() :void
     {
         parent::setUp();
-        $order = OrderFactory::create();
-        $user = UserFactory::create();
+        $this->user = UserDatatype::create(UserFactory::create());
+        $this->order = OrderDatatype::create(OrderFactory::create());
 
         $createSignatureParameters = [
-            'code_livraison' => $order['code_livraison'],
-            'id_partenaire' => $user['id_partenaire'],
-            'mode_paiement' => $order['mode_paiement'],
-            'utilisateurs_adresse1' => $user['utilisateurs_adresse1'],
-            'utilisateurs_adresse_nom' => $user['utilisateurs_adresse_nom'],
-            'utilisateurs_codepostal' => $user['utilisateurs_codepostal'],
-            'utilisateurs_email' => $user['utilisateurs_email'],
-            'utilisateurs_nom' => $user['utilisateurs_nom'],
-            'utilisateurs_prenom' => $user['utilisateurs_prenom'],
-            'utilisateurs_ville' => $user['utilisateurs_ville'],
+            'code_livraison' => $this->order->code_livraison,
+            'id_partenaire' => $this->user->id_partenaire,
+            'mode_paiement' => $this->order->mode_paiement,
+            'utilisateurs_adresse1' => $this->user->utilisateurs_adresse1,
+            'utilisateurs_adresse_nom' => $this->user->utilisateurs_adresse_nom,
+            'utilisateurs_codepostal' => $this->user->utilisateurs_codepostal,
+            'utilisateurs_email' => $this->user->utilisateurs_email,
+            'utilisateurs_nom' => $this->user->utilisateurs_nom,
+            'utilisateurs_prenom' => $this->user->utilisateurs_prenom,
+            'utilisateurs_ville' => $this->user->utilisateurs_ville,
             'clef_secrete' => sldconfig('clef_secrete'),
         ];
         $this->signature = generateSignature($createSignatureParameters);
 
-        $this->signatureDatasetTable = DatasetTable::create('signature')
-            ->addDatasetFields(
-                [
-                    DatasetField::create('signature', 'string', $this->signature),
-                ]
-            );
+        $this->signatureDatasetTable = SignatureDatasetTable::prepare()->with($this->order, $this->user, sldconfig('clef_secrete'));
     }
 
     /** @test */

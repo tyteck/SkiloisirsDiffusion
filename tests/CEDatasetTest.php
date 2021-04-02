@@ -2,17 +2,17 @@
 
 namespace SkiLoisirsDiffusion\Tests;
 
-use SkiLoisirsDiffusion\Datasets\CeDatasetTable;
+use SkiLoisirsDiffusion\DatasetTables\CeDatasetTable;
 
 class CEDatasetTest extends BaseTestCase
 {
-    /** @var \SkiLoisirsDiffusion\Datasets\DatasetTable $ceDatasetTable */
+    /** @var \SkiLoisirsDiffusion\DatasetTables\DatasetTable $ceDatasetTable */
     protected $ceDatasetTable;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->ceDatasetTable = CeDatasetTable::create();
+        $this->ceDatasetTable = CeDatasetTable::prepare()->withConfig();
     }
 
     /** @test */

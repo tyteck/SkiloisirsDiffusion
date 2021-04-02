@@ -1,8 +1,9 @@
 <?php
 
-namespace SkiLoisirsDiffusion\Datasets;
+namespace SkiLoisirsDiffusion\DatasetTables;
 
 use InvalidArgumentException;
+use SkiLoisirsDiffusion\Datasets\DatasetField;
 use SkiLoisirsDiffusion\Exceptions\TableNameShouldNotBeEmptyException;
 
 class DatasetTable
@@ -13,7 +14,7 @@ class DatasetTable
     /** @var array $datasetFields */
     protected $datasetFields = [];
 
-    private function __construct(string $tableName)
+    protected function __construct(string $tableName)
     {
         if (!strlen($tableName)) {
             throw new TableNameShouldNotBeEmptyException('Table name should not be empty');

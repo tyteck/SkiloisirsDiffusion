@@ -47,6 +47,20 @@ class DatasetFieldTest extends BaseTestCase
     }
 
     /** @test */
+    public function not_an_int32_should_fail()
+    {
+        $this->expectException(FieldValueDoesNotMatchWithTypeException::class);
+        DatasetField::create('field1', 'int32', 'this is not an int');
+    }
+
+    /** @test */
+    public function not_an_int64_should_fail()
+    {
+        $this->expectException(FieldValueDoesNotMatchWithTypeException::class);
+        DatasetField::create('field1', 'int64', 'this is not an int');
+    }
+
+    /** @test */
     public function string_is_ok()
     {
         $expectedFieldName = 'field1';
@@ -54,6 +68,20 @@ class DatasetFieldTest extends BaseTestCase
         $expectedValue = 'value1';
         $expectedMinOccurs = 10;
         $datasetField = DatasetField::create($expectedFieldName, 'string', $expectedValue, $expectedMinOccurs);
+        $this->assertEquals($expectedFieldName, $datasetField->fieldName());
+        $this->assertEquals($expectedFieldType, $datasetField->fieldType());
+        $this->assertEquals($expectedValue, $datasetField->fieldValue());
+        $this->assertEquals($expectedMinOccurs, $datasetField->fieldMinOccurs());
+    }
+
+    /** @test */
+    public function int32_is_ok()
+    {
+        $expectedFieldName = 'field1';
+        $expectedFieldType = 'xs:int32';
+        $expectedValue = 1;
+        $expectedMinOccurs = 0;
+        $datasetField = DatasetField::create($expectedFieldName, 'int32', $expectedValue, $expectedMinOccurs);
         $this->assertEquals($expectedFieldName, $datasetField->fieldName());
         $this->assertEquals($expectedFieldType, $datasetField->fieldType());
         $this->assertEquals($expectedValue, $datasetField->fieldValue());

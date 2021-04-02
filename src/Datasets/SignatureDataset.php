@@ -7,7 +7,7 @@ use SkiLoisirsDiffusion\Interfaces\DatasetTableContract;
 
 class SignatureDataset implements DatasetTableContract
 {
-    /** @var \SkiLoisirsDiffusion\Datasets\DatasetTable $datasetTable */
+    /** @var \SkiLoisirsDiffusion\DatasetTables\DatasetTable $datasetTable */
     protected $datasetTable;
 
     /** @var string $tablename */

@@ -2,11 +2,13 @@
 
 namespace SkiLoisirsDiffusion\Tests;
 
-use SkiLoisirsDiffusion\Datasets\CeDatasetTable;
 use SkiLoisirsDiffusion\Datasets\MakeDataset;
-use SkiLoisirsDiffusion\Factories\OrderDatasetTableFactory;
-use SkiLoisirsDiffusion\Factories\SignatureFactory;
-use SkiLoisirsDiffusion\Factories\UserDatasetTableFactory;
+use SkiLoisirsDiffusion\DatasetTables\CeDatasetTable;
+use SkiLoisirsDiffusion\DatasetTables\OrderDatasetTable;
+use SkiLoisirsDiffusion\DatasetTables\SignatureDatasetTable;
+use SkiLoisirsDiffusion\DatasetTables\UserDatasetTable;
+use SkiLoisirsDiffusion\Datatypes\OrderDatatype;
+use SkiLoisirsDiffusion\Datatypes\UserDatatype;
 use SkiLoisirsDiffusion\SkiLoisirsDiffusion;
 use SkiLoisirsDiffusion\Tests\Factory\OrderFactory;
 use SkiLoisirsDiffusion\Tests\Factory\UserFactory;
@@ -18,14 +20,11 @@ class CreateOrderDatasetTest extends BaseTestCase
     protected $order;
     protected $signature;
 
-    /** @var \Skiloisirs\Datasets\DatasetTable $ceDataSetTable */
-    protected $ceDataSetTable;
+    protected \SkiLoisirsDiffusion\DatasetTables\CeDatasetTable $ceDataSetTable;
 
-    /** @var \Skiloisirs\Datasets\DatasetTable $userDatasetTable */
-    protected $userDatasetTable;
+    protected \SkiLoisirsDiffusion\DatasetTables\UserDatasetTable $userDatasetTable;
 
-    /** @var \Skiloisirs\Datasets\DatasetTable $orderDataSetTable */
-    protected $orderDataSetTable;
+    protected \SkiLoisirsDiffusion\DatasetTables\OrderDatasetTable $orderDataSetTable;
 
     /** @var \Skiloisirs\Datasets\DatasetTable $signatureDataSetTable */
     protected $signatureDataSetTable;
@@ -37,19 +36,18 @@ class CreateOrderDatasetTest extends BaseTestCase
     {
         parent::setUp();
 
-        $this->user = UserFactory::create();
-        $this->order = OrderFactory::create(['code_livraison' => 'LS100G', 'prix_livraison' => 6.0]);
+        $this->user = UserDatatype::create(UserFactory::create());
 
-        $signatureFactory = SignatureFactory::create($this->order, $this->user, sldconfig('clef_secrete'));
-        $this->signature = $signatureFactory->signature();
-        $this->signatureDataSetTable = $signatureFactory->datasetTable();
+        $this->order = OrderDatatype::create(OrderFactory::create());
+
+        $this->signatureDataSetTable = SignatureDatasetTable::prepare()->with($this->order, $this->user, sldconfig('clef_secrete'));
 
         $this->orderDataset = MakeDataset::init()->addDatasetTables(
             [
-                CeDatasetTable::create(),
-                UserDatasetTableFactory::create($this->user),
-                OrderDatasetTableFactory::create($this->order),
-                $signatureFactory->datasetTable(),
+                CeDatasetTable::prepare()->withConfig(),
+                UserDatasetTable::prepare()->with($this->user),
+                OrderDatasetTable::prepare()->with($this->order),
+                $this->signatureDataSetTable,
             ]
         )->render();
     }
@@ -114,49 +112,49 @@ class CreateOrderDatasetTest extends BaseTestCase
 <ce_pays></ce_pays>
 </ce>
 <utilisateur diffgr:id="utilisateur1" msdata:rowOrder="1">
-<id_partenaire>{$this->user['id_partenaire']}</id_partenaire>
-<utilisateurs_societe>{$this->user['utilisateurs_societe']}</utilisateurs_societe>
-<utilisateurs_civilite>{$this->user['utilisateurs_civilite']}</utilisateurs_civilite>
-<utilisateurs_nom>{$this->user['utilisateurs_nom']}</utilisateurs_nom>
-<utilisateurs_prenom>{$this->user['utilisateurs_prenom']}</utilisateurs_prenom>
-<utilisateurs_telephone>{$this->user['utilisateurs_telephone']}</utilisateurs_telephone>
-<utilisateurs_portable>{$this->user['utilisateurs_portable']}</utilisateurs_portable>
-<utilisateurs_fax>{$this->user['utilisateurs_fax']}</utilisateurs_fax>
-<utilisateurs_email>{$this->user['utilisateurs_email']}</utilisateurs_email>
-<utilisateurs_adresse_nom>{$this->user['utilisateurs_adresse_nom']}</utilisateurs_adresse_nom>
-<utilisateurs_adresse1>{$this->user['utilisateurs_adresse1']}</utilisateurs_adresse1>
-<utilisateurs_adresse2>{$this->user['utilisateurs_adresse2']}</utilisateurs_adresse2>
-<utilisateurs_codepostal>{$this->user['utilisateurs_codepostal']}</utilisateurs_codepostal>
-<utilisateurs_ville>{$this->user['utilisateurs_ville']}</utilisateurs_ville>
-<utilisateurs_pays>{$this->user['utilisateurs_pays']}</utilisateurs_pays>
-<utilisateurs_date_naissance>{$this->user['utilisateurs_date_naissance']}</utilisateurs_date_naissance>
+<id_partenaire>{$this->user->id_partenaire}</id_partenaire>
+<utilisateurs_societe>{$this->user->utilisateurs_societe}</utilisateurs_societe>
+<utilisateurs_civilite>{$this->user->utilisateurs_civilite}</utilisateurs_civilite>
+<utilisateurs_nom>{$this->user->utilisateurs_nom}</utilisateurs_nom>
+<utilisateurs_prenom>{$this->user->utilisateurs_prenom}</utilisateurs_prenom>
+<utilisateurs_telephone>{$this->user->utilisateurs_telephone}</utilisateurs_telephone>
+<utilisateurs_portable>{$this->user->utilisateurs_portable}</utilisateurs_portable>
+<utilisateurs_fax>{$this->user->utilisateurs_fax}</utilisateurs_fax>
+<utilisateurs_email>{$this->user->utilisateurs_email}</utilisateurs_email>
+<utilisateurs_adresse_nom>{$this->user->utilisateurs_adresse_nom}</utilisateurs_adresse_nom>
+<utilisateurs_adresse1>{$this->user->utilisateurs_adresse1}</utilisateurs_adresse1>
+<utilisateurs_adresse2>{$this->user->utilisateurs_adresse2}</utilisateurs_adresse2>
+<utilisateurs_codepostal>{$this->user->utilisateurs_codepostal}</utilisateurs_codepostal>
+<utilisateurs_ville>{$this->user->utilisateurs_ville}</utilisateurs_ville>
+<utilisateurs_pays>{$this->user->utilisateurs_pays}</utilisateurs_pays>
+<utilisateurs_date_naissance>{$this->user->utilisateurs_date_naissance}</utilisateurs_date_naissance>
 </utilisateur>
 <commande diffgr:id="commande1" msdata:rowOrder="2">
-<nb_cheques_vacances>{$this->order['nb_cheques_vacances']}</nb_cheques_vacances>
-<montant_total_cheques_vacances>{$this->order['montant_total_cheques_vacances']}</montant_total_cheques_vacances>
-<mode_paiement>{$this->order['mode_paiement']}</mode_paiement>
-<prix_livraison>{$this->order['prix_livraison']}</prix_livraison>
-<code_livraison>{$this->order['code_livraison']}</code_livraison>
-<commentaire>{$this->order['commentaire']}</commentaire>
-<livraison_adresse_societe>{$this->order['livraison_adresse_societe']}</livraison_adresse_societe>
-<livraison_adresse_nom>{$this->order['livraison_adresse_nom']}</livraison_adresse_nom>
-<livraison_adresse1>{$this->order['livraison_adresse1']}</livraison_adresse1>
-<livraison_adresse2>{$this->order['livraison_adresse2']}</livraison_adresse2>
-<livraison_codepostal>{$this->order['livraison_codepostal']}</livraison_codepostal>
-<livraison_ville>{$this->order['livraison_ville']}</livraison_ville>
-<livraison_pays>{$this->order['livraison_pays']}</livraison_pays>
-<url_retour>{$this->order['url_retour']}</url_retour>
-<url_retour_ok>{$this->order['url_retour_ok']}</url_retour_ok>
-<url_retour_err>{$this->order['url_retour_err']}</url_retour_err>
-<acompte>{$this->order['acompte']}</acompte>
-<numero_commande_ticketnet>{$this->order['numero_commande_ticketnet']}</numero_commande_ticketnet>
-<frais_gestion_payeur>{$this->order['frais_gestion_payeur']}</frais_gestion_payeur>
-<frais_port_payeur>{$this->order['frais_port_payeur']}</frais_port_payeur>
-<remise_frais_port>{$this->order['remise_frais_port']}</remise_frais_port>
-<numero_commande_distributeur>{$this->order['numero_commande_distributeur']}</numero_commande_distributeur>
+<nb_cheques_vacances>{$this->order->nb_cheques_vacances}</nb_cheques_vacances>
+<montant_total_cheques_vacances>{$this->order->montant_total_cheques_vacances}</montant_total_cheques_vacances>
+<mode_paiement>{$this->order->mode_paiement}</mode_paiement>
+<prix_livraison>{$this->order->prix_livraison}</prix_livraison>
+<code_livraison>{$this->order->code_livraison}</code_livraison>
+<commentaire>{$this->order->commentaire}</commentaire>
+<livraison_adresse_societe>{$this->order->livraison_adresse_societe}</livraison_adresse_societe>
+<livraison_adresse_nom>{$this->order->livraison_adresse_nom}</livraison_adresse_nom>
+<livraison_adresse1>{$this->order->livraison_adresse1}</livraison_adresse1>
+<livraison_adresse2>{$this->order->livraison_adresse2}</livraison_adresse2>
+<livraison_codepostal>{$this->order->livraison_codepostal}</livraison_codepostal>
+<livraison_ville>{$this->order->livraison_ville}</livraison_ville>
+<livraison_pays>{$this->order->livraison_pays}</livraison_pays>
+<url_retour>{$this->order->url_retour}</url_retour>
+<url_retour_ok>{$this->order->url_retour_ok}</url_retour_ok>
+<url_retour_err>{$this->order->url_retour_err}</url_retour_err>
+<acompte>{$this->order->acompte}</acompte>
+<numero_commande_ticketnet>{$this->order->numero_commande_ticketnet}</numero_commande_ticketnet>
+<frais_gestion_payeur>{$this->order->frais_gestion_payeur}</frais_gestion_payeur>
+<frais_port_payeur>{$this->order->frais_port_payeur}</frais_port_payeur>
+<remise_frais_port>{$this->order->remise_frais_port}</remise_frais_port>
+<numero_commande_distributeur>{$this->order->numero_commande_distributeur}</numero_commande_distributeur>
 </commande>
 <signature diffgr:id="signature1" msdata:rowOrder="3">
-<signature>{$this->signature}</signature>
+<signature>{$this->signatureDataSetTable->signature}</signature>
 </signature>
 </NewDataSet>
 </diffgr:diffgram>

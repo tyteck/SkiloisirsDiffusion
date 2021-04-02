@@ -2,43 +2,23 @@
 
 namespace SkiLoisirsDiffusion\Tests;
 
-use SkiLoisirsDiffusion\Datasets\DatasetField;
-use SkiLoisirsDiffusion\Datasets\DatasetTable;
+use SkiLoisirsDiffusion\DatasetTables\UserDatasetTable;
+use SkiLoisirsDiffusion\Datatypes\UserDatatype;
 use SkiLoisirsDiffusion\Tests\Factory\UserFactory;
 
 class UserDatasetTest extends BaseTestCase
 {
-    /** @var array $user */
-    protected array $user;
+    protected \SkiLoisirsDiffusion\Datatypes\UserDatatype $user;
 
-    /** @var \SkiLoisirsDiffusion\Datasets\DatasetTable $userDatasetTable */
-    protected DatasetTable $userDatasetTable;
+    protected \SkiLoisirsDiffusion\DatasetTables\DatasetTable $userDatasetTable;
 
     public function setUp() :void
     {
         parent::setUp();
-        $this->user = UserFactory::create();
-        $this->userDatasetTable = DatasetTable::create('utilisateur')
-            ->addDatasetFields(
-                [
-                    DatasetField::create('id_partenaire', 'string', $this->user['id_partenaire']),
-                    DatasetField::create('utilisateurs_societe', 'string', $this->user['utilisateurs_societe'], 0, false),
-                    DatasetField::create('utilisateurs_civilite', 'string', $this->user['utilisateurs_civilite'], 0, false),
-                    DatasetField::create('utilisateurs_nom', 'string', $this->user['utilisateurs_nom']),
-                    DatasetField::create('utilisateurs_prenom', 'string', $this->user['utilisateurs_prenom']),
-                    DatasetField::create('utilisateurs_telephone', 'string', $this->user['utilisateurs_telephone']),
-                    DatasetField::create('utilisateurs_portable', 'string', $this->user['utilisateurs_portable']),
-                    DatasetField::create('utilisateurs_fax', 'string', $this->user['utilisateurs_fax'], 0, false),
-                    DatasetField::create('utilisateurs_email', 'string', $this->user['utilisateurs_email']),
-                    DatasetField::create('utilisateurs_adresse_nom', 'string', $this->user['utilisateurs_adresse_nom']),
-                    DatasetField::create('utilisateurs_adresse1', 'string', $this->user['utilisateurs_adresse1']),
-                    DatasetField::create('utilisateurs_adresse2', 'string', $this->user['utilisateurs_adresse2']),
-                    DatasetField::create('utilisateurs_codepostal', 'string', $this->user['utilisateurs_codepostal']),
-                    DatasetField::create('utilisateurs_ville', 'string', $this->user['utilisateurs_ville']),
-                    DatasetField::create('utilisateurs_pays', 'string', $this->user['utilisateurs_pays']),
-                    DatasetField::create('utilisateurs_date_naissance', 'dateTime', $this->user['utilisateurs_date_naissance']),
-                ]
-            );
+        /** factory create fake user array I throw to userDataType*/
+        $this->user = UserDatatype::create(UserFactory::create());
+
+        $this->userDatasetTable = UserDatasetTable::prepare()->with($this->user);
     }
 
     /** @test */
@@ -76,22 +56,22 @@ EOT;
     {
         $expectedBody = <<<EOT
 <utilisateur diffgr:id="utilisateur1" msdata:rowOrder="0">
-<id_partenaire>{$this->user['id_partenaire']}</id_partenaire>
-<utilisateurs_societe>{$this->user['utilisateurs_societe']}</utilisateurs_societe>
-<utilisateurs_civilite>{$this->user['utilisateurs_civilite']}</utilisateurs_civilite>
-<utilisateurs_nom>{$this->user['utilisateurs_nom']}</utilisateurs_nom>
-<utilisateurs_prenom>{$this->user['utilisateurs_prenom']}</utilisateurs_prenom>
-<utilisateurs_telephone>{$this->user['utilisateurs_telephone']}</utilisateurs_telephone>
-<utilisateurs_portable>{$this->user['utilisateurs_portable']}</utilisateurs_portable>
-<utilisateurs_fax>{$this->user['utilisateurs_fax']}</utilisateurs_fax>
-<utilisateurs_email>{$this->user['utilisateurs_email']}</utilisateurs_email>
-<utilisateurs_adresse_nom>{$this->user['utilisateurs_adresse_nom']}</utilisateurs_adresse_nom>
-<utilisateurs_adresse1>{$this->user['utilisateurs_adresse1']}</utilisateurs_adresse1>
-<utilisateurs_adresse2>{$this->user['utilisateurs_adresse2']}</utilisateurs_adresse2>
-<utilisateurs_codepostal>{$this->user['utilisateurs_codepostal']}</utilisateurs_codepostal>
-<utilisateurs_ville>{$this->user['utilisateurs_ville']}</utilisateurs_ville>
-<utilisateurs_pays>{$this->user['utilisateurs_pays']}</utilisateurs_pays>
-<utilisateurs_date_naissance>{$this->user['utilisateurs_date_naissance']}</utilisateurs_date_naissance>
+<id_partenaire>{$this->user->id_partenaire}</id_partenaire>
+<utilisateurs_societe>{$this->user->utilisateurs_societe}</utilisateurs_societe>
+<utilisateurs_civilite>{$this->user->utilisateurs_civilite}</utilisateurs_civilite>
+<utilisateurs_nom>{$this->user->utilisateurs_nom}</utilisateurs_nom>
+<utilisateurs_prenom>{$this->user->utilisateurs_prenom}</utilisateurs_prenom>
+<utilisateurs_telephone>{$this->user->utilisateurs_telephone}</utilisateurs_telephone>
+<utilisateurs_portable>{$this->user->utilisateurs_portable}</utilisateurs_portable>
+<utilisateurs_fax>{$this->user->utilisateurs_fax}</utilisateurs_fax>
+<utilisateurs_email>{$this->user->utilisateurs_email}</utilisateurs_email>
+<utilisateurs_adresse_nom>{$this->user->utilisateurs_adresse_nom}</utilisateurs_adresse_nom>
+<utilisateurs_adresse1>{$this->user->utilisateurs_adresse1}</utilisateurs_adresse1>
+<utilisateurs_adresse2>{$this->user->utilisateurs_adresse2}</utilisateurs_adresse2>
+<utilisateurs_codepostal>{$this->user->utilisateurs_codepostal}</utilisateurs_codepostal>
+<utilisateurs_ville>{$this->user->utilisateurs_ville}</utilisateurs_ville>
+<utilisateurs_pays>{$this->user->utilisateurs_pays}</utilisateurs_pays>
+<utilisateurs_date_naissance>{$this->user->utilisateurs_date_naissance}</utilisateurs_date_naissance>
 </utilisateur>
 EOT;
         $this->assertEquals($expectedBody, $this->userDatasetTable->renderBody());

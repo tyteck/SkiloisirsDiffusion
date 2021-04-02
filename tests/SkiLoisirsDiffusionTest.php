@@ -70,6 +70,11 @@ class SkiLoisirsDiffusionTest extends BaseTestCase
             array_keys($result)
         );
         array_map(function ($key, $expectedValue) use ($result) {
+            if ($key === 'lieux_plan') {
+                /** not checkling if url is the exact one because it changes every week */
+                $this->assertTrue(filter_var($result[$key], FILTER_VALIDATE_URL) !== false);
+                return true;
+            }
             $this->assertEquals($expectedValue, $result[$key], "We were expecting {$expectedValue} for {$key} and we obtained {$result[$key]}");
         }, array_keys($expectedResult), $expectedResult);
     }

@@ -3,12 +3,12 @@
 namespace SkiLoisirsDiffusion\Tests;
 
 use SkiLoisirsDiffusion\Datasets\DatasetField;
-use SkiLoisirsDiffusion\Datasets\DatasetTable;
+use SkiLoisirsDiffusion\DatasetTables\DatasetTable;
 use SkiLoisirsDiffusion\Tests\Factory\FraisGestionFactory;
 
 class FraisGestionDatasetTest extends BaseTestCase
 {
-    /** @var SkiLoisirsDiffusion\Datasets\DatasetTable $fraisGestionDatasetTable */
+    /** @var SkiLoisirsDiffusion\DatasetTables\DatasetTable $fraisGestionDatasetTable */
     protected $fraisGestionDatasetTable;
 
     /** @var array $fraisGestion */

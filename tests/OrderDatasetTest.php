@@ -2,49 +2,24 @@
 
 namespace SkiLoisirsDiffusion\Tests;
 
-use SkiLoisirsDiffusion\Datasets\DatasetField;
-use SkiLoisirsDiffusion\Datasets\DatasetTable;
+use SkiLoisirsDiffusion\DatasetTables\OrderDatasetTable;
+use SkiLoisirsDiffusion\Datatypes\OrderDatatype;
 use SkiLoisirsDiffusion\Tests\Factory\OrderFactory;
 
 class OrderDatasetTest extends BaseTestCase
 {
-    /** @var array $order */
-    protected array $order;
+    protected \SkiLoisirsDiffusion\Datatypes\OrderDatatype $order;
 
-    /** @var \SkiLoisirsDiffusion\Datasets\DatasetTable $orderDatasetTable */
-    protected DatasetTable $orderDatasetTable;
+    protected \SkiLoisirsDiffusion\DatasetTables\DatasetTable $orderDatasetTable;
 
     public function setUp() :void
     {
         parent::setUp();
-        $this->order = OrderFactory::create();
-        $this->orderDatasetTable = DatasetTable::create('commande')
-            ->addDatasetFields(
-                [
-                    DatasetField::create('nb_cheques_vacances', 'string', $this->order['nb_cheques_vacances']),
-                    DatasetField::create('montant_total_cheques_vacances', 'string', $this->order['montant_total_cheques_vacances']),
-                    DatasetField::create('mode_paiement', 'string', $this->order['mode_paiement']),
-                    DatasetField::create('prix_livraison', 'decimal', $this->order['prix_livraison']),
-                    DatasetField::create('code_livraison', 'string', $this->order['code_livraison']),
-                    DatasetField::create('commentaire', 'string', $this->order['commentaire'], 0, false),
-                    DatasetField::create('livraison_adresse_societe', 'string', $this->order['livraison_adresse_societe']),
-                    DatasetField::create('livraison_adresse_nom', 'string', $this->order['livraison_adresse_nom']),
-                    DatasetField::create('livraison_adresse1', 'string', $this->order['livraison_adresse1']),
-                    DatasetField::create('livraison_adresse2', 'string', $this->order['livraison_adresse2']),
-                    DatasetField::create('livraison_codepostal', 'string', $this->order['livraison_codepostal']),
-                    DatasetField::create('livraison_ville', 'string', $this->order['livraison_ville']),
-                    DatasetField::create('livraison_pays', 'string', $this->order['livraison_pays'], 0, false),
-                    DatasetField::create('url_retour', 'string', $this->order['url_retour'], 0, false),
-                    DatasetField::create('url_retour_ok', 'string', $this->order['url_retour_ok'], 0, false),
-                    DatasetField::create('url_retour_err', 'string', $this->order['url_retour_err'], 0, false),
-                    DatasetField::create('acompte', 'decimal', $this->order['acompte'], 0, false),
-                    DatasetField::create('numero_commande_ticketnet', 'string', $this->order['numero_commande_ticketnet'], 0, false),
-                    DatasetField::create('frais_gestion_payeur', 'string', $this->order['frais_gestion_payeur'], 0, false),
-                    DatasetField::create('frais_port_payeur', 'string', $this->order['frais_port_payeur'], 0, false),
-                    DatasetField::create('remise_frais_port', 'decimal', $this->order['remise_frais_port'], 0, false),
-                    DatasetField::create('numero_commande_distributeur', 'string', $this->order['numero_commande_distributeur'], 0, false),
-                ]
-            );
+
+        /** factory create fake user array I throw to userDataType*/
+        $this->order = OrderDatatype::create(OrderFactory::create());
+
+        $this->orderDatasetTable = OrderDatasetTable::prepare()->with($this->order);
     }
 
     /** @test */
@@ -88,28 +63,28 @@ EOT;
     {
         $expectedBody = <<<EOT
 <commande diffgr:id="commande1" msdata:rowOrder="0">
-<nb_cheques_vacances>{$this->order['nb_cheques_vacances']}</nb_cheques_vacances>
-<montant_total_cheques_vacances>{$this->order['montant_total_cheques_vacances']}</montant_total_cheques_vacances>
-<mode_paiement>{$this->order['mode_paiement']}</mode_paiement>
-<prix_livraison>{$this->order['prix_livraison']}</prix_livraison>
-<code_livraison>{$this->order['code_livraison']}</code_livraison>
-<commentaire>{$this->order['commentaire']}</commentaire>
-<livraison_adresse_societe>{$this->order['livraison_adresse_societe']}</livraison_adresse_societe>
-<livraison_adresse_nom>{$this->order['livraison_adresse_nom']}</livraison_adresse_nom>
-<livraison_adresse1>{$this->order['livraison_adresse1']}</livraison_adresse1>
-<livraison_adresse2>{$this->order['livraison_adresse2']}</livraison_adresse2>
-<livraison_codepostal>{$this->order['livraison_codepostal']}</livraison_codepostal>
-<livraison_ville>{$this->order['livraison_ville']}</livraison_ville>
-<livraison_pays>{$this->order['livraison_pays']}</livraison_pays>
-<url_retour>{$this->order['url_retour']}</url_retour>
-<url_retour_ok>{$this->order['url_retour_ok']}</url_retour_ok>
-<url_retour_err>{$this->order['url_retour_err']}</url_retour_err>
-<acompte>{$this->order['acompte']}</acompte>
-<numero_commande_ticketnet>{$this->order['numero_commande_ticketnet']}</numero_commande_ticketnet>
-<frais_gestion_payeur>{$this->order['frais_gestion_payeur']}</frais_gestion_payeur>
-<frais_port_payeur>{$this->order['frais_port_payeur']}</frais_port_payeur>
-<remise_frais_port>{$this->order['remise_frais_port']}</remise_frais_port>
-<numero_commande_distributeur>{$this->order['numero_commande_distributeur']}</numero_commande_distributeur>
+<nb_cheques_vacances>{$this->order->nb_cheques_vacances}</nb_cheques_vacances>
+<montant_total_cheques_vacances>{$this->order->montant_total_cheques_vacances}</montant_total_cheques_vacances>
+<mode_paiement>{$this->order->mode_paiement}</mode_paiement>
+<prix_livraison>{$this->order->prix_livraison}</prix_livraison>
+<code_livraison>{$this->order->code_livraison}</code_livraison>
+<commentaire>{$this->order->commentaire}</commentaire>
+<livraison_adresse_societe>{$this->order->livraison_adresse_societe}</livraison_adresse_societe>
+<livraison_adresse_nom>{$this->order->livraison_adresse_nom}</livraison_adresse_nom>
+<livraison_adresse1>{$this->order->livraison_adresse1}</livraison_adresse1>
+<livraison_adresse2>{$this->order->livraison_adresse2}</livraison_adresse2>
+<livraison_codepostal>{$this->order->livraison_codepostal}</livraison_codepostal>
+<livraison_ville>{$this->order->livraison_ville}</livraison_ville>
+<livraison_pays>{$this->order->livraison_pays}</livraison_pays>
+<url_retour>{$this->order->url_retour}</url_retour>
+<url_retour_ok>{$this->order->url_retour_ok}</url_retour_ok>
+<url_retour_err>{$this->order->url_retour_err}</url_retour_err>
+<acompte>{$this->order->acompte}</acompte>
+<numero_commande_ticketnet>{$this->order->numero_commande_ticketnet}</numero_commande_ticketnet>
+<frais_gestion_payeur>{$this->order->frais_gestion_payeur}</frais_gestion_payeur>
+<frais_port_payeur>{$this->order->frais_port_payeur}</frais_port_payeur>
+<remise_frais_port>{$this->order->remise_frais_port}</remise_frais_port>
+<numero_commande_distributeur>{$this->order->numero_commande_distributeur}</numero_commande_distributeur>
 </commande>
 EOT;
         $this->assertEquals($expectedBody, $this->orderDatasetTable->renderBody());

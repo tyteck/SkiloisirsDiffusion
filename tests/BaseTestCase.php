@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
 use SkiLoisirsDiffusion\Datasets\ArticleDataset;
 use SkiLoisirsDiffusion\Datasets\DatasetField;
-use SkiLoisirsDiffusion\Datasets\DatasetTable;
+use SkiLoisirsDiffusion\DatasetTables\DatasetTable;
 
 class BaseTestCase extends TestCase
 {

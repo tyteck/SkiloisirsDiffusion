@@ -3,6 +3,7 @@
 namespace SkiLoisirsDiffusion\Datasets;
 
 use InvalidArgumentException;
+use SkiLoisirsDiffusion\DatasetTables\DatasetTable;
 use stdClass;
 
 class MakeDataset
@@ -35,7 +36,7 @@ class MakeDataset
     public function addDatasetTables(array $datasetTables = [])
     {
         array_map(function ($datasetTable) {
-            if (!(is_object($datasetTable) && get_class($datasetTable) == 'SkiLoisirsDiffusion\Datasets\DatasetTable')) {
+            if (!(is_object($datasetTable) && get_class($datasetTable) == 'SkiLoisirsDiffusion\DatasetTables\DatasetTable')) {
                 throw new InvalidArgumentException('addDatasetTables accept only array of datasetTable::class');
             }
             $this->addDatasetTable($datasetTable);

@@ -3,7 +3,7 @@
 namespace Skiloisirs\Tests;
 
 use InvalidArgumentException;
-use SkiLoisirsDiffusion\Datasets\DatasetTable;
+use SkiLoisirsDiffusion\DatasetTables\DatasetTable;
 use SkiLoisirsDiffusion\Exceptions\TableNameShouldNotBeEmptyException;
 use SkiLoisirsDiffusion\Tests\BaseTestCase;
 
