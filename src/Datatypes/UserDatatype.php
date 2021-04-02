@@ -21,7 +21,7 @@ class UserDatatype
     public ?string $utilisateurs_codepostal;
     public ?string $utilisateurs_ville;
     public ?string $utilisateurs_pays;
-    public ?\Carbon\Carbon $utilisateurs_date_naissance;
+    public ?string $utilisateurs_date_naissance;
 
     private function __construct(array $attributes = [])
     {
@@ -74,9 +74,5 @@ class UserDatatype
                 throw new InvalidArgumentException("Field {$field} is required and cannot be null");
             }
         }, $requiredFields);
-
-        if (get_class($this->utilisateurs_date_naissance) !== 'Carbon\Carbon') {
-            throw new InvalidArgumentException("Field utilisateurs_date_naissance should be a Carbon\Carbon object.");
-        }
     }
 }

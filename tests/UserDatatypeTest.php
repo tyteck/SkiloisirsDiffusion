@@ -26,7 +26,22 @@ class UserDatatypeTest extends BaseTestCase
     {
         $userDatatype = UserDatatype::create($validData);
         $this->assertInstanceOf(UserDatatype::class, $userDatatype);
+        $this->assertEquals($validData['id_partenaire'], $userDatatype->id_partenaire);
+        $this->assertEquals($validData['utilisateurs_societe'], $userDatatype->utilisateurs_societe);
+        $this->assertEquals($validData['utilisateurs_civilite'], $userDatatype->utilisateurs_civilite);
         $this->assertEquals($validData['utilisateurs_nom'], $userDatatype->utilisateurs_nom);
+        $this->assertEquals($validData['utilisateurs_prenom'], $userDatatype->utilisateurs_prenom);
+        $this->assertEquals($validData['utilisateurs_telephone'], $userDatatype->utilisateurs_telephone);
+        $this->assertEquals($validData['utilisateurs_portable'], $userDatatype->utilisateurs_portable);
+        $this->assertEquals($validData['utilisateurs_fax'], $userDatatype->utilisateurs_fax);
+        $this->assertEquals($validData['utilisateurs_email'], $userDatatype->utilisateurs_email);
+        $this->assertEquals($validData['utilisateurs_adresse_nom'], $userDatatype->utilisateurs_adresse_nom);
+        $this->assertEquals($validData['utilisateurs_adresse1'], $userDatatype->utilisateurs_adresse1);
+        $this->assertEquals($validData['utilisateurs_adresse2'], $userDatatype->utilisateurs_adresse2);
+        $this->assertEquals($validData['utilisateurs_codepostal'], $userDatatype->utilisateurs_codepostal);
+        $this->assertEquals($validData['utilisateurs_ville'], $userDatatype->utilisateurs_ville);
+        $this->assertEquals($validData['utilisateurs_pays'], $userDatatype->utilisateurs_pays);
+        $this->assertEquals($validData['utilisateurs_date_naissance'], $userDatatype->utilisateurs_date_naissance);
     }
 
     public function provide_invalid_data()
