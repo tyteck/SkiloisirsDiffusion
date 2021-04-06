@@ -20,11 +20,14 @@ class CreateOrderDatasetTest extends BaseTestCase
     protected $order;
     protected $signature;
 
-    protected \SkiLoisirsDiffusion\DatasetTables\CeDatasetTable $ceDataSetTable;
+    /** @var \SkiLoisirsDiffusion\DatasetTables\CeDatasetTable $ceDataSetTable */
+    protected $ceDataSetTable;
 
-    protected \SkiLoisirsDiffusion\DatasetTables\UserDatasetTable $userDatasetTable;
+    /** @var \SkiLoisirsDiffusion\DatasetTables\UserDatasetTable $userDatasetTable */
+    protected $userDatasetTable;
 
-    protected \SkiLoisirsDiffusion\DatasetTables\OrderDatasetTable $orderDataSetTable;
+    /** @var \SkiLoisirsDiffusion\DatasetTables\OrderDatasetTable $orderDataSetTable */
+    protected $orderDataSetTable;
 
     /** @var \Skiloisirs\Datasets\DatasetTable $signatureDataSetTable */
     protected $signatureDataSetTable;
