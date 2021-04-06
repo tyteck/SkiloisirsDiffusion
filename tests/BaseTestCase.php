@@ -81,14 +81,15 @@ class BaseTestCase extends TestCase
         if (count($datasetTables)) {
             $method = $INeedSchema === true ? 'renderSchema' : 'renderBody';
 
+            $index = 1;
             $rowOrder = 0;
             $result .= array_reduce(
                 $datasetTables,
-                function ($carry, DatasetTable $datasetTable) use ($method, &$rowOrder) {
+                function ($carry, DatasetTable $datasetTable) use ($method, &$index, &$rowOrder) {
                     if (strlen($carry)) {
                         $carry .= PHP_EOL;
                     }
-                    return $carry .= $datasetTable->$method($rowOrder++);
+                    return $carry .= $datasetTable->$method($index++, $rowOrder++);
                 }
             );
         }

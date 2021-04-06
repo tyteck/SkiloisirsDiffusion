@@ -63,10 +63,15 @@ class MakeDataset
             '<xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">' . PHP_EOL .
             '<xs:complexType>' . PHP_EOL .
             '<xs:choice minOccurs="0" maxOccurs="unbounded">' . PHP_EOL;
+        $renderedSchemaTables = [];
         if (count($this->datasetTables)) {
             $this->dataset->schema .= array_reduce(
                 $this->datasetTables,
-                function ($carry, DatasetTable $datasetTable) {
+                function ($carry, DatasetTable $datasetTable) use (&$renderedSchemaTables) {
+                    if (in_array($datasetTable->tableName(), $renderedSchemaTables)) {
+                        return $carry;
+                    }
+                    $renderedSchemaTables[] = $datasetTable->tableName();
                     if (strlen($carry)) {
                         $carry .= PHP_EOL;
                     }
@@ -88,13 +93,15 @@ class MakeDataset
         $this->dataset->any = '<diffgr:diffgram xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">' . PHP_EOL
         . '<NewDataSet xmlns="">' . PHP_EOL;
         if (count($this->datasetTables)) {
+            $index = 1;
             $this->dataset->any .= array_reduce(
                 $this->datasetTables,
-                function ($carry, DatasetTable $datasetTable) {
+                function ($carry, DatasetTable $datasetTable) use (&$index) {
                     if (strlen($carry)) {
                         $carry .= PHP_EOL;
                     }
-                    return $carry .= $datasetTable->renderBody($this->rowOrder++);
+
+                    return $carry .= $datasetTable->renderBody($index++, $this->rowOrder++);
                 }
             ) . PHP_EOL;
         }

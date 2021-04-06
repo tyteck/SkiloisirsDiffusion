@@ -45,9 +45,9 @@ class DatasetTable
         return $schema;
     }
 
-    public function renderBody(?int $rowOrder = 0): string
+    public function renderBody(?int $index = 1, ?int $rowOrder = 0): string
     {
-        $body = '<' . $this->tableName . ' diffgr:id="' . $this->tableName . '1" msdata:rowOrder="' . $rowOrder . '">' . PHP_EOL;
+        $body = "<{$this->tableName} diffgr:id=\"{$this->tableName}{$index}\" msdata:rowOrder=\"{$rowOrder}\">" . PHP_EOL;
         if (count($this->datasetFields)) {
             $body .= array_reduce(
                 $this->datasetFields,
@@ -84,5 +84,10 @@ class DatasetTable
         }, $datasetFields);
 
         return $this;
+    }
+
+    public function tableName()
+    {
+        return $this->tableName;
     }
 }

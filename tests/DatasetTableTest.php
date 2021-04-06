@@ -135,4 +135,14 @@ EOT;
 EOT;
         $this->assertEquals($expectedBody, $datasetTable->renderBody());
     }
+
+    /** @test */
+    public function table_name_is_ok()
+    {
+        $datasetTable = DatasetTable::create('user');
+        $this->assertEquals('user', $datasetTable->tableName());
+
+        $datasetTable = DatasetTable::create('Ch4t_no1r');
+        $this->assertEquals('Ch4t_no1r', $datasetTable->tableName());
+    }
 }
