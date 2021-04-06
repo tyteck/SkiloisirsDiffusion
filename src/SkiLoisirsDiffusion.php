@@ -3,7 +3,7 @@
 namespace SkiLoisirsDiffusion;
 
 use SimpleXMLElement;
-use SkiLoisirsDiffusion\Datasets\ArticleDataset;
+use SkiLoisirsDiffusion\DatasetTables\ArticleDatasetTable;
 use SkiLoisirsDiffusion\Exceptions\SLDGenericException;
 use SkiLoisirsDiffusion\Exceptions\SLDPermissionDeniedException;
 use SkiLoisirsDiffusion\Exceptions\SLDServiceNotAvailableException;
@@ -119,19 +119,19 @@ class SkiLoisirsDiffusion
     /**
      * place one reservation on some article.
      *
-     * @param \SkiLoisirsDiffusion\Datasets\ArticleDataset $articleDataset
+     * @param \SkiLoisirsDiffusion\Datasets\ArticleDatasetTable $articleDatasetTable
      * @param string $ticketnetOrderId
      *
      * @throws \SkiloisirsDiffusion\Exceptions\TicketPlaceReservationException
      *
      * @return string $ticketnetOrderId
      */
-    public function ticketPlaceReservation(ArticleDataset $articleDataset, string $ticketnetOrderId = ''):string
+    public function ticketPlaceReservation(ArticleDatasetTable $articleDatasetTable, string $ticketnetOrderId = ''):string
     {
         $arrayParams = [
             'CE_ID' => $this->partenaireId,
             'numero_commande_ticketnet' => $ticketnetOrderId,
-            'DS_DATA' => $articleDataset->dataset()
+            'DS_DATA' => $articleDatasetTable->dataset()
         ];
 
         $result = $this->soapClient->CREATION_COMMANDE($arrayParams);

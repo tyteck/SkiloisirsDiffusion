@@ -83,8 +83,5 @@ class SkiLoisirsDiffusionTest extends BaseTestCase
     public function ticket_place_reservation_is_ok()
     {
         $this->markTestIncomplete('to be done');
-        /* $articleDataset = $this->createArticleDataset($this->articleDatasetParameters());
-        $result = SkiLoisirsDiffusion::create($this->sldDomainUrl, $this->partenaireId)
-            ->ticketPlaceReservation($articleDataset); */
     }
 }

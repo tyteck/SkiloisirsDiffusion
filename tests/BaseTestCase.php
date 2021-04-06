@@ -4,17 +4,11 @@ namespace SkiLoisirsDiffusion\Tests;
 
 use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
-use SkiLoisirsDiffusion\Datasets\ArticleDataset;
 use SkiLoisirsDiffusion\Datasets\DatasetField;
 use SkiLoisirsDiffusion\DatasetTables\DatasetTable;
 
 class BaseTestCase extends TestCase
 {
-    public function createArticleDataset()
-    {
-        return ArticleDataset::create($this->expectedArticleDatasetBody());
-    }
-
     public function expectedArticleDatasetBody()
     {
         return [
