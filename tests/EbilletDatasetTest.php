@@ -2,8 +2,8 @@
 
 namespace SkiLoisirsDiffusion\Tests;
 
-use SkiLoisirsDiffusion\Datasets\DatasetField;
-use SkiLoisirsDiffusion\DatasetTables\DatasetTable;
+use SkiLoisirsDiffusion\DatasetTables\EbilletDatasetTable;
+use SkiLoisirsDiffusion\Datatypes\EbilletDatatype;
 use SkiLoisirsDiffusion\Tests\Factory\EbilletFactory;
 
 class EbilletDatasetTest extends BaseTestCase
@@ -11,19 +11,9 @@ class EbilletDatasetTest extends BaseTestCase
     public function setUp() :void
     {
         parent::setUp();
-        $this->ebillet = EbilletFactory::create();
-        $this->ebilletDatasetTable = DatasetTable::create('ebillet')
-            ->addDatasetFields(
-                [
-                    DatasetField::create('code_article', 'string', $this->ebillet['code_article']),
-                    DatasetField::create('nom', 'string', $this->ebillet['nom']),
-                    DatasetField::create('prenom', 'string', $this->ebillet['prenom']),
-                    DatasetField::create('date', 'string', $this->ebillet['date']),
-                    DatasetField::create('date_naissance', 'string', $this->ebillet['date_naissance']),
-                    DatasetField::create('keycard', 'string', $this->ebillet['keycard']),
-                    DatasetField::create('skier_index', 'int32', $this->ebillet['skier_index']),
-                ]
-            );
+        $this->ebillet = EbilletDatatype::create(EbilletFactory::create());
+
+        $this->ebilletDatasetTable = EbilletDatasetTable::prepare()->with($this->ebillet);
     }
 
     /** @test */
@@ -52,13 +42,13 @@ EOT;
     {
         $expectedBody = <<<EOT
 <ebillet diffgr:id="ebillet1" msdata:rowOrder="0">
-<code_article>{$this->ebillet['code_article']}</code_article>
-<nom>{$this->ebillet['nom']}</nom>
-<prenom>{$this->ebillet['prenom']}</prenom>
-<date>{$this->ebillet['date']}</date>
-<date_naissance>{$this->ebillet['date_naissance']}</date_naissance>
-<keycard>{$this->ebillet['keycard']}</keycard>
-<skier_index>{$this->ebillet['skier_index']}</skier_index>
+<code_article>{$this->ebillet->code_article}</code_article>
+<nom>{$this->ebillet->nom}</nom>
+<prenom>{$this->ebillet->prenom}</prenom>
+<date>{$this->ebillet->date}</date>
+<date_naissance>{$this->ebillet->date_naissance}</date_naissance>
+<keycard>{$this->ebillet->keycard}</keycard>
+<skier_index>{$this->ebillet->skier_index}</skier_index>
 </ebillet>
 EOT;
         $this->assertEquals($expectedBody, $this->ebilletDatasetTable->renderBody());
