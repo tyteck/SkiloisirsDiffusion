@@ -3,6 +3,7 @@
 namespace SkiLoisirsDiffusion;
 
 use SimpleXMLElement;
+use SkiLoisirsDiffusion\Datasets\MakeDataset;
 use SkiLoisirsDiffusion\DatasetTables\ArticleDatasetTable;
 use SkiLoisirsDiffusion\Exceptions\SLDGenericException;
 use SkiLoisirsDiffusion\Exceptions\SLDPermissionDeniedException;
@@ -131,7 +132,7 @@ class SkiLoisirsDiffusion
         $arrayParams = [
             'CE_ID' => $this->partenaireId,
             'numero_commande_ticketnet' => $ticketnetOrderId,
-            'DS_DATA' => $articleDatasetTable->dataset()
+            'DS_DATA' => MakeDataset::init()->addDatasetTable($articleDatasetTable)->dataset()
         ];
 
         $result = $this->soapClient->CREATION_COMMANDE($arrayParams);

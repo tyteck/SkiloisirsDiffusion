@@ -6,47 +6,11 @@ use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
 use SkiLoisirsDiffusion\Datasets\DatasetField;
 use SkiLoisirsDiffusion\DatasetTables\DatasetTable;
+use SkiLoisirsDiffusion\Datatypes\OrderDatatype;
+use SkiLoisirsDiffusion\Datatypes\UserDatatype;
 
 class BaseTestCase extends TestCase
 {
-    public function expectedArticleDatasetBody()
-    {
-        return [
-            'code_article' => '',
-            'quantite' => '',
-            'articles_prix' => '',
-            'code_parent' => '',
-            'acompte' => '',
-            'subvention_montant' => '',
-            'subvention_payeur' => '',
-            'remise' => '',
-            'nature_client_id' => '',
-            'categorie_place_code' => '',
-            'libelle_article' => '',
-            'famille_article' => '',
-            'skier_index' => '',
-        ];
-    }
-
-    public function expectedArticleDatasetSchema()
-    {
-        return [
-            'code_article' => 'string',
-            'quantite' => 'int',
-            'articles_prix' => 'decimal',
-            'code_parent' => 'string',
-            'acompte' => 'decimal',
-            'subvention_montant' => 'string',
-            'subvention_payeur' => 'string',
-            'remise' => 'decimal',
-            'nature_client_id' => 'string',
-            'categorie_place_code' => 'string',
-            'libelle_article' => 'string',
-            'famille_article' => 'string',
-            'skier_index' => 'int',
-        ];
-    }
-
     public function createDatasetField()
     {
         $fieldName = 'field' . rand(1, 1000);
@@ -145,5 +109,23 @@ class BaseTestCase extends TestCase
                     DatasetField::create('ce_ville', 'string', sldconfig('ce_ville')),
                 ]
             );
+    }
+
+    public function makeSignatureFrom(UserDatatype $user, OrderDatatype $order, string $clefSecrete)
+    {
+        $createSignatureParameters = [
+            'code_livraison' => $order->code_livraison,
+            'id_partenaire' => $user->id_partenaire,
+            'mode_paiement' => $order->mode_paiement,
+            'utilisateurs_adresse1' => $user->utilisateurs_adresse1,
+            'utilisateurs_adresse_nom' => $user->utilisateurs_adresse_nom,
+            'utilisateurs_codepostal' => $user->utilisateurs_codepostal,
+            'utilisateurs_email' => $user->utilisateurs_email,
+            'utilisateurs_nom' => $user->utilisateurs_nom,
+            'utilisateurs_prenom' => $user->utilisateurs_prenom,
+            'utilisateurs_ville' => $user->utilisateurs_ville,
+            'clef_secrete' => $clefSecrete,
+        ];
+        return generateSignature($createSignatureParameters);
     }
 }

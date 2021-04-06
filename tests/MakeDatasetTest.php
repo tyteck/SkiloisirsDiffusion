@@ -4,6 +4,7 @@ namespace Skiloisirs\Tests;
 
 use InvalidArgumentException;
 use SkiLoisirsDiffusion\Datasets\MakeDataset;
+use SkiLoisirsDiffusion\DatasetTables\CeDatasetTable;
 use SkiLoisirsDiffusion\Tests\BaseTestCase;
 use stdClass;
 
@@ -236,5 +237,19 @@ EOT;
 EOT;
 
         $this->assertEquals($expectedBody, $createdDataset->dataset()->any);
+    }
+
+    /** @test */
+    public function adding_ce_dataset_table_is_ok()
+    {
+        /** adding single datasetTable */
+        $result = MakeDataset::init()->addDatasetTable(CeDatasetTable::prepare()->withConfig())->datasetTables();
+        $this->assertIsArray($result);
+        $this->assertEquals(1, count($result));
+
+        /** adding many datasetTables */
+        $result = MakeDataset::init()->addDatasetTables([CeDatasetTable::prepare()->withConfig()])->datasetTables();
+        $this->assertIsArray($result);
+        $this->assertEquals(1, count($result));
     }
 }

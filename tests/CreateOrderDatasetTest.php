@@ -2,11 +2,7 @@
 
 namespace SkiLoisirsDiffusion\Tests;
 
-use SkiLoisirsDiffusion\Datasets\MakeDataset;
-use SkiLoisirsDiffusion\DatasetTables\CeDatasetTable;
-use SkiLoisirsDiffusion\DatasetTables\OrderDatasetTable;
-use SkiLoisirsDiffusion\DatasetTables\SignatureDatasetTable;
-use SkiLoisirsDiffusion\DatasetTables\UserDatasetTable;
+use SkiLoisirsDiffusion\Datasets\CreateOrderDataset;
 use SkiLoisirsDiffusion\Datatypes\OrderDatatype;
 use SkiLoisirsDiffusion\Datatypes\UserDatatype;
 use SkiLoisirsDiffusion\SkiLoisirsDiffusion;
@@ -18,43 +14,22 @@ class CreateOrderDatasetTest extends BaseTestCase
 {
     protected $user;
     protected $order;
-    protected $signature;
+    protected $expectedSignature;
 
-    /** @var \SkiLoisirsDiffusion\DatasetTables\CeDatasetTable $ceDataSetTable */
-    protected $ceDataSetTable;
-
-    /** @var \SkiLoisirsDiffusion\DatasetTables\UserDatasetTable $userDatasetTable */
-    protected $userDatasetTable;
-
-    /** @var \SkiLoisirsDiffusion\DatasetTables\OrderDatasetTable $orderDataSetTable */
-    protected $orderDataSetTable;
-
-    /** @var \Skiloisirs\Datasets\DatasetTable $signatureDataSetTable */
-    protected $signatureDataSetTable;
-
-    /** @var \Skiloisirs\Datasets\MakeDataset $orderDataset */
+    /** @var \Skiloisirs\Datasets\CreateOrderDataset $orderDataset */
     protected $orderDataset;
 
     public function setUp() :void
     {
         parent::setUp();
 
+        /** creating datatypes to be used */
         $this->user = UserDatatype::create(UserFactory::create());
-
         $this->order = OrderDatatype::create(OrderFactory::create());
 
-        $this->signatureDataSetTable = SignatureDatasetTable::prepare()->with($this->order, $this->user, sldconfig('clef_secrete'));
+        $this->expectedSignature = $this->makeSignatureFrom($this->user, $this->order, sldconfig('clef_secrete'));
 
-        $this->orderDataset = MakeDataset::init()->addDatasetTable(CeDatasetTable::prepare()->withConfig());
-
-        $this->orderDataset = MakeDataset::init()->addDatasetTables(
-            [
-                CeDatasetTable::prepare()->withConfig(),
-                UserDatasetTable::prepare()->with($this->user),
-                OrderDatasetTable::prepare()->with($this->order),
-                $this->signatureDataSetTable,
-            ]
-        )->render();
+        $this->orderDataset = CreateOrderDataset::create($this->user, $this->order)->render();
     }
 
     /** @test */
@@ -159,7 +134,7 @@ class CreateOrderDatasetTest extends BaseTestCase
 <numero_commande_distributeur>{$this->order->numero_commande_distributeur}</numero_commande_distributeur>
 </commande>
 <signature diffgr:id="signature1" msdata:rowOrder="3">
-<signature>{$this->signatureDataSetTable->signature}</signature>
+<signature>{$this->expectedSignature}</signature>
 </signature>
 </NewDataSet>
 </diffgr:diffgram>

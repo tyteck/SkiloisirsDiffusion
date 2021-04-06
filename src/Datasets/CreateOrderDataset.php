@@ -6,79 +6,48 @@ use SkiLoisirsDiffusion\DatasetTables\CeDatasetTable;
 use SkiLoisirsDiffusion\DatasetTables\OrderDatasetTable;
 use SkiLoisirsDiffusion\DatasetTables\SignatureDatasetTable;
 use SkiLoisirsDiffusion\DatasetTables\UserDatasetTable;
-use SkiLoisirsDiffusion\Interfaces\Dataset;
+use SkiLoisirsDiffusion\Datatypes\OrderDatatype;
+use SkiLoisirsDiffusion\Datatypes\UserDatatype;
 use stdClass;
 
-class CreateOrderDataset implements Dataset
+class CreateOrderDataset extends MakeDataset
 {
-    /** @var stdClass $dataset */
-    protected $dataset;
+    /** @var \SkiLoisirsDiffusion\DatasetTables\CeDatasetTable */
+    protected $ceDataSetTable;
 
-    /** @var \SkiLoisirsDiffusion\Datasets\CEDataset */
-    protected $ceDataset;
+    /** @var \SkiLoisirsDiffusion\DatasetTables\UserDatasetTable */
+    protected $userDatasetTable;
 
-    /** @var \SkiLoisirsDiffusion\Datasets\UserDataset */
-    protected $userDataset;
+    /** @var \SkiLoisirsDiffusion\DatasetTables\OrderDatasetTable */
+    protected $orderDatasetTable;
 
-    /** @var \SkiLoisirsDiffusion\Datasets\OrderDataset */
-    protected $orderDataset;
+    /** @var \SkiLoisirsDiffusion\DatasetTables\SignatureDatasetTable */
+    protected $signatureDataSetTable;
 
-    /** @var \SkiLoisirsDiffusion\Datasets\SignatureDataset */
-    protected $signatureDataset;
-
-    private function __construct(UserDatasetTable $userDataset, OrderDatasetTable $orderDataset, SignatureDatasetTable $signatureDataset)
+    private function __construct(UserDatatype $user, OrderDatatype $order)
     {
-        $this->ceDataset = CeDatasetTable::prepare()->withConfig();
-        $this->userDataset = $userDataset;
-        $this->orderDataset = $orderDataset;
-        $this->signatureDataset = $signatureDataset;
+        $this->user = $user;
+        $this->order = $order;
+
+        $this->ceDataSetTable = CeDatasetTable::prepare()->withConfig();
+        $this->userDatasetTable = UserDatasetTable::prepare()->with($this->user);
+        $this->orderDataSetTable = OrderDatasetTable::prepare()->with($this->order);
+        $this->signatureDataSetTable = SignatureDatasetTable::prepare()->with($this->order, $this->user, sldconfig('clef_secrete'));
 
         $this->dataset = new stdClass();
 
-        $this->dataset->schema = '
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="NewDataSet">
-    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
-        <xs:complexType>
-            <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                ' . $this->ceDataset->renderSchema() . '
-                ' . $this->userDataset->renderSchema() . '
-                ' . $this->orderDataset->renderSchema() . '
-                ' . $this->signatureDataset->renderSchema() . '
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-</xs:schema>
-';
-
-        $this->dataset->any = '
-<diffgr:diffgram xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <NewDataSet xmlns="">
-    ' . $this->ceDataset->renderBody() . '
-    ' . $this->userDataset->renderBody() . '
-    ' . $this->orderDataset->renderBody() . '
-    ' . $this->signatureDataset->renderBody() . '
-    </NewDataSet>
-</diffgr:diffgram>
-';
+        $this->addDatasetTables(
+            [
+                $this->ceDataSetTable,
+                $this->userDatasetTable,
+                $this->orderDataSetTable,
+                $this->signatureDataSetTable,
+            ]
+        );
     }
 
     public static function create(...$params)
     {
         return new static(...$params);
-    }
-
-    public function schema():string
-    {
-        return $this->dataset->schema;
-    }
-
-    public function body():string
-    {
-        return $this->dataset->any;
-    }
-
-    public function dataset():stdClass
-    {
-        return $this->dataset;
     }
 }
