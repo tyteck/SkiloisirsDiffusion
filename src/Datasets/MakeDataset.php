@@ -36,7 +36,7 @@ class MakeDataset
     public function addDatasetTables(array $datasetTables = [])
     {
         array_map(function ($datasetTable) {
-            if (!(is_object($datasetTable) && get_class($datasetTable) == 'SkiLoisirsDiffusion\DatasetTables\DatasetTable')) {
+            if (!(is_object($datasetTable) && is_a($datasetTable, DatasetTable::class))) {
                 throw new InvalidArgumentException('addDatasetTables accept only array of datasetTable::class');
             }
             $this->addDatasetTable($datasetTable);

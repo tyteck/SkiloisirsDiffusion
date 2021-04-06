@@ -42,6 +42,8 @@ class CreateOrderDatasetTest extends BaseTestCase
 
         $this->signatureDataSetTable = SignatureDatasetTable::prepare()->with($this->order, $this->user, sldconfig('clef_secrete'));
 
+        $this->orderDataset = MakeDataset::init()->addDatasetTable(CeDatasetTable::prepare()->withConfig());
+
         $this->orderDataset = MakeDataset::init()->addDatasetTables(
             [
                 CeDatasetTable::prepare()->withConfig(),

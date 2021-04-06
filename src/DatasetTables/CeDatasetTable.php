@@ -14,7 +14,7 @@ class CeDatasetTable extends DatasetTable
         return new self(static::$tablename);
     }
 
-    public function withConfig()
+    public function withConfig(): self
     {
         $this->addDatasetFields(
             [

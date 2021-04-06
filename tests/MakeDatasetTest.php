@@ -142,7 +142,7 @@ EOT;
     }
 
     /** @test */
-    public function adding_something_else_sjould_fail()
+    public function adding_something_else_should_fail()
     {
         $datasetTables = $this->createDatasetTables(1);
         $datasetTables[] = ['Not a dataset table'];
