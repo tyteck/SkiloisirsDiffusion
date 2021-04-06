@@ -8,7 +8,8 @@ use SkiLoisirsDiffusion\Tests\Factory\ArticleFactory;
 
 class ArticleDatasetTest extends BaseTestCase
 {
-    protected \SkiLoisirsDiffusion\Datatypes\ArticleDatatype $article;
+    /** @var \SkiLoisirsDiffusion\Datatypes\ArticleDatatype $article */
+    protected $article;
 
     public function setUp() :void
     {
