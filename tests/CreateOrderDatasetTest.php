@@ -16,7 +16,7 @@ class CreateOrderDatasetTest extends BaseTestCase
     protected $order;
     protected $expectedSignature;
 
-    /** @var \Skiloisirs\Datasets\CreateOrderDataset $orderDataset */
+    /** @var \SkiLoisirsDiffusion\Datasets\CreateOrderDataset $orderDataset */
     protected $orderDataset;
 
     public function setUp() :void
@@ -58,7 +58,7 @@ class CreateOrderDatasetTest extends BaseTestCase
     public function creation_commande_is_ok()
     {
         $orderNumber = SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))
-            ->CREATION_COMMANDE($this->orderDataset->dataset());
+            ->CREATION_COMMANDE($this->orderDataset);
         $this->assertGreaterThan(0, $orderNumber);
     }
 

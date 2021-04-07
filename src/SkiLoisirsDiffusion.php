@@ -3,6 +3,7 @@
 namespace SkiLoisirsDiffusion;
 
 use SimpleXMLElement;
+use SkiLoisirsDiffusion\Datasets\CreateOrderDataset;
 use SkiLoisirsDiffusion\Datasets\InsertOrderLineDataset;
 use SkiLoisirsDiffusion\Datasets\MakeDataset;
 use SkiLoisirsDiffusion\DatasetTables\ArticleDatasetTable;
@@ -101,11 +102,11 @@ class SkiLoisirsDiffusion
     /**
      * @return string order number newly created
      */
-    public function CREATION_COMMANDE(stdClass $createOrderDataset): string
+    public function CREATION_COMMANDE(CreateOrderDataset $createOrderDataset): string
     {
         $arrayParams = [
             'CE_ID' => $this->partenaireId,
-            'DS_DATA' => $createOrderDataset
+            'DS_DATA' => $createOrderDataset->dataset()
         ];
 
         $result = $this->soapClient->CREATION_COMMANDE($arrayParams);
@@ -129,6 +130,7 @@ class SkiLoisirsDiffusion
             'DS_DATA' => $insertLineOrder->dataset()
         ];
 
+        dump($arrayParams);
         $result = $this->soapClient->INSERTION_LIGNE_COMMANDE($arrayParams);
         $body = $this->toSimpleXml($result->INSERTION_LIGNE_COMMANDEResult->any);
 

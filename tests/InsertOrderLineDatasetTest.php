@@ -2,6 +2,7 @@
 
 namespace SkiLoisirsDiffusion\Tests;
 
+use SkiLoisirsDiffusion\Datasets\CreateOrderDataset;
 use SkiLoisirsDiffusion\Datasets\InsertOrderLineDataset;
 use SkiLoisirsDiffusion\DatasetTables\ArticleDatasetTable;
 use SkiLoisirsDiffusion\DatasetTables\EbilletDatasetTable;
@@ -9,10 +10,14 @@ use SkiLoisirsDiffusion\DatasetTables\FraisGestionDatasetTable;
 use SkiLoisirsDiffusion\Datatypes\ArticleDatatype;
 use SkiLoisirsDiffusion\Datatypes\EbilletDatatype;
 use SkiLoisirsDiffusion\Datatypes\FraisGestionDatatype;
+use SkiLoisirsDiffusion\Datatypes\OrderDatatype;
+use SkiLoisirsDiffusion\Datatypes\UserDatatype;
 use SkiLoisirsDiffusion\SkiLoisirsDiffusion;
 use SkiLoisirsDiffusion\Tests\Factory\ArticleFactory;
 use SkiLoisirsDiffusion\Tests\Factory\EbilletFactory;
 use SkiLoisirsDiffusion\Tests\Factory\FraisGestionFactory;
+use SkiLoisirsDiffusion\Tests\Factory\OrderFactory;
+use SkiLoisirsDiffusion\Tests\Factory\UserFactory;
 use stdClass;
 
 class InsertOrderLineDatasetTest extends BaseTestCase
@@ -34,12 +39,20 @@ class InsertOrderLineDatasetTest extends BaseTestCase
     {
         parent::setUp();
 
+        /** creating datatypes to be used */
+        $this->user = UserDatatype::create(UserFactory::create());
+        $this->order = OrderDatatype::create(OrderFactory::create());
+
+        $this->orderDataset = CreateOrderDataset::create($this->user, $this->order)->render();
+
+        $this->orderNumber = SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))
+            ->CREATION_COMMANDE($this->orderDataset);
+        dump($this->orderNumber);
         $this->article = ArticleDatatype::create(ArticleFactory::create());
         $this->ebillet = EbilletDatatype::create(EbilletFactory::create());
         $this->fraisGestion = FraisGestionDatatype::create(FraisGestionFactory::create());
 
         /** creating order */
-        $this->orderNumber = (string)rand(24300, 24400);
 
         $this->datasetTables[] = ArticleDatasetTable::prepare()->with($this->article);
         $this->datasetTables[] = EbilletDatasetTable::prepare()->with($this->ebillet);
