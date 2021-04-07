@@ -3,6 +3,7 @@
 namespace SkiLoisirsDiffusion;
 
 use SimpleXMLElement;
+use SkiLoisirsDiffusion\Datasets\InsertOrderLineDataset;
 use SkiLoisirsDiffusion\Datasets\MakeDataset;
 use SkiLoisirsDiffusion\DatasetTables\ArticleDatasetTable;
 use SkiLoisirsDiffusion\Exceptions\SLDGenericException;
@@ -110,6 +111,28 @@ class SkiLoisirsDiffusion
         $result = $this->soapClient->CREATION_COMMANDE($arrayParams);
         $body = $this->toSimpleXml($result->CREATION_COMMANDEResult->any);
 
+        if ($body->NewDataSet->Commande->statut == 'false') {
+            throw new SLDGenericException($body->NewDataSet->Commande->message_erreur);
+        }
+
+        return $body->NewDataSet->Commande->commandes_numero;
+    }
+
+    /**
+     * @return int order number newly created
+     */
+    public function INSERTION_LIGNE_COMMANDE(int $orderNumber, InsertOrderLineDataset $insertLineOrder): string
+    {
+        $arrayParams = [
+            'CE_ID' => $this->partenaireId,
+            'commandes_numero' => $orderNumber,
+            'DS_DATA' => $insertLineOrder->dataset()
+        ];
+
+        $result = $this->soapClient->INSERTION_LIGNE_COMMANDE($arrayParams);
+        $body = $this->toSimpleXml($result->INSERTION_LIGNE_COMMANDEResult->any);
+
+        dd($body);
         if ($body->NewDataSet->Commande->statut == 'false') {
             throw new SLDGenericException($body->NewDataSet->Commande->message_erreur);
         }

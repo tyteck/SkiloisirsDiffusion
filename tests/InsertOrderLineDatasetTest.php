@@ -4,11 +4,16 @@ namespace SkiLoisirsDiffusion\Tests;
 
 use SkiLoisirsDiffusion\Datasets\InsertOrderLineDataset;
 use SkiLoisirsDiffusion\DatasetTables\ArticleDatasetTable;
+use SkiLoisirsDiffusion\DatasetTables\EbilletDatasetTable;
 use SkiLoisirsDiffusion\DatasetTables\FraisGestionDatasetTable;
 use SkiLoisirsDiffusion\Datatypes\ArticleDatatype;
+use SkiLoisirsDiffusion\Datatypes\EbilletDatatype;
 use SkiLoisirsDiffusion\Datatypes\FraisGestionDatatype;
+use SkiLoisirsDiffusion\SkiLoisirsDiffusion;
 use SkiLoisirsDiffusion\Tests\Factory\ArticleFactory;
+use SkiLoisirsDiffusion\Tests\Factory\EbilletFactory;
 use SkiLoisirsDiffusion\Tests\Factory\FraisGestionFactory;
+use stdClass;
 
 class InsertOrderLineDatasetTest extends BaseTestCase
 {
@@ -17,26 +22,47 @@ class InsertOrderLineDatasetTest extends BaseTestCase
     protected $orderNumber;
     protected $expectedSignature;
     protected $datasetTables = [];
+
+    protected $article;
+    protected $ebillet;
     protected $fraisGestion;
 
-    /** @var \Skiloisirs\Datasets\InsertOrderLineDataset $insertOrderLine */
-    protected $insertOrderLine;
+    /** @var \SkiLoisirsDiffusion\Datasets\InsertOrderLineDataset $insertOrderLineDataset */
+    protected $insertOrderLineDataset;
 
     public function setUp() :void
     {
         parent::setUp();
 
+        $this->article = ArticleDatatype::create(ArticleFactory::create());
+        $this->ebillet = EbilletDatatype::create(EbilletFactory::create());
+        $this->fraisGestion = FraisGestionDatatype::create(FraisGestionFactory::create());
+
         /** creating order */
         $this->orderNumber = (string)rand(24300, 24400);
-        $this->insertOrderLine = InsertOrderLineDataset::create($this->orderNumber);
+
+        $this->datasetTables[] = ArticleDatasetTable::prepare()->with($this->article);
+        $this->datasetTables[] = EbilletDatasetTable::prepare()->with($this->ebillet);
+        $this->datasetTables[] = FraisGestionDatasetTable::prepare()->with($this->fraisGestion);
+
+        $this->insertOrderLineDataset = InsertOrderLineDataset::create($this->orderNumber)
+            ->addDatasetTables($this->datasetTables)
+            ->render();
     }
 
     /** @test */
     public function with_one_article_only_is_ok()
     {
-        $this->datasetTables[] = ArticleDatasetTable::prepare()->with(ArticleDatatype::create(ArticleFactory::create()));
-        $this->datasetTables[] = FraisGestionDatasetTable::prepare()->with(FraisGestionDatatype::create(FraisGestionFactory::create()));
-        $this->insertOrderLine->addDatasetTables($this->datasetTables)->render();
+        $this->assertEquals($this->expectedSchema(), $this->insertOrderLineDataset->schema());
+        $this->assertEquals($this->expectedBody(), $this->insertOrderLineDataset->body());
+        $this->assertInstanceOf(stdClass::class, $this->insertOrderLineDataset->dataset());
+    }
+
+    /** @test */
+    public function insertion_ligne_commande_is_ok()
+    {
+        SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))
+            ->INSERTION_LIGNE_COMMANDE($this->orderNumber, $this->insertOrderLineDataset);
     }
 
     protected function expectedBody(): string
@@ -44,51 +70,60 @@ class InsertOrderLineDatasetTest extends BaseTestCase
         return <<<EOT
 <diffgr:diffgram xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
 <NewDataSet xmlns="">
-<utilisateur diffgr:id="utilisateur1" msdata:rowOrder="1">
-<id_partenaire>{$this->user->id_partenaire}</id_partenaire>
-<utilisateurs_societe>{$this->user->utilisateurs_societe}</utilisateurs_societe>
-<utilisateurs_civilite>{$this->user->utilisateurs_civilite}</utilisateurs_civilite>
-<utilisateurs_nom>{$this->user->utilisateurs_nom}</utilisateurs_nom>
-<utilisateurs_prenom>{$this->user->utilisateurs_prenom}</utilisateurs_prenom>
-<utilisateurs_telephone>{$this->user->utilisateurs_telephone}</utilisateurs_telephone>
-<utilisateurs_portable>{$this->user->utilisateurs_portable}</utilisateurs_portable>
-<utilisateurs_fax>{$this->user->utilisateurs_fax}</utilisateurs_fax>
-<utilisateurs_email>{$this->user->utilisateurs_email}</utilisateurs_email>
-<utilisateurs_adresse_nom>{$this->user->utilisateurs_adresse_nom}</utilisateurs_adresse_nom>
-<utilisateurs_adresse1>{$this->user->utilisateurs_adresse1}</utilisateurs_adresse1>
-<utilisateurs_adresse2>{$this->user->utilisateurs_adresse2}</utilisateurs_adresse2>
-<utilisateurs_codepostal>{$this->user->utilisateurs_codepostal}</utilisateurs_codepostal>
-<utilisateurs_ville>{$this->user->utilisateurs_ville}</utilisateurs_ville>
-<utilisateurs_pays>{$this->user->utilisateurs_pays}</utilisateurs_pays>
-<utilisateurs_date_naissance>{$this->user->utilisateurs_date_naissance}</utilisateurs_date_naissance>
-</utilisateur>
-<commande diffgr:id="commande1" msdata:rowOrder="2">
-<nb_cheques_vacances>{$this->order->nb_cheques_vacances}</nb_cheques_vacances>
-<montant_total_cheques_vacances>{$this->order->montant_total_cheques_vacances}</montant_total_cheques_vacances>
-<mode_paiement>{$this->order->mode_paiement}</mode_paiement>
-<prix_livraison>{$this->order->prix_livraison}</prix_livraison>
-<code_livraison>{$this->order->code_livraison}</code_livraison>
-<commentaire>{$this->order->commentaire}</commentaire>
-<livraison_adresse_societe>{$this->order->livraison_adresse_societe}</livraison_adresse_societe>
-<livraison_adresse_nom>{$this->order->livraison_adresse_nom}</livraison_adresse_nom>
-<livraison_adresse1>{$this->order->livraison_adresse1}</livraison_adresse1>
-<livraison_adresse2>{$this->order->livraison_adresse2}</livraison_adresse2>
-<livraison_codepostal>{$this->order->livraison_codepostal}</livraison_codepostal>
-<livraison_ville>{$this->order->livraison_ville}</livraison_ville>
-<livraison_pays>{$this->order->livraison_pays}</livraison_pays>
-<url_retour>{$this->order->url_retour}</url_retour>
-<url_retour_ok>{$this->order->url_retour_ok}</url_retour_ok>
-<url_retour_err>{$this->order->url_retour_err}</url_retour_err>
-<acompte>{$this->order->acompte}</acompte>
-<numero_commande_ticketnet>{$this->order->numero_commande_ticketnet}</numero_commande_ticketnet>
-<frais_gestion_payeur>{$this->order->frais_gestion_payeur}</frais_gestion_payeur>
-<frais_port_payeur>{$this->order->frais_port_payeur}</frais_port_payeur>
-<remise_frais_port>{$this->order->remise_frais_port}</remise_frais_port>
-<numero_commande_distributeur>{$this->order->numero_commande_distributeur}</numero_commande_distributeur>
-</commande>
-<signature diffgr:id="signature1" msdata:rowOrder="3">
-<signature>{$this->expectedSignature}</signature>
-</signature>
+<article diffgr:id="article1" msdata:rowOrder="0">
+<code_article>{$this->article->code_article}</code_article>
+<quantite>{$this->article->quantite}</quantite>
+<articles_prix>{$this->article->articles_prix}</articles_prix>
+<code_parent>{$this->article->code_parent}</code_parent>
+<acompte>{$this->article->acompte}</acompte>
+<subvention_montant>{$this->article->subvention_montant}</subvention_montant>
+<subvention_payeur>{$this->article->subvention_payeur}</subvention_payeur>
+<remise>{$this->article->remise}</remise>
+<nature_client_id>{$this->article->nature_client_id}</nature_client_id>
+<categorie_place_code>{$this->article->categorie_place_code}</categorie_place_code>
+<libelle_article>{$this->article->libelle_article}</libelle_article>
+<famille_article>{$this->article->famille_article}</famille_article>
+<skier_index>{$this->article->skier_index}</skier_index>
+</article>
+<ebillet diffgr:id="ebillet1" msdata:rowOrder="1">
+<code_article>{$this->ebillet->code_article}</code_article>
+<nom>{$this->ebillet->nom}</nom>
+<prenom>{$this->ebillet->prenom}</prenom>
+<date>{$this->ebillet->date}</date>
+<date_naissance>{$this->ebillet->date_naissance}</date_naissance>
+<keycard>{$this->ebillet->keycard}</keycard>
+<skier_index>{$this->ebillet->skier_index}</skier_index>
+</ebillet>
+<frais_gestion diffgr:id="frais_gestion1" msdata:rowOrder="2">
+<nb_ebillets>{$this->fraisGestion->nb_ebillets}</nb_ebillets>
+<prix_ebillet>{$this->fraisGestion->prix_ebillet}</prix_ebillet>
+<nb_ebc>{$this->fraisGestion->nb_ebc}</nb_ebc>
+<prix_ebc>{$this->fraisGestion->prix_ebc}</prix_ebc>
+<nb_ebr>{$this->fraisGestion->nb_ebr}</nb_ebr>
+<prix_ebr>{$this->fraisGestion->prix_ebr}</prix_ebr>
+<nb_be>{$this->fraisGestion->nb_be}</nb_be>
+<prix_be>{$this->fraisGestion->prix_be}</prix_be>
+<nb_etickets>{$this->fraisGestion->nb_etickets}</nb_etickets>
+<prix_etickets>{$this->fraisGestion->prix_etickets}</prix_etickets>
+<nb_retraits>{$this->fraisGestion->nb_retraits}</nb_retraits>
+<prix_retraits>{$this->fraisGestion->prix_retraits}</prix_retraits>
+<remise_ebillets>{$this->fraisGestion->remise_ebillets}</remise_ebillets>
+<remise_ebc>{$this->fraisGestion->remise_ebc}</remise_ebc>
+<remise_ebr>{$this->fraisGestion->remise_ebr}</remise_ebr>
+<remise_be>{$this->fraisGestion->remise_be}</remise_be>
+<remise_etickets>{$this->fraisGestion->remise_etickets}</remise_etickets>
+<remise_retraits>{$this->fraisGestion->remise_retraits}</remise_retraits>
+<nb_cartes_cadeaux>{$this->fraisGestion->nb_cartes_cadeaux}</nb_cartes_cadeaux>
+<prix_carte_cadeau>{$this->fraisGestion->prix_carte_cadeau}</prix_carte_cadeau>
+<remise_cartes_cadeaux>{$this->fraisGestion->remise_cartes_cadeaux}</remise_cartes_cadeaux>
+<montant_plafond_commande>{$this->fraisGestion->montant_plafond_commande}</montant_plafond_commande>
+<nb_frais_gestion>{$this->fraisGestion->nb_frais_gestion}</nb_frais_gestion>
+<prix_frais_gestion>{$this->fraisGestion->prix_frais_gestion}</prix_frais_gestion>
+<nb_frais_demat>{$this->fraisGestion->nb_frais_demat}</nb_frais_demat>
+<prix_frais_demat>{$this->fraisGestion->prix_frais_demat}</prix_frais_demat>
+<nb_frais_papier>{$this->fraisGestion->nb_frais_papier}</nb_frais_papier>
+<prix_frais_papier>{$this->fraisGestion->prix_frais_papier}</prix_frais_papier>
+</frais_gestion>
 </NewDataSet>
 </diffgr:diffgram>
 EOT;
@@ -101,81 +136,69 @@ EOT;
 <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
 <xs:complexType>
 <xs:choice minOccurs="0" maxOccurs="unbounded">
-<xs:element name="ce">
+<xs:element name="article">
 <xs:complexType>
 <xs:sequence>
-<xs:element name="ce_id" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_societe" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_civilite" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_nom" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_prenom" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_telephone" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_portable" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_fax" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_email" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_adresse_nom" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_adresse1" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_adresse2" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_codepostal" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_ville" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_pays" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-<xs:element name="utilisateur">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="id_partenaire" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_societe" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_civilite" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_nom" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_prenom" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_telephone" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_portable" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_fax" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_email" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_adresse_nom" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_adresse1" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_adresse2" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_codepostal" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_ville" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_pays" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_date_naissance" type="xs:dateTime" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-<xs:element name="commande">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="nb_cheques_vacances" type="xs:string" minOccurs="0"/>
-<xs:element name="montant_total_cheques_vacances" type="xs:string" minOccurs="0"/>
-<xs:element name="mode_paiement" type="xs:string" minOccurs="0"/>
-<xs:element name="prix_livraison" type="xs:decimal" minOccurs="0"/>
-<xs:element name="code_livraison" type="xs:string" minOccurs="0"/>
-<xs:element name="commentaire" type="xs:string" minOccurs="0"/>
-<xs:element name="livraison_adresse_societe" type="xs:string" minOccurs="0"/>
-<xs:element name="livraison_adresse_nom" type="xs:string" minOccurs="0"/>
-<xs:element name="livraison_adresse1" type="xs:string" minOccurs="0"/>
-<xs:element name="livraison_adresse2" type="xs:string" minOccurs="0"/>
-<xs:element name="livraison_codepostal" type="xs:string" minOccurs="0"/>
-<xs:element name="livraison_ville" type="xs:string" minOccurs="0"/>
-<xs:element name="livraison_pays" type="xs:string" minOccurs="0"/>
-<xs:element name="url_retour" type="xs:string" minOccurs="0"/>
-<xs:element name="url_retour_ok" type="xs:string" minOccurs="0"/>
-<xs:element name="url_retour_err" type="xs:string" minOccurs="0"/>
+<xs:element name="code_article" type="xs:string" minOccurs="0"/>
+<xs:element name="quantite" type="xs:int32" minOccurs="0"/>
+<xs:element name="articles_prix" type="xs:decimal" minOccurs="0"/>
+<xs:element name="code_parent" type="xs:string" minOccurs="0"/>
 <xs:element name="acompte" type="xs:decimal" minOccurs="0"/>
-<xs:element name="numero_commande_ticketnet" type="xs:string" minOccurs="0"/>
-<xs:element name="frais_gestion_payeur" type="xs:string" minOccurs="0"/>
-<xs:element name="frais_port_payeur" type="xs:string" minOccurs="0"/>
-<xs:element name="remise_frais_port" type="xs:decimal" minOccurs="0"/>
-<xs:element name="numero_commande_distributeur" type="xs:string" minOccurs="0"/>
+<xs:element name="subvention_montant" type="xs:string" minOccurs="0"/>
+<xs:element name="subvention_payeur" type="xs:string" minOccurs="0"/>
+<xs:element name="remise" type="xs:decimal" minOccurs="0"/>
+<xs:element name="nature_client_id" type="xs:string" minOccurs="0"/>
+<xs:element name="categorie_place_code" type="xs:string" minOccurs="0"/>
+<xs:element name="libelle_article" type="xs:string" minOccurs="0"/>
+<xs:element name="famille_article" type="xs:string" minOccurs="0"/>
+<xs:element name="skier_index" type="xs:int32" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
-<xs:element name="signature">
+<xs:element name="ebillet">
 <xs:complexType>
 <xs:sequence>
-<xs:element name="signature" type="xs:string" minOccurs="0"/>
+<xs:element name="code_article" type="xs:string" minOccurs="0"/>
+<xs:element name="nom" type="xs:string" minOccurs="0"/>
+<xs:element name="prenom" type="xs:string" minOccurs="0"/>
+<xs:element name="date" type="xs:string" minOccurs="0"/>
+<xs:element name="date_naissance" type="xs:string" minOccurs="0"/>
+<xs:element name="keycard" type="xs:string" minOccurs="0"/>
+<xs:element name="skier_index" type="xs:int32" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="frais_gestion">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="nb_ebillets" type="xs:int32" minOccurs="0"/>
+<xs:element name="prix_ebillet" type="xs:decimal" minOccurs="0"/>
+<xs:element name="nb_ebc" type="xs:int32" minOccurs="0"/>
+<xs:element name="prix_ebc" type="xs:decimal" minOccurs="0"/>
+<xs:element name="nb_ebr" type="xs:int32" minOccurs="0"/>
+<xs:element name="prix_ebr" type="xs:decimal" minOccurs="0"/>
+<xs:element name="nb_be" type="xs:int32" minOccurs="0"/>
+<xs:element name="prix_be" type="xs:decimal" minOccurs="0"/>
+<xs:element name="nb_etickets" type="xs:int32" minOccurs="0"/>
+<xs:element name="prix_etickets" type="xs:decimal" minOccurs="0"/>
+<xs:element name="nb_retraits" type="xs:int32" minOccurs="0"/>
+<xs:element name="prix_retraits" type="xs:decimal" minOccurs="0"/>
+<xs:element name="remise_ebillets" type="xs:decimal" minOccurs="0"/>
+<xs:element name="remise_ebc" type="xs:decimal" minOccurs="0"/>
+<xs:element name="remise_ebr" type="xs:decimal" minOccurs="0"/>
+<xs:element name="remise_be" type="xs:decimal" minOccurs="0"/>
+<xs:element name="remise_etickets" type="xs:decimal" minOccurs="0"/>
+<xs:element name="remise_retraits" type="xs:decimal" minOccurs="0"/>
+<xs:element name="nb_cartes_cadeaux" type="xs:int32" minOccurs="0"/>
+<xs:element name="prix_carte_cadeau" type="xs:decimal" minOccurs="0"/>
+<xs:element name="remise_cartes_cadeaux" type="xs:decimal" minOccurs="0"/>
+<xs:element name="montant_plafond_commande" type="xs:decimal" minOccurs="0"/>
+<xs:element name="nb_frais_gestion" type="xs:int32" minOccurs="0"/>
+<xs:element name="prix_frais_gestion" type="xs:decimal" minOccurs="0"/>
+<xs:element name="nb_frais_demat" type="xs:int32" minOccurs="0"/>
+<xs:element name="prix_frais_demat" type="xs:decimal" minOccurs="0"/>
+<xs:element name="nb_frais_papier" type="xs:int32" minOccurs="0"/>
+<xs:element name="prix_frais_papier" type="xs:decimal" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
