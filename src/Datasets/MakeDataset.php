@@ -23,7 +23,7 @@ class MakeDataset
      */
     protected $knownTables = [];
 
-    private function __construct()
+    protected function __construct()
     {
         $this->dataset = new stdClass();
     }

@@ -8,7 +8,6 @@ use SkiLoisirsDiffusion\DatasetTables\SignatureDatasetTable;
 use SkiLoisirsDiffusion\DatasetTables\UserDatasetTable;
 use SkiLoisirsDiffusion\Datatypes\OrderDatatype;
 use SkiLoisirsDiffusion\Datatypes\UserDatatype;
-use stdClass;
 
 class CreateOrderDataset extends MakeDataset
 {
@@ -26,6 +25,7 @@ class CreateOrderDataset extends MakeDataset
 
     private function __construct(UserDatatype $user, OrderDatatype $order)
     {
+        parent::__construct();
         $this->user = $user;
         $this->order = $order;
 
@@ -33,8 +33,6 @@ class CreateOrderDataset extends MakeDataset
         $this->userDatasetTable = UserDatasetTable::prepare()->with($this->user);
         $this->orderDataSetTable = OrderDatasetTable::prepare()->with($this->order);
         $this->signatureDataSetTable = SignatureDatasetTable::prepare()->with($this->order, $this->user, sldconfig('clef_secrete'));
-
-        $this->dataset = new stdClass();
 
         $this->addDatasetTables(
             [
