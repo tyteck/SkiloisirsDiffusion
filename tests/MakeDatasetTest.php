@@ -4,10 +4,13 @@ namespace Skiloisirs\Tests;
 
 use InvalidArgumentException;
 use SkiLoisirsDiffusion\Datasets\MakeDataset;
+use SkiLoisirsDiffusion\DatasetTables\ArticleDatasetTable;
 use SkiLoisirsDiffusion\DatasetTables\CeDatasetTable;
 use SkiLoisirsDiffusion\DatasetTables\EbilletDatasetTable;
+use SkiLoisirsDiffusion\Datatypes\ArticleDatatype;
 use SkiLoisirsDiffusion\Datatypes\EbilletDatatype;
 use SkiLoisirsDiffusion\Tests\BaseTestCase;
+use SkiLoisirsDiffusion\Tests\Factory\ArticleFactory;
 use SkiLoisirsDiffusion\Tests\Factory\EbilletFactory;
 use stdClass;
 
@@ -86,6 +89,7 @@ EOT;
 </diffgr:diffgram>
 EOT;
         $dataset = MakeDataset::init()->addDatasetTable($datasetTable)->render();
+
         $this->assertEquals($expectedBody, $dataset->body());
     }
 
@@ -257,40 +261,28 @@ EOT;
     }
 
     /** @test */
-    public function foo()
-    {
-        $foo = ['chat', 'chien', 'chat', 'chat', 'poney'];
-        $expected = 'chat1, chien1, chat2, chat3, poney1';
-        $result = '';
-        foreach ($foo as $key => $item) {
-        }
-        dump($result);
-    }
-
-    /** @test */
     public function adding_many_times_same_dataset_table_is_ok()
     {
         $ebillet1 = EbilletDatasetTable::prepare()
             ->with(EbilletDatatype::create(EbilletFactory::create()));
+        $article1 = ArticleDatasetTable::prepare()
+            ->with(ArticleDatatype::create(ArticleFactory::create()));
         $ebillet2 = EbilletDatasetTable::prepare()
             ->with(EbilletDatatype::create(EbilletFactory::create()));
+        $article2 = ArticleDatasetTable::prepare()
+            ->with(ArticleDatatype::create(ArticleFactory::create()));
+        $article3 = ArticleDatasetTable::prepare()
+            ->with(ArticleDatatype::create(ArticleFactory::create()));
 
-        $expectedDatasetFieldsSchemaString = $this->datasetFieldsToString($ebillet1->datasetFields(), true);
-
-        $dataset = MakeDataset::init()->addDatasetTables([$ebillet1, $ebillet2])->render();
+        $expectedDatasetFieldsSchemaString = $this->datasetTablesToString([$ebillet1, $article1], true);
+        $dataset = MakeDataset::init()->addDatasetTables([$ebillet1, $article1, $ebillet2, $article2, $article3])->render();
 
         $expectedSchema = <<<EOT
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="NewDataSet">
 <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
 <xs:complexType>
 <xs:choice minOccurs="0" maxOccurs="unbounded">
-<xs:element name="ebillet">
-<xs:complexType>
-<xs:sequence>
 {$expectedDatasetFieldsSchemaString}
-</xs:sequence>
-</xs:complexType>
-</xs:element>
 </xs:choice>
 </xs:complexType>
 </xs:element>
@@ -299,7 +291,7 @@ EOT;
 
         $this->assertEquals($expectedSchema, $dataset->schema());
 
-        $expectedDatasetTableBodyString = $this->datasetTablesToString([$ebillet1, $ebillet2], false);
+        $expectedDatasetTableBodyString = $this->datasetTablesToString([$ebillet1, $article1, $ebillet2, $article2, $article3], false);
         $expectedBody = <<<EOT
 <diffgr:diffgram xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
 <NewDataSet xmlns="">

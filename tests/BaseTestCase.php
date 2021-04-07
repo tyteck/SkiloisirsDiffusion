@@ -78,18 +78,26 @@ class BaseTestCase extends TestCase
     public function datasetTablesToString(array $datasetTables, bool $INeedSchema = true)
     {
         $result = '';
+
         if (count($datasetTables)) {
             $method = $INeedSchema === true ? 'renderSchema' : 'renderBody';
-
-            $index = 1;
             $rowOrder = 0;
+            $knownTablesWithIndex = [];
             $result .= array_reduce(
                 $datasetTables,
-                function ($carry, DatasetTable $datasetTable) use ($method, &$index, &$rowOrder) {
+                function ($carry, DatasetTable $datasetTable) use ($method, &$knownTablesWithIndex, &$rowOrder) {
                     if (strlen($carry)) {
                         $carry .= PHP_EOL;
                     }
-                    return $carry .= $datasetTable->$method($index++, $rowOrder++);
+                    if (!isset($knownTablesWithIndex[$datasetTable->tableName()])) {
+                        $knownTablesWithIndex[$datasetTable->tableName()] = 1;
+                    } else {
+                        $knownTablesWithIndex[$datasetTable->tableName()]++;
+                    }
+                    return $carry .= $datasetTable->$method(
+                        $knownTablesWithIndex[$datasetTable->tableName()],
+                        $rowOrder++
+                    );
                 }
             );
         }

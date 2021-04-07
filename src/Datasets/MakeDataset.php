@@ -17,6 +17,12 @@ class MakeDataset
     /** @var int $rowOrder */
     protected int $rowOrder = 0;
 
+    /**
+     * @var array $knownTables
+     * will record table and index. ['article'=>3, 'frais_gestion' => 1]
+     */
+    protected $knownTables = [];
+
     private function __construct()
     {
         $this->dataset = new stdClass();
@@ -59,10 +65,13 @@ class MakeDataset
 
     protected function renderSchema(): self
     {
-        $this->dataset->schema = '<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="NewDataSet">' . PHP_EOL .
-            '<xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">' . PHP_EOL .
-            '<xs:complexType>' . PHP_EOL .
-            '<xs:choice minOccurs="0" maxOccurs="unbounded">' . PHP_EOL;
+        $this->dataset->schema = <<<EOT
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="NewDataSet">
+<xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+<xs:complexType>
+<xs:choice minOccurs="0" maxOccurs="unbounded">
+
+EOT;
         $renderedSchemaTables = [];
         if (count($this->datasetTables)) {
             $this->dataset->schema .= array_reduce(
@@ -79,7 +88,12 @@ class MakeDataset
                 }
             ) . PHP_EOL;
         }
-        $this->dataset->schema .= '</xs:choice>' . PHP_EOL . '</xs:complexType>' . PHP_EOL . '</xs:element>' . PHP_EOL . '</xs:schema>';
+        $this->dataset->schema .= <<<EOT
+</xs:choice>
+</xs:complexType>
+</xs:element>
+</xs:schema>
+EOT;
         return $this;
     }
 
@@ -93,15 +107,22 @@ class MakeDataset
         $this->dataset->any = '<diffgr:diffgram xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">' . PHP_EOL
         . '<NewDataSet xmlns="">' . PHP_EOL;
         if (count($this->datasetTables)) {
-            $index = 1;
             $this->dataset->any .= array_reduce(
                 $this->datasetTables,
                 function ($carry, DatasetTable $datasetTable) use (&$index) {
                     if (strlen($carry)) {
                         $carry .= PHP_EOL;
                     }
-
-                    return $carry .= $datasetTable->renderBody($index++, $this->rowOrder++);
+                    /** this part to increment index. Index is the suffix in article1 (1 here) */
+                    if (!isset($this->knownTables[$datasetTable->tableName()])) {
+                        $this->knownTables[$datasetTable->tableName()] = 1;
+                    } else {
+                        $this->knownTables[$datasetTable->tableName()]++;
+                    }
+                    return $carry .= $datasetTable->renderBody(
+                        $this->knownTables[$datasetTable->tableName()], // index
+                        $this->rowOrder++ // order
+                    );
                 }
             ) . PHP_EOL;
         }
