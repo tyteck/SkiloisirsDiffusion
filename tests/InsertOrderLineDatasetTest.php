@@ -46,16 +46,16 @@ class InsertOrderLineDatasetTest extends BaseTestCase
         $this->orderDataset = CreateOrderDataset::create($this->user, $this->order)->render();
 
         $this->orderNumber = 24463; //SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))->CREATION_COMMANDE($this->orderDataset);
-        dump($this->orderNumber);
+
         $this->article = ArticleDatatype::create(ArticleFactory::create());
         $this->ebillet = EbilletDatatype::create(EbilletFactory::create());
         $this->fraisGestion = FraisGestionDatatype::create(FraisGestionFactory::create());
 
         /** creating order */
 
-        //$this->datasetTables[] = ArticleDatasetTable::prepare()->with($this->article);
+        $this->datasetTables[] = ArticleDatasetTable::prepare()->with($this->article);
         $this->datasetTables[] = EbilletDatasetTable::prepare()->with($this->ebillet);
-        //$this->datasetTables[] = FraisGestionDatasetTable::prepare()->with($this->fraisGestion);
+        $this->datasetTables[] = FraisGestionDatasetTable::prepare()->with($this->fraisGestion);
 
         $this->insertOrderLineDataset = InsertOrderLineDataset::create($this->orderNumber)
             ->addDatasetTables($this->datasetTables)
