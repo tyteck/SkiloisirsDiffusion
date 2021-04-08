@@ -27,7 +27,7 @@ class ArticleDatasetTest extends BaseTestCase
 <xs:complexType>
 <xs:sequence>
 <xs:element name="code_article" type="xs:string" minOccurs="0"/>
-<xs:element name="quantite" type="xs:int32" minOccurs="0"/>
+<xs:element name="quantite" type="xs:int" minOccurs="0"/>
 <xs:element name="articles_prix" type="xs:decimal" minOccurs="0"/>
 <xs:element name="code_parent" type="xs:string" minOccurs="0"/>
 <xs:element name="acompte" type="xs:decimal" minOccurs="0"/>
@@ -38,7 +38,7 @@ class ArticleDatasetTest extends BaseTestCase
 <xs:element name="categorie_place_code" type="xs:string" minOccurs="0"/>
 <xs:element name="libelle_article" type="xs:string" minOccurs="0"/>
 <xs:element name="famille_article" type="xs:string" minOccurs="0"/>
-<xs:element name="skier_index" type="xs:int32" minOccurs="0"/>
+<xs:element name="skier_index" type="xs:int" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>

@@ -27,7 +27,13 @@ class DatasetField
     protected $fieldValue;
 
     /** @var array $allowedFieldTypes */
-    protected static $allowedFieldTypes = ['string', 'decimal', 'dateTime', 'int32', 'int64'];
+    protected static $allowedFieldTypes = [
+        'string' => 'xs:string',
+        'decimal' => 'xs:decimal',
+        'dateTime' => 'xs:dateTime',
+        'int32' => 'xs:int',
+        'int64' => 'xs:long',
+    ];
 
     private function __construct(string $fieldName, string $fieldType, $fieldValue, int $fieldMinOccurs = 0, bool $fieldRequired = true)
     {
@@ -36,13 +42,13 @@ class DatasetField
         }
         $this->fieldName = $fieldName;
 
-        if (!in_array($fieldType, self::allowedFieldTypes())) {
-            throw new FieldTypeNotAllowedException("Field type {$fieldType} not allowed. Are allowed : " . implode(', ', self::allowedFieldTypes()));
+        if (!array_key_exists($fieldType, self::allowedFieldTypes())) {
+            throw new FieldTypeNotAllowedException("Field type {$fieldType} not allowed. Are allowed : " . implode(', ', array_keys(self::allowedFieldTypes())));
         }
-        $this->fieldType = "xs:{$fieldType}";
+        $this->fieldType = self::allowedFieldTypes()[$fieldType];
 
         if ($fieldMinOccurs < 0) {
-            throw new FieldMinOccursShouldBeGreaterThanZeroException("Field type {$fieldType} not allowed. Are allowed : " . implode(', ', self::allowedFieldTypes()));
+            throw new FieldMinOccursShouldBeGreaterThanZeroException('Field min occurs should be greater or equal to 0.');
         }
         $this->fieldMinOccurs = $fieldMinOccurs;
 
@@ -107,7 +113,7 @@ class DatasetField
             return is_float($this->fieldValue);
         }
 
-        if (in_array($this->fieldType(), ['xs:int32', 'xs:int64'])) {
+        if (in_array($this->fieldType(), ['xs:int', 'xs:long'])) {
             return is_integer($this->fieldValue);
         }
 
@@ -120,6 +126,7 @@ class DatasetField
             $this->fieldValue = $isItADate->toDateTimeLocalString();
             return true;
         }
+        return false;
     }
 
     public static function allowedFieldTypes()

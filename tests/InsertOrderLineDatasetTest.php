@@ -45,8 +45,7 @@ class InsertOrderLineDatasetTest extends BaseTestCase
 
         $this->orderDataset = CreateOrderDataset::create($this->user, $this->order)->render();
 
-        $this->orderNumber = SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))
-            ->CREATION_COMMANDE($this->orderDataset);
+        $this->orderNumber = 24463; //SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))->CREATION_COMMANDE($this->orderDataset);
         dump($this->orderNumber);
         $this->article = ArticleDatatype::create(ArticleFactory::create());
         $this->ebillet = EbilletDatatype::create(EbilletFactory::create());
@@ -54,9 +53,9 @@ class InsertOrderLineDatasetTest extends BaseTestCase
 
         /** creating order */
 
-        $this->datasetTables[] = ArticleDatasetTable::prepare()->with($this->article);
+        //$this->datasetTables[] = ArticleDatasetTable::prepare()->with($this->article);
         $this->datasetTables[] = EbilletDatasetTable::prepare()->with($this->ebillet);
-        $this->datasetTables[] = FraisGestionDatasetTable::prepare()->with($this->fraisGestion);
+        //$this->datasetTables[] = FraisGestionDatasetTable::prepare()->with($this->fraisGestion);
 
         $this->insertOrderLineDataset = InsertOrderLineDataset::create($this->orderNumber)
             ->addDatasetTables($this->datasetTables)
@@ -153,7 +152,7 @@ EOT;
 <xs:complexType>
 <xs:sequence>
 <xs:element name="code_article" type="xs:string" minOccurs="0"/>
-<xs:element name="quantite" type="xs:int32" minOccurs="0"/>
+<xs:element name="quantite" type="xs:int" minOccurs="0"/>
 <xs:element name="articles_prix" type="xs:decimal" minOccurs="0"/>
 <xs:element name="code_parent" type="xs:string" minOccurs="0"/>
 <xs:element name="acompte" type="xs:decimal" minOccurs="0"/>
@@ -164,7 +163,7 @@ EOT;
 <xs:element name="categorie_place_code" type="xs:string" minOccurs="0"/>
 <xs:element name="libelle_article" type="xs:string" minOccurs="0"/>
 <xs:element name="famille_article" type="xs:string" minOccurs="0"/>
-<xs:element name="skier_index" type="xs:int32" minOccurs="0"/>
+<xs:element name="skier_index" type="xs:int" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
@@ -177,24 +176,24 @@ EOT;
 <xs:element name="date" type="xs:string" minOccurs="0"/>
 <xs:element name="date_naissance" type="xs:string" minOccurs="0"/>
 <xs:element name="keycard" type="xs:string" minOccurs="0"/>
-<xs:element name="skier_index" type="xs:int32" minOccurs="0"/>
+<xs:element name="skier_index" type="xs:int" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
 <xs:element name="frais_gestion">
 <xs:complexType>
 <xs:sequence>
-<xs:element name="nb_ebillets" type="xs:int32" minOccurs="0"/>
+<xs:element name="nb_ebillets" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_ebillet" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_ebc" type="xs:int32" minOccurs="0"/>
+<xs:element name="nb_ebc" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_ebc" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_ebr" type="xs:int32" minOccurs="0"/>
+<xs:element name="nb_ebr" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_ebr" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_be" type="xs:int32" minOccurs="0"/>
+<xs:element name="nb_be" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_be" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_etickets" type="xs:int32" minOccurs="0"/>
+<xs:element name="nb_etickets" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_etickets" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_retraits" type="xs:int32" minOccurs="0"/>
+<xs:element name="nb_retraits" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_retraits" type="xs:decimal" minOccurs="0"/>
 <xs:element name="remise_ebillets" type="xs:decimal" minOccurs="0"/>
 <xs:element name="remise_ebc" type="xs:decimal" minOccurs="0"/>
@@ -202,15 +201,15 @@ EOT;
 <xs:element name="remise_be" type="xs:decimal" minOccurs="0"/>
 <xs:element name="remise_etickets" type="xs:decimal" minOccurs="0"/>
 <xs:element name="remise_retraits" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_cartes_cadeaux" type="xs:int32" minOccurs="0"/>
+<xs:element name="nb_cartes_cadeaux" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_carte_cadeau" type="xs:decimal" minOccurs="0"/>
 <xs:element name="remise_cartes_cadeaux" type="xs:decimal" minOccurs="0"/>
 <xs:element name="montant_plafond_commande" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_frais_gestion" type="xs:int32" minOccurs="0"/>
+<xs:element name="nb_frais_gestion" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_frais_gestion" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_frais_demat" type="xs:int32" minOccurs="0"/>
+<xs:element name="nb_frais_demat" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_frais_demat" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_frais_papier" type="xs:int32" minOccurs="0"/>
+<xs:element name="nb_frais_papier" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_frais_papier" type="xs:decimal" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>

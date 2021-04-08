@@ -14,7 +14,7 @@ class BaseTestCase extends TestCase
     public function createDatasetField()
     {
         $fieldName = 'field' . rand(1, 1000);
-        $fieldTypes = DatasetField::allowedFieldTypes();
+        $fieldTypes = array_keys(DatasetField::allowedFieldTypes());
         $fieldType = $fieldTypes[rand(0, (count($fieldTypes) - 1))];
         switch ($fieldType) {
             case 'string': $fieldValue = 'lorem ipsum'; break;

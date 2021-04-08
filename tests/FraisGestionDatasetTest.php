@@ -29,17 +29,17 @@ class FraisGestionDatasetTest extends BaseTestCase
 <xs:element name="frais_gestion">
 <xs:complexType>
 <xs:sequence>
-<xs:element name="nb_ebillets" type="xs:int32" minOccurs="0"/>
+<xs:element name="nb_ebillets" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_ebillet" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_ebc" type="xs:int32" minOccurs="0"/>
+<xs:element name="nb_ebc" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_ebc" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_ebr" type="xs:int32" minOccurs="0"/>
+<xs:element name="nb_ebr" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_ebr" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_be" type="xs:int32" minOccurs="0"/>
+<xs:element name="nb_be" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_be" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_etickets" type="xs:int32" minOccurs="0"/>
+<xs:element name="nb_etickets" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_etickets" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_retraits" type="xs:int32" minOccurs="0"/>
+<xs:element name="nb_retraits" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_retraits" type="xs:decimal" minOccurs="0"/>
 <xs:element name="remise_ebillets" type="xs:decimal" minOccurs="0"/>
 <xs:element name="remise_ebc" type="xs:decimal" minOccurs="0"/>
@@ -47,15 +47,15 @@ class FraisGestionDatasetTest extends BaseTestCase
 <xs:element name="remise_be" type="xs:decimal" minOccurs="0"/>
 <xs:element name="remise_etickets" type="xs:decimal" minOccurs="0"/>
 <xs:element name="remise_retraits" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_cartes_cadeaux" type="xs:int32" minOccurs="0"/>
+<xs:element name="nb_cartes_cadeaux" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_carte_cadeau" type="xs:decimal" minOccurs="0"/>
 <xs:element name="remise_cartes_cadeaux" type="xs:decimal" minOccurs="0"/>
 <xs:element name="montant_plafond_commande" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_frais_gestion" type="xs:int32" minOccurs="0"/>
+<xs:element name="nb_frais_gestion" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_frais_gestion" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_frais_demat" type="xs:int32" minOccurs="0"/>
+<xs:element name="nb_frais_demat" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_frais_demat" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_frais_papier" type="xs:int32" minOccurs="0"/>
+<xs:element name="nb_frais_papier" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_frais_papier" type="xs:decimal" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>

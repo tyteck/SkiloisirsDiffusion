@@ -78,10 +78,24 @@ class DatasetFieldTest extends BaseTestCase
     public function int32_is_ok()
     {
         $expectedFieldName = 'field1';
-        $expectedFieldType = 'xs:int32';
+        $expectedFieldType = 'xs:int';
         $expectedValue = 1;
         $expectedMinOccurs = 0;
         $datasetField = DatasetField::create($expectedFieldName, 'int32', $expectedValue, $expectedMinOccurs);
+        $this->assertEquals($expectedFieldName, $datasetField->fieldName());
+        $this->assertEquals($expectedFieldType, $datasetField->fieldType());
+        $this->assertEquals($expectedValue, $datasetField->fieldValue());
+        $this->assertEquals($expectedMinOccurs, $datasetField->fieldMinOccurs());
+    }
+
+    /** @test */
+    public function int64_is_ok()
+    {
+        $expectedFieldName = 'field1';
+        $expectedFieldType = 'xs:long';
+        $expectedValue = 1;
+        $expectedMinOccurs = 0;
+        $datasetField = DatasetField::create($expectedFieldName, 'int64', $expectedValue, $expectedMinOccurs);
         $this->assertEquals($expectedFieldName, $datasetField->fieldName());
         $this->assertEquals($expectedFieldType, $datasetField->fieldType());
         $this->assertEquals($expectedValue, $datasetField->fieldValue());
@@ -146,7 +160,8 @@ class DatasetFieldTest extends BaseTestCase
     {
         $datasetFieldTypes = DatasetField::allowedFieldTypes();
         $this->assertIsArray($datasetFieldTypes);
-        $this->assertEqualsCanonicalizing(['string', 'dateTime', 'decimal', 'int32', 'int64'], $datasetFieldTypes);
+        $this->assertEqualsCanonicalizing(['string', 'dateTime', 'decimal', 'int32', 'int64'], array_keys($datasetFieldTypes));
+        $this->assertEqualsCanonicalizing(['xs:string', 'xs:dateTime', 'xs:decimal', 'xs:int', 'xs:long'], array_values($datasetFieldTypes));
     }
 
     /** @test */
