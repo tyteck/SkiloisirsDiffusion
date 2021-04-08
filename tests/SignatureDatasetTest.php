@@ -12,9 +12,10 @@ use SkiLoisirsDiffusion\Tests\Factory\UserFactory;
 class SignatureDatasetTest extends BaseTestCase
 {
     /** @var \SkiLoisirsDiffusion\DatasetTables\DatasetTable $signatureDatasetTable */
-    protected DatasetTable $signatureDatasetTable;
+    protected $signatureDatasetTable;
 
-    protected string $expectedSignature;
+    /** @var string $expectedSignature */
+    protected $expectedSignature;
 
     public function setUp() :void
     {

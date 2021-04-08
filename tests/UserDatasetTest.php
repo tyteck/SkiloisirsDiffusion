@@ -8,11 +8,13 @@ use SkiLoisirsDiffusion\Tests\Factory\UserFactory;
 
 class UserDatasetTest extends BaseTestCase
 {
-    protected \SkiLoisirsDiffusion\Datatypes\UserDatatype $user;
+    /** @var \SkiLoisirsDiffusion\Datatypes\UserDatatype $user */
+    protected $user;
 
-    protected \SkiLoisirsDiffusion\DatasetTables\DatasetTable $userDatasetTable;
+    /** @var \SkiLoisirsDiffusion\DatasetTables\DatasetTable $userDatasetTable */
+    protected $userDatasetTable;
 
-    public function setUp() :void
+    public function setUp(): void
     {
         parent::setUp();
         /** factory create fake user array I throw to userDataType*/

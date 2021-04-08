@@ -8,11 +8,13 @@ use SkiLoisirsDiffusion\Tests\Factory\OrderFactory;
 
 class OrderDatasetTest extends BaseTestCase
 {
-    protected \SkiLoisirsDiffusion\Datatypes\OrderDatatype $order;
+    /** @var \SkiLoisirsDiffusion\Datatypes\OrderDatatype $order */
+    protected $order;
 
-    protected \SkiLoisirsDiffusion\DatasetTables\DatasetTable $orderDatasetTable;
+    /** @var \SkiLoisirsDiffusion\DatasetTables\DatasetTable $orderDatasetTable */
+    protected $orderDatasetTable;
 
-    public function setUp() :void
+    public function setUp(): void
     {
         parent::setUp();
 
