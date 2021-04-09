@@ -23,26 +23,28 @@ class ArticleFactory
 
     public static function create(?array $attributes = [])
     {
-        /* if (!isset($attributes['code_article']) || $attributes['code_article'] === null) {
+        if (!isset($attributes['code_article']) || $attributes['code_article'] === null) {
             $realFakes = self::realFake();
-            $selecteditem = rand(0, count($realFakes) - 1);
+            $selectedIndex = array_rand($realFakes);
 
-            $attributes['code_article'] = $realFakes[$selecteditem]['code_article'];
-            $attributes['articles_prix'] = $realFakes[$selecteditem]['articles_prix'];
-        } */
+            $attributes['code_article'] = $realFakes[$selectedIndex]['code_article'];
+            $attributes['articles_prix'] = $realFakes[$selectedIndex]['articles_prix'];
+        }
+
+        $subvention_payeurs = ['ce', 'salarie'];
 
         $faker = Faker::create('fr_FR');
         $result = [
             'code_article' => $attributes['code_article'] ?? $faker->regexify('[a-zA-Z0-9]{4}'),
             'quantite' => $attributes['quantite'] ?? 1,
-            'articles_prix' => $attributes['articles_prix'] ?? $faker->randomFloat(2, 0, 30),
+            'articles_prix' => (float)$attributes['articles_prix'] ?? $faker->randomFloat(2, 0, 30),
             'code_parent' => $attributes['code_parent'] ?? null,
             'acompte' => $attributes['acompte'] ?? null,
-            'subvention_montant' => $attributes['subvention_montant'] ?? null,
-            'subvention_payeur' => $attributes['subvention_payeur'] ?? $faker->word,
+            'subvention_montant' => $attributes['subvention_montant'] ?? 0.25,
+            'subvention_payeur' => $attributes['subvention_payeur'] ?? $subvention_payeurs[array_rand($subvention_payeurs)],
             'remise' => $attributes['remise'] ?? 3.0,
-            'nature_client_id' => $attributes['nature_client_id'] ?? $faker->word,
-            'categorie_place_code' => $attributes['categorie_place_code'] ?? $faker->word,
+            'nature_client_id' => $attributes['nature_client_id'] ?? null,
+            'categorie_place_code' => $attributes['categorie_place_code'] ?? null,
             'libelle_article' => $attributes['libelle_article'] ?? null,
             'famille_article' => $attributes['famille_article'] ?? null,
             'skier_index' => $attributes['skier_index'] ?? $faker->randomNumber(4),
