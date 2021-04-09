@@ -23,19 +23,19 @@ class ArticleFactory
 
     public static function create(?array $attributes = [])
     {
-        if (!isset($attributes['code_article']) || $attributes['code_article'] === null) {
+        /* if (!isset($attributes['code_article']) || $attributes['code_article'] === null) {
             $realFakes = self::realFake();
             $selecteditem = rand(0, count($realFakes) - 1);
 
             $attributes['code_article'] = $realFakes[$selecteditem]['code_article'];
             $attributes['articles_prix'] = $realFakes[$selecteditem]['articles_prix'];
-        }
+        } */
 
         $faker = Faker::create('fr_FR');
         $result = [
-            'code_article' => $attributes['code_article'],
+            'code_article' => $attributes['code_article'] ?? $faker->regexify('[a-zA-Z0-9]{4}'),
             'quantite' => $attributes['quantite'] ?? 1,
-            'articles_prix' => $attributes['articles_prix'],
+            'articles_prix' => $attributes['articles_prix'] ?? $faker->randomFloat(2, 0, 30),
             'code_parent' => $attributes['code_parent'] ?? null,
             'acompte' => $attributes['acompte'] ?? null,
             'subvention_montant' => $attributes['subvention_montant'] ?? null,
