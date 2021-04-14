@@ -161,15 +161,15 @@ EOT;
 <xs:element name="code_article" type="xs:string" minOccurs="0"/>
 <xs:element name="quantite" type="xs:int" minOccurs="0"/>
 <xs:element name="articles_prix" type="xs:decimal" minOccurs="0"/>
-<xs:element name="code_parent" type="xs:string" minOccurs="0"/>
-<xs:element name="acompte" type="xs:decimal" minOccurs="0"/>
-<xs:element name="subvention_montant" type="xs:string" minOccurs="0"/>
+<xs:element name="code_parent" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="acompte" type="xs:decimal" minOccurs="0" nillable="true"/>
+<xs:element name="subvention_montant" type="xs:string" minOccurs="0" nillable="true"/>
 <xs:element name="subvention_payeur" type="xs:string" minOccurs="0"/>
 <xs:element name="remise" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nature_client_id" type="xs:string" minOccurs="0"/>
-<xs:element name="categorie_place_code" type="xs:string" minOccurs="0"/>
-<xs:element name="libelle_article" type="xs:string" minOccurs="0"/>
-<xs:element name="famille_article" type="xs:string" minOccurs="0"/>
+<xs:element name="nature_client_id" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="categorie_place_code" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="libelle_article" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="famille_article" type="xs:string" minOccurs="0" nillable="true"/>
 <xs:element name="skier_index" type="xs:int" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
@@ -211,13 +211,13 @@ EOT;
 <xs:element name="nb_cartes_cadeaux" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_carte_cadeau" type="xs:decimal" minOccurs="0"/>
 <xs:element name="remise_cartes_cadeaux" type="xs:decimal" minOccurs="0"/>
-<xs:element name="montant_plafond_commande" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_frais_gestion" type="xs:int" minOccurs="0"/>
-<xs:element name="prix_frais_gestion" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_frais_demat" type="xs:int" minOccurs="0"/>
-<xs:element name="prix_frais_demat" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_frais_papier" type="xs:int" minOccurs="0"/>
-<xs:element name="prix_frais_papier" type="xs:decimal" minOccurs="0"/>
+<xs:element name="montant_plafond_commande" type="xs:decimal" minOccurs="0" nillable="true"/>
+<xs:element name="nb_frais_gestion" type="xs:int" minOccurs="0" nillable="true"/>
+<xs:element name="prix_frais_gestion" type="xs:decimal" minOccurs="0" nillable="true"/>
+<xs:element name="nb_frais_demat" type="xs:int" minOccurs="0" nillable="true"/>
+<xs:element name="prix_frais_demat" type="xs:decimal" minOccurs="0" nillable="true"/>
+<xs:element name="nb_frais_papier" type="xs:int" minOccurs="0" nillable="true"/>
+<xs:element name="prix_frais_papier" type="xs:decimal" minOccurs="0" nillable="true"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>

@@ -11,7 +11,7 @@ use SkiLoisirsDiffusion\Datatypes\UserDatatype;
 
 class BaseTestCase extends TestCase
 {
-    public function createDatasetField()
+    public function createDatasetField(int $minOccurs = 0, bool $required = true)
     {
         $fieldName = 'field' . rand(1, 1000);
         $fieldTypes = array_keys(DatasetField::allowedFieldTypes());
@@ -23,7 +23,7 @@ class BaseTestCase extends TestCase
             case 'int32': $fieldValue = 2846; break;
             case 'int64': $fieldValue = 2847; break;
         }
-        return DatasetField::create($fieldName, $fieldType, $fieldValue);
+        return DatasetField::create($fieldName, $fieldType, $fieldValue, $minOccurs, $required);
     }
 
     public function createManyDatasetFields(int $numberOfDataset)

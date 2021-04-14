@@ -137,6 +137,23 @@ EOT;
     }
 
     /** @test */
+    public function adding_nillable_dataset_is_ok()
+    {
+        $expectedTableName = 'truck';
+        $datasetField = $this->createDatasetField(0, false);
+        $expectedSchema = <<<EOT
+<xs:element name="$expectedTableName">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="{$datasetField->fieldName()}" type="{$datasetField->fieldType()}" minOccurs="{$datasetField->fieldMinOccurs()}" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+EOT;
+        $this->assertEquals($expectedSchema, DatasetTable::create($expectedTableName)->addDatasetField($datasetField)->renderSchema());
+    }
+
+    /** @test */
     public function table_name_is_ok()
     {
         $datasetTable = DatasetTable::create('user');

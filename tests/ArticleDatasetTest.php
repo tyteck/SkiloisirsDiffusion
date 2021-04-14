@@ -29,15 +29,15 @@ class ArticleDatasetTest extends BaseTestCase
 <xs:element name="code_article" type="xs:string" minOccurs="0"/>
 <xs:element name="quantite" type="xs:int" minOccurs="0"/>
 <xs:element name="articles_prix" type="xs:decimal" minOccurs="0"/>
-<xs:element name="code_parent" type="xs:string" minOccurs="0"/>
-<xs:element name="acompte" type="xs:decimal" minOccurs="0"/>
-<xs:element name="subvention_montant" type="xs:string" minOccurs="0"/>
+<xs:element name="code_parent" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="acompte" type="xs:decimal" minOccurs="0" nillable="true"/>
+<xs:element name="subvention_montant" type="xs:string" minOccurs="0" nillable="true"/>
 <xs:element name="subvention_payeur" type="xs:string" minOccurs="0"/>
 <xs:element name="remise" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nature_client_id" type="xs:string" minOccurs="0"/>
-<xs:element name="categorie_place_code" type="xs:string" minOccurs="0"/>
-<xs:element name="libelle_article" type="xs:string" minOccurs="0"/>
-<xs:element name="famille_article" type="xs:string" minOccurs="0"/>
+<xs:element name="nature_client_id" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="categorie_place_code" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="libelle_article" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="famille_article" type="xs:string" minOccurs="0" nillable="true"/>
 <xs:element name="skier_index" type="xs:int" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>

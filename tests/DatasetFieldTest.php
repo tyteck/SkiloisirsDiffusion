@@ -169,7 +169,7 @@ class DatasetFieldTest extends BaseTestCase
     {
         $datasetField = DatasetField::create('field1', 'string', '', 0, false);
         $this->assertEquals(
-            '<xs:element name="field1" type="xs:string" minOccurs="0"/>',
+            '<xs:element name="field1" type="xs:string" minOccurs="0" nillable="true"/>',
             $datasetField->renderSchema()
         );
         $this->assertEquals('<field1></field1>', $datasetField->renderBody());
@@ -180,7 +180,7 @@ class DatasetFieldTest extends BaseTestCase
     {
         $datasetField = DatasetField::create('field1', 'string', null, 0, false);
         $this->assertEquals(
-            '<xs:element name="field1" type="xs:string" minOccurs="0"/>',
+            '<xs:element name="field1" type="xs:string" minOccurs="0" nillable="true"/>',
             $datasetField->renderSchema()
         );
         $this->assertEquals('<field1></field1>', $datasetField->renderBody());

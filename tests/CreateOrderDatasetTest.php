@@ -153,19 +153,19 @@ EOT;
 <xs:sequence>
 <xs:element name="ce_id" type="xs:string" minOccurs="0"/>
 <xs:element name="ce_societe" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_civilite" type="xs:string" minOccurs="0"/>
+<xs:element name="ce_civilite" type="xs:string" minOccurs="0" nillable="true"/>
 <xs:element name="ce_nom" type="xs:string" minOccurs="0"/>
 <xs:element name="ce_prenom" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_telephone" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_portable" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_fax" type="xs:string" minOccurs="0"/>
+<xs:element name="ce_telephone" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="ce_portable" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="ce_fax" type="xs:string" minOccurs="0" nillable="true"/>
 <xs:element name="ce_email" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_adresse_nom" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_adresse1" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_adresse2" type="xs:string" minOccurs="0"/>
+<xs:element name="ce_adresse_nom" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="ce_adresse1" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="ce_adresse2" type="xs:string" minOccurs="0" nillable="true"/>
 <xs:element name="ce_codepostal" type="xs:string" minOccurs="0"/>
 <xs:element name="ce_ville" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_pays" type="xs:string" minOccurs="0"/>
+<xs:element name="ce_pays" type="xs:string" minOccurs="0" nillable="true"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
@@ -173,13 +173,13 @@ EOT;
 <xs:complexType>
 <xs:sequence>
 <xs:element name="id_partenaire" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_societe" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_civilite" type="xs:string" minOccurs="0"/>
+<xs:element name="utilisateurs_societe" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="utilisateurs_civilite" type="xs:string" minOccurs="0" nillable="true"/>
 <xs:element name="utilisateurs_nom" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_prenom" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_telephone" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_portable" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_fax" type="xs:string" minOccurs="0"/>
+<xs:element name="utilisateurs_fax" type="xs:string" minOccurs="0" nillable="true"/>
 <xs:element name="utilisateurs_email" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_adresse_nom" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_adresse1" type="xs:string" minOccurs="0"/>
@@ -199,23 +199,23 @@ EOT;
 <xs:element name="mode_paiement" type="xs:string" minOccurs="0"/>
 <xs:element name="prix_livraison" type="xs:decimal" minOccurs="0"/>
 <xs:element name="code_livraison" type="xs:string" minOccurs="0"/>
-<xs:element name="commentaire" type="xs:string" minOccurs="0"/>
+<xs:element name="commentaire" type="xs:string" minOccurs="0" nillable="true"/>
 <xs:element name="livraison_adresse_societe" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_adresse_nom" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_adresse1" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_adresse2" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_codepostal" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_ville" type="xs:string" minOccurs="0"/>
-<xs:element name="livraison_pays" type="xs:string" minOccurs="0"/>
-<xs:element name="url_retour" type="xs:string" minOccurs="0"/>
-<xs:element name="url_retour_ok" type="xs:string" minOccurs="0"/>
-<xs:element name="url_retour_err" type="xs:string" minOccurs="0"/>
-<xs:element name="acompte" type="xs:decimal" minOccurs="0"/>
-<xs:element name="numero_commande_ticketnet" type="xs:string" minOccurs="0"/>
-<xs:element name="frais_gestion_payeur" type="xs:string" minOccurs="0"/>
-<xs:element name="frais_port_payeur" type="xs:string" minOccurs="0"/>
-<xs:element name="remise_frais_port" type="xs:decimal" minOccurs="0"/>
-<xs:element name="numero_commande_distributeur" type="xs:string" minOccurs="0"/>
+<xs:element name="livraison_pays" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="url_retour" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="url_retour_ok" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="url_retour_err" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="acompte" type="xs:decimal" minOccurs="0" nillable="true"/>
+<xs:element name="numero_commande_ticketnet" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="frais_gestion_payeur" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="frais_port_payeur" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="remise_frais_port" type="xs:decimal" minOccurs="0" nillable="true"/>
+<xs:element name="numero_commande_distributeur" type="xs:string" minOccurs="0" nillable="true"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>

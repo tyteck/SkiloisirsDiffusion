@@ -31,13 +31,13 @@ class UserDatasetTest extends BaseTestCase
 <xs:complexType>
 <xs:sequence>
 <xs:element name="id_partenaire" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_societe" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_civilite" type="xs:string" minOccurs="0"/>
+<xs:element name="utilisateurs_societe" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="utilisateurs_civilite" type="xs:string" minOccurs="0" nillable="true"/>
 <xs:element name="utilisateurs_nom" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_prenom" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_telephone" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_portable" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_fax" type="xs:string" minOccurs="0"/>
+<xs:element name="utilisateurs_fax" type="xs:string" minOccurs="0" nillable="true"/>
 <xs:element name="utilisateurs_email" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_adresse_nom" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_adresse1" type="xs:string" minOccurs="0"/>

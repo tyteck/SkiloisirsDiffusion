@@ -91,7 +91,10 @@ class DatasetField
 
     public function renderSchema()
     {
-        return '<xs:element name="' . $this->fieldName() . '" type="' . $this->fieldType() . '" minOccurs="' . $this->fieldMinOccurs() . '"/>';
+        $result = "<xs:element name=\"{$this->fieldName()}\" type=\"{$this->fieldType()}\" minOccurs=\"{$this->fieldMinOccurs()}\"";
+        $result .= $this->fieldRequired() === false ? ' nillable="true"' : '';
+        $result .= '/>';
+        return $result;
     }
 
     public function renderBody()

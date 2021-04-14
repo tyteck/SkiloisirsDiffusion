@@ -134,7 +134,7 @@ class SkiLoisirsDiffusion
         $result = $this->soapClient->INSERTION_LIGNE_COMMANDE($arrayParams);
         $body = $this->toSimpleXml($result->INSERTION_LIGNE_COMMANDEResult->any);
 
-        dd($body);
+        dump($body);
         if ($body->NewDataSet->Commande->statut == 'false') {
             throw new SLDGenericException($body->NewDataSet->Commande->message_erreur);
         }

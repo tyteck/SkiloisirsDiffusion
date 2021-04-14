@@ -50,13 +50,13 @@ class FraisGestionDatasetTest extends BaseTestCase
 <xs:element name="nb_cartes_cadeaux" type="xs:int" minOccurs="0"/>
 <xs:element name="prix_carte_cadeau" type="xs:decimal" minOccurs="0"/>
 <xs:element name="remise_cartes_cadeaux" type="xs:decimal" minOccurs="0"/>
-<xs:element name="montant_plafond_commande" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_frais_gestion" type="xs:int" minOccurs="0"/>
-<xs:element name="prix_frais_gestion" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_frais_demat" type="xs:int" minOccurs="0"/>
-<xs:element name="prix_frais_demat" type="xs:decimal" minOccurs="0"/>
-<xs:element name="nb_frais_papier" type="xs:int" minOccurs="0"/>
-<xs:element name="prix_frais_papier" type="xs:decimal" minOccurs="0"/>
+<xs:element name="montant_plafond_commande" type="xs:decimal" minOccurs="0" nillable="true"/>
+<xs:element name="nb_frais_gestion" type="xs:int" minOccurs="0" nillable="true"/>
+<xs:element name="prix_frais_gestion" type="xs:decimal" minOccurs="0" nillable="true"/>
+<xs:element name="nb_frais_demat" type="xs:int" minOccurs="0" nillable="true"/>
+<xs:element name="prix_frais_demat" type="xs:decimal" minOccurs="0" nillable="true"/>
+<xs:element name="nb_frais_papier" type="xs:int" minOccurs="0" nillable="true"/>
+<xs:element name="prix_frais_papier" type="xs:decimal" minOccurs="0" nillable="true"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>

@@ -36,23 +36,23 @@ class OrderDatasetTest extends BaseTestCase
 <xs:element name="mode_paiement" type="xs:string" minOccurs="0"/>
 <xs:element name="prix_livraison" type="xs:decimal" minOccurs="0"/>
 <xs:element name="code_livraison" type="xs:string" minOccurs="0"/>
-<xs:element name="commentaire" type="xs:string" minOccurs="0"/>
+<xs:element name="commentaire" type="xs:string" minOccurs="0" nillable="true"/>
 <xs:element name="livraison_adresse_societe" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_adresse_nom" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_adresse1" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_adresse2" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_codepostal" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_ville" type="xs:string" minOccurs="0"/>
-<xs:element name="livraison_pays" type="xs:string" minOccurs="0"/>
-<xs:element name="url_retour" type="xs:string" minOccurs="0"/>
-<xs:element name="url_retour_ok" type="xs:string" minOccurs="0"/>
-<xs:element name="url_retour_err" type="xs:string" minOccurs="0"/>
-<xs:element name="acompte" type="xs:decimal" minOccurs="0"/>
-<xs:element name="numero_commande_ticketnet" type="xs:string" minOccurs="0"/>
-<xs:element name="frais_gestion_payeur" type="xs:string" minOccurs="0"/>
-<xs:element name="frais_port_payeur" type="xs:string" minOccurs="0"/>
-<xs:element name="remise_frais_port" type="xs:decimal" minOccurs="0"/>
-<xs:element name="numero_commande_distributeur" type="xs:string" minOccurs="0"/>
+<xs:element name="livraison_pays" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="url_retour" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="url_retour_ok" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="url_retour_err" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="acompte" type="xs:decimal" minOccurs="0" nillable="true"/>
+<xs:element name="numero_commande_ticketnet" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="frais_gestion_payeur" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="frais_port_payeur" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="remise_frais_port" type="xs:decimal" minOccurs="0" nillable="true"/>
+<xs:element name="numero_commande_distributeur" type="xs:string" minOccurs="0" nillable="true"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
