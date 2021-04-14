@@ -47,9 +47,16 @@ class InsertOrderLineDatasetTest extends BaseTestCase
 
         $this->orderNumber = 24463; //SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))->CREATION_COMMANDE($this->orderDataset);
 
-        $this->article = ArticleDatatype::create(ArticleFactory::create());
+        $this->article = ArticleDatatype::create(ArticleFactory::create(['code_article' => 'ALHAMBRA', 'articles_prix' => 6.5]));
         $this->ebillet = EbilletDatatype::create(EbilletFactory::create());
-        $this->fraisGestion = FraisGestionDatatype::create(FraisGestionFactory::create());
+        $this->fraisGestion = FraisGestionDatatype::create(FraisGestionFactory::create(
+            [
+                'nb_ebc' => 1,
+                'prix_ebc' => 0.5,
+                'nb_frais_gestion' => 1,
+                'prix_frais_gestion' => 0.5
+            ]
+        ));
 
         /** creating order */
 
