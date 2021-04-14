@@ -37,7 +37,7 @@ class ArticleFactory
             'quantite' => $attributes['quantite'] ?? 1,
             'articles_prix' => $attributes['articles_prix'] ?? $faker->randomFloat(2, 0, 30),
             'code_parent' => $attributes['code_parent'] ?? null,
-            'acompte' => $attributes['acompte'] ?? null,
+            'acompte' => $attributes['acompte'] ?? 0.0,
             'subvention_montant' => $attributes['subvention_montant'] ?? null,
             'subvention_payeur' => $attributes['subvention_payeur'] ?? $faker->word,
             'remise' => $attributes['remise'] ?? 3.0,
