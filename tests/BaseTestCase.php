@@ -15,13 +15,13 @@ class BaseTestCase extends TestCase
     {
         $fieldName = 'field' . rand(1, 1000);
         $fieldTypes = array_keys(DatasetField::allowedFieldTypes());
-        $fieldType = $fieldTypes[rand(0, (count($fieldTypes) - 1))];
+        $fieldType = $fieldTypes[rand(0, (count($fieldTypes) - 1))]; 
         switch ($fieldType) {
-            case 'string': $fieldValue = 'lorem ipsum'; break;
-            case 'dateTime': $fieldValue = Carbon::now()->subDay(); break;
-            case 'decimal': $fieldValue = 29.90; break;
-            case 'int32': $fieldValue = 2846; break;
-            case 'int64': $fieldValue = 2847; break;
+            case 'string': $fieldValue = $required ? 'lorem ipsum' : null ; break;
+            case 'dateTime': $fieldValue = $required ? Carbon::now()->subDay() : null ; break;
+            case 'decimal': $fieldValue = $required ? 29.90 : null; break;
+            case 'int32': $fieldValue = $required ? 2846 : null;  break;
+            case 'int64': $fieldValue = $required ? 2847 : null;  break;
         }
         return DatasetField::create($fieldName, $fieldType, $fieldValue, $minOccurs, $required);
     }

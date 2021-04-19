@@ -172,7 +172,29 @@ class DatasetFieldTest extends BaseTestCase
             '<xs:element name="field1" type="xs:string" minOccurs="0" nillable="true"/>',
             $datasetField->renderSchema()
         );
-        $this->assertEquals('<field1 xsi:nil="true"></field1>', $datasetField->renderBody());
+        $this->assertEquals('<field1 xsi:nil="true"/>', $datasetField->renderBody());
+    }
+
+    /** @test */
+    public function not_required_with_0_should_be_ok()
+    {
+        $datasetField = DatasetField::create('field1', 'string', 0, 0, false);
+        $this->assertEquals(
+            '<xs:element name="field1" type="xs:string" minOccurs="0" nillable="true"/>',
+            $datasetField->renderSchema()
+        );
+        $this->assertEquals('<field1>0</field1>', $datasetField->renderBody());
+    }
+
+    /** @test */
+    public function not_required_with_0_dot_0_should_be_ok()
+    {
+        $datasetField = DatasetField::create('field1', 'string', 0.0, 0, false);
+        $this->assertEquals(
+            '<xs:element name="field1" type="xs:string" minOccurs="0" nillable="true"/>',
+            $datasetField->renderSchema()
+        );
+        $this->assertEquals('<field1>0</field1>', $datasetField->renderBody());
     }
 
     /** @test */
@@ -183,6 +205,6 @@ class DatasetFieldTest extends BaseTestCase
             '<xs:element name="field1" type="xs:string" minOccurs="0" nillable="true"/>',
             $datasetField->renderSchema()
         );
-        $this->assertEquals('<field1 xsi:nil="true"></field1>', $datasetField->renderBody());
+        $this->assertEquals('<field1 xsi:nil="true"/>', $datasetField->renderBody());
     }
 }

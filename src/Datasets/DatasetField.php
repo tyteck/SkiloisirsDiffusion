@@ -53,7 +53,7 @@ class DatasetField
         $this->fieldMinOccurs = $fieldMinOccurs;
 
         $this->fieldRequired = $fieldRequired;
-        $this->fieldValue = $fieldValue;
+        $this->fieldValue = strlen($fieldValue) > 0 ? $fieldValue : null;
         if (!$this->isValueMatchingType()) {
             throw new FieldValueDoesNotMatchWithTypeException("Field {$fieldName} is expecting type {$fieldType} and we got {$fieldValue}.");
         }
@@ -100,7 +100,9 @@ class DatasetField
     public function renderBody(): string
     {
         $result = "<{$this->fieldName()}";
-        $result .= $this->fieldRequired() === false ? ' xsi:nil="true"' : '';
+        if ($this->fieldRequired() === false && $this->fieldValue === null) {
+            return $result .= ' xsi:nil="true"/>';
+        }
         $result .= ">{$this->fieldValue}</{$this->fieldName()}>";
         return $result;
     }

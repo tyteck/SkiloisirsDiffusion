@@ -155,7 +155,7 @@ EOT;
 
         $expectedBody = <<<EOT
 <{$expectedTableName} diffgr:id="{$expectedTableName}1" msdata:rowOrder="0">
-<{$datasetField->fieldName()} xsi:nil="true">{$datasetField->fieldValue()}</{$datasetField->fieldName()}>
+<{$datasetField->fieldName()} xsi:nil="true"/>
 </{$expectedTableName}>
 EOT;
         $this->assertEquals($expectedBody, $factory->renderBody());
