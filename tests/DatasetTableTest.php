@@ -150,7 +150,15 @@ EOT;
 </xs:complexType>
 </xs:element>
 EOT;
-        $this->assertEquals($expectedSchema, DatasetTable::create($expectedTableName)->addDatasetField($datasetField)->renderSchema());
+        $factory = DatasetTable::create($expectedTableName)->addDatasetField($datasetField);
+        $this->assertEquals($expectedSchema, $factory->renderSchema());
+
+        $expectedBody = <<<EOT
+<{$expectedTableName} diffgr:id="{$expectedTableName}1" msdata:rowOrder="0">
+<{$datasetField->fieldName()} xsi:nil="true">{$datasetField->fieldValue()}</{$datasetField->fieldName()}>
+</{$expectedTableName}>
+EOT;
+        $this->assertEquals($expectedBody, $factory->renderBody());
     }
 
     /** @test */

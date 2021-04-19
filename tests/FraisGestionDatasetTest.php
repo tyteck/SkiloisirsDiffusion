@@ -90,13 +90,13 @@ EOT;
 <nb_cartes_cadeaux>{$this->fraisGestion->nb_cartes_cadeaux}</nb_cartes_cadeaux>
 <prix_carte_cadeau>{$this->fraisGestion->prix_carte_cadeau}</prix_carte_cadeau>
 <remise_cartes_cadeaux>{$this->fraisGestion->remise_cartes_cadeaux}</remise_cartes_cadeaux>
-<montant_plafond_commande>{$this->fraisGestion->montant_plafond_commande}</montant_plafond_commande>
-<nb_frais_gestion>{$this->fraisGestion->nb_frais_gestion}</nb_frais_gestion>
-<prix_frais_gestion>{$this->fraisGestion->prix_frais_gestion}</prix_frais_gestion>
-<nb_frais_demat>{$this->fraisGestion->nb_frais_demat}</nb_frais_demat>
-<prix_frais_demat>{$this->fraisGestion->prix_frais_demat}</prix_frais_demat>
-<nb_frais_papier>{$this->fraisGestion->nb_frais_papier}</nb_frais_papier>
-<prix_frais_papier>{$this->fraisGestion->prix_frais_papier}</prix_frais_papier>
+<montant_plafond_commande xsi:nil="true">{$this->fraisGestion->montant_plafond_commande}</montant_plafond_commande>
+<nb_frais_gestion xsi:nil="true">{$this->fraisGestion->nb_frais_gestion}</nb_frais_gestion>
+<prix_frais_gestion xsi:nil="true">{$this->fraisGestion->prix_frais_gestion}</prix_frais_gestion>
+<nb_frais_demat xsi:nil="true">{$this->fraisGestion->nb_frais_demat}</nb_frais_demat>
+<prix_frais_demat xsi:nil="true">{$this->fraisGestion->prix_frais_demat}</prix_frais_demat>
+<nb_frais_papier xsi:nil="true">{$this->fraisGestion->nb_frais_papier}</nb_frais_papier>
+<prix_frais_papier xsi:nil="true">{$this->fraisGestion->prix_frais_papier}</prix_frais_papier>
 </frais_gestion>
 EOT;
         $this->assertEquals($expectedBody, $this->fraisGestionDatasetTable->renderBody());

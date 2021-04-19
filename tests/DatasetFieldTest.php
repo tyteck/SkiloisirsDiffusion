@@ -172,7 +172,7 @@ class DatasetFieldTest extends BaseTestCase
             '<xs:element name="field1" type="xs:string" minOccurs="0" nillable="true"/>',
             $datasetField->renderSchema()
         );
-        $this->assertEquals('<field1></field1>', $datasetField->renderBody());
+        $this->assertEquals('<field1 xsi:nil="true"></field1>', $datasetField->renderBody());
     }
 
     /** @test */
@@ -183,6 +183,6 @@ class DatasetFieldTest extends BaseTestCase
             '<xs:element name="field1" type="xs:string" minOccurs="0" nillable="true"/>',
             $datasetField->renderSchema()
         );
-        $this->assertEquals('<field1></field1>', $datasetField->renderBody());
+        $this->assertEquals('<field1 xsi:nil="true"></field1>', $datasetField->renderBody());
     }
 }

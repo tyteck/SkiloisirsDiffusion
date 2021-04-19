@@ -58,19 +58,19 @@ EOT;
 <ce diffgr:id="ce1" msdata:rowOrder="0">
 <ce_id>{$ce_id}</ce_id>
 <ce_societe>{$ce_societe}</ce_societe>
-<ce_civilite></ce_civilite>
+<ce_civilite xsi:nil="true"></ce_civilite>
 <ce_nom>{$ce_nom}</ce_nom>
 <ce_prenom>{$ce_prenom}</ce_prenom>
-<ce_telephone></ce_telephone>
-<ce_portable></ce_portable>
-<ce_fax></ce_fax>
+<ce_telephone xsi:nil="true"></ce_telephone>
+<ce_portable xsi:nil="true"></ce_portable>
+<ce_fax xsi:nil="true"></ce_fax>
 <ce_email>{$ce_email}</ce_email>
-<ce_adresse_nom></ce_adresse_nom>
-<ce_adresse1></ce_adresse1>
-<ce_adresse2></ce_adresse2>
+<ce_adresse_nom xsi:nil="true"></ce_adresse_nom>
+<ce_adresse1 xsi:nil="true"></ce_adresse1>
+<ce_adresse2 xsi:nil="true"></ce_adresse2>
 <ce_codepostal>{$ce_codepostal}</ce_codepostal>
 <ce_ville>{$ce_ville}</ce_ville>
-<ce_pays></ce_pays>
+<ce_pays xsi:nil="true"></ce_pays>
 </ce>
 EOT;
 

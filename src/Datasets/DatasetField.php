@@ -97,9 +97,12 @@ class DatasetField
         return $result;
     }
 
-    public function renderBody()
+    public function renderBody(): string
     {
-        return "<{$this->fieldName()}>{$this->fieldValue}</{$this->fieldName()}>";
+        $result = "<{$this->fieldName()}";
+        $result .= $this->fieldRequired() === false ? ' xsi:nil="true"' : '';
+        $result .= ">{$this->fieldValue}</{$this->fieldName()}>";
+        return $result;
     }
 
     public function isValueMatchingType(): bool

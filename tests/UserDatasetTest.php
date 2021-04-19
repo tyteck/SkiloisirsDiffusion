@@ -59,13 +59,13 @@ EOT;
         $expectedBody = <<<EOT
 <utilisateur diffgr:id="utilisateur1" msdata:rowOrder="0">
 <id_partenaire>{$this->user->id_partenaire}</id_partenaire>
-<utilisateurs_societe>{$this->user->utilisateurs_societe}</utilisateurs_societe>
-<utilisateurs_civilite>{$this->user->utilisateurs_civilite}</utilisateurs_civilite>
+<utilisateurs_societe xsi:nil="true">{$this->user->utilisateurs_societe}</utilisateurs_societe>
+<utilisateurs_civilite xsi:nil="true">{$this->user->utilisateurs_civilite}</utilisateurs_civilite>
 <utilisateurs_nom>{$this->user->utilisateurs_nom}</utilisateurs_nom>
 <utilisateurs_prenom>{$this->user->utilisateurs_prenom}</utilisateurs_prenom>
 <utilisateurs_telephone>{$this->user->utilisateurs_telephone}</utilisateurs_telephone>
 <utilisateurs_portable>{$this->user->utilisateurs_portable}</utilisateurs_portable>
-<utilisateurs_fax>{$this->user->utilisateurs_fax}</utilisateurs_fax>
+<utilisateurs_fax xsi:nil="true">{$this->user->utilisateurs_fax}</utilisateurs_fax>
 <utilisateurs_email>{$this->user->utilisateurs_email}</utilisateurs_email>
 <utilisateurs_adresse_nom>{$this->user->utilisateurs_adresse_nom}</utilisateurs_adresse_nom>
 <utilisateurs_adresse1>{$this->user->utilisateurs_adresse1}</utilisateurs_adresse1>

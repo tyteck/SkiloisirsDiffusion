@@ -32,7 +32,8 @@ class CreateOrderDataset extends MakeDataset
         $this->ceDataSetTable = CeDatasetTable::prepare()->withConfig();
         $this->userDatasetTable = UserDatasetTable::prepare()->with($this->user);
         $this->orderDataSetTable = OrderDatasetTable::prepare()->with($this->order);
-        $this->signatureDataSetTable = SignatureDatasetTable::prepare()->with($this->order, $this->user, sldconfig('clef_secrete'));
+        $this->signatureDataSetTable = SignatureDatasetTable::prepare()
+            ->with($this->order, $this->user, sldconfig('clef_secrete'));
 
         $this->addDatasetTables(
             [
