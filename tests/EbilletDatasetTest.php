@@ -29,7 +29,7 @@ class EbilletDatasetTest extends BaseTestCase
 <xs:element name="date" type="xs:string" minOccurs="0"/>
 <xs:element name="date_naissance" type="xs:string" minOccurs="0"/>
 <xs:element name="keycard" type="xs:string" minOccurs="0"/>
-<xs:element name="skier_index" type="xs:int" minOccurs="0"/>
+<xs:element name="skier_index" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>

@@ -78,7 +78,7 @@ class DatasetFieldTest extends BaseTestCase
     public function int32_is_ok()
     {
         $expectedFieldName = 'field1';
-        $expectedFieldType = 'xs:int';
+        $expectedFieldType = 'xs:string';
         $expectedValue = 1;
         $expectedMinOccurs = 0;
         $datasetField = DatasetField::create($expectedFieldName, 'int32', $expectedValue, $expectedMinOccurs);
@@ -92,7 +92,7 @@ class DatasetFieldTest extends BaseTestCase
     public function int64_is_ok()
     {
         $expectedFieldName = 'field1';
-        $expectedFieldType = 'xs:long';
+        $expectedFieldType = 'xs:string';
         $expectedValue = 1;
         $expectedMinOccurs = 0;
         $datasetField = DatasetField::create($expectedFieldName, 'int64', $expectedValue, $expectedMinOccurs);
@@ -106,7 +106,7 @@ class DatasetFieldTest extends BaseTestCase
     public function decimal_is_ok()
     {
         $expectedFieldName = 'field1';
-        $expectedFieldType = 'xs:decimal';
+        $expectedFieldType = 'xs:string';
         $expectedValue = 29.99;
         $datasetField = DatasetField::create($expectedFieldName, 'decimal', $expectedValue);
         $this->assertEquals(
@@ -123,7 +123,7 @@ class DatasetFieldTest extends BaseTestCase
     public function date_time_is_ok()
     {
         $expectedFieldName = 'field1';
-        $expectedFieldType = 'xs:dateTime';
+        $expectedFieldType = 'xs:string';
         $expectedValue = '2015-01-31T08:37:59';
         $datasetField = DatasetField::create($expectedFieldName, 'dateTime', '2015-01-31 08:37:59');
         $this->assertEquals(
@@ -180,10 +180,10 @@ class DatasetFieldTest extends BaseTestCase
     {
         $datasetField = DatasetField::create('field1', 'decimal', null, 0, false);
         $this->assertEquals(
-            '<xs:element name="field1" type="xs:decimal" minOccurs="0" nillable="true"/>',
+            '<xs:element name="field1" type="xs:string" minOccurs="0"/>',
             $datasetField->renderSchema()
         );
-        $this->assertEquals('<field1 xsi:nil="true"></field1>', $datasetField->renderBody());
+        $this->assertEquals('<field1></field1>', $datasetField->renderBody());
     }
 
     /** @test */
@@ -194,9 +194,6 @@ class DatasetFieldTest extends BaseTestCase
             '<xs:element name="field1" type="xs:string" minOccurs="0"/>',
             $datasetField->renderSchema()
         );
-        $this->assertEquals(
-            '<field1 xsi:nil="true"></field1>',
-            $datasetField->renderBody()
-        );
+        $this->assertEquals('<field1></field1>', $datasetField->renderBody());
     }
 }

@@ -29,10 +29,10 @@ class DatasetField
     /** @var array $allowedFieldTypes */
     protected static $allowedFieldTypes = [
         'string' => 'xs:string',
-        'decimal' => 'xs:string', //'xs:decimal',
-        'dateTime' => 'xs:string', //'xs:dateTime',
-        'int32' => 'xs:string', //'xs:int',
-        'int64' => 'xs:string', //'xs:long',
+        'decimal' => 'xs:decimal',
+        'dateTime' => 'xs:dateTime',
+        'int32' => 'xs:int',
+        'int64' => 'xs:long',
     ];
 
     private function __construct(string $fieldName, string $fieldType, $fieldValue, int $fieldMinOccurs = 0, bool $fieldRequired = true)
@@ -57,6 +57,11 @@ class DatasetField
         if (!$this->isValueMatchingType()) {
             throw new FieldValueDoesNotMatchWithTypeException("Field {$fieldName} is expecting type {$fieldType} and we got {$fieldValue}.");
         }
+        /**
+         * I spent a lot of time with dataset field types problems. And all were solved by forcing the type to
+         * 'xs:string'. It's confirmed with the SLD team. They are checking type on their side. So ...
+         */
+        $this->fieldType = 'xs:string';
     }
 
     public static function create(string $fieldName, string $fieldType, $fieldValue, int $fieldMinOccurs = 0, bool $fieldRequired = true)
@@ -126,6 +131,8 @@ class DatasetField
         if ($this->fieldType() == 'xs:dateTime') {
             try {
                 $isItADate = Carbon::parse($this->fieldValue);
+
+                $this->fieldType = 'xs:string';
             } catch (InvalidFormatException $exception) {
                 return false;
             }

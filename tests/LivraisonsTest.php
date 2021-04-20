@@ -15,7 +15,6 @@ class LivraisonsTest extends BaseTestCase
     public function livraisons_is_working_properly()
     {
         $result = Livraisons::init(sldconfig('sld_domain_url'))->fromRemote()->deliveryModes();
-        //dump($result);
         $this->assertIsArray($result);
         $this->assertGreaterThan(0, count($result));
     }

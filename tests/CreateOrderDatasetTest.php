@@ -78,29 +78,29 @@ class CreateOrderDatasetTest extends BaseTestCase
 <ce diffgr:id="ce1" msdata:rowOrder="0">
 <ce_id>{$ce_id}</ce_id>
 <ce_societe>{$ce_societe}</ce_societe>
-<ce_civilite xsi:nil="true"></ce_civilite>
+<ce_civilite></ce_civilite>
 <ce_nom>{$ce_nom}</ce_nom>
 <ce_prenom>{$ce_prenom}</ce_prenom>
-<ce_telephone xsi:nil="true"></ce_telephone>
-<ce_portable xsi:nil="true"></ce_portable>
-<ce_fax xsi:nil="true"></ce_fax>
+<ce_telephone></ce_telephone>
+<ce_portable></ce_portable>
+<ce_fax></ce_fax>
 <ce_email>{$ce_email}</ce_email>
-<ce_adresse_nom xsi:nil="true"></ce_adresse_nom>
-<ce_adresse1 xsi:nil="true"></ce_adresse1>
-<ce_adresse2 xsi:nil="true"></ce_adresse2>
+<ce_adresse_nom></ce_adresse_nom>
+<ce_adresse1></ce_adresse1>
+<ce_adresse2></ce_adresse2>
 <ce_codepostal>{$ce_codepostal}</ce_codepostal>
 <ce_ville>{$ce_ville}</ce_ville>
-<ce_pays xsi:nil="true"></ce_pays>
+<ce_pays></ce_pays>
 </ce>
 <utilisateur diffgr:id="utilisateur1" msdata:rowOrder="1">
 <id_partenaire>{$this->user->id_partenaire}</id_partenaire>
-<utilisateurs_societe xsi:nil="true">{$this->user->utilisateurs_societe}</utilisateurs_societe>
-<utilisateurs_civilite xsi:nil="true">{$this->user->utilisateurs_civilite}</utilisateurs_civilite>
+<utilisateurs_societe>{$this->user->utilisateurs_societe}</utilisateurs_societe>
+<utilisateurs_civilite>{$this->user->utilisateurs_civilite}</utilisateurs_civilite>
 <utilisateurs_nom>{$this->user->utilisateurs_nom}</utilisateurs_nom>
 <utilisateurs_prenom>{$this->user->utilisateurs_prenom}</utilisateurs_prenom>
 <utilisateurs_telephone>{$this->user->utilisateurs_telephone}</utilisateurs_telephone>
 <utilisateurs_portable>{$this->user->utilisateurs_portable}</utilisateurs_portable>
-<utilisateurs_fax xsi:nil="true">{$this->user->utilisateurs_fax}</utilisateurs_fax>
+<utilisateurs_fax>{$this->user->utilisateurs_fax}</utilisateurs_fax>
 <utilisateurs_email>{$this->user->utilisateurs_email}</utilisateurs_email>
 <utilisateurs_adresse_nom>{$this->user->utilisateurs_adresse_nom}</utilisateurs_adresse_nom>
 <utilisateurs_adresse1>{$this->user->utilisateurs_adresse1}</utilisateurs_adresse1>
@@ -116,23 +116,23 @@ class CreateOrderDatasetTest extends BaseTestCase
 <mode_paiement>{$this->order->mode_paiement}</mode_paiement>
 <prix_livraison>{$this->order->prix_livraison}</prix_livraison>
 <code_livraison>{$this->order->code_livraison}</code_livraison>
-<commentaire xsi:nil="true">{$this->order->commentaire}</commentaire>
+<commentaire>{$this->order->commentaire}</commentaire>
 <livraison_adresse_societe>{$this->order->livraison_adresse_societe}</livraison_adresse_societe>
 <livraison_adresse_nom>{$this->order->livraison_adresse_nom}</livraison_adresse_nom>
 <livraison_adresse1>{$this->order->livraison_adresse1}</livraison_adresse1>
 <livraison_adresse2>{$this->order->livraison_adresse2}</livraison_adresse2>
 <livraison_codepostal>{$this->order->livraison_codepostal}</livraison_codepostal>
 <livraison_ville>{$this->order->livraison_ville}</livraison_ville>
-<livraison_pays xsi:nil="true">{$this->order->livraison_pays}</livraison_pays>
-<url_retour xsi:nil="true">{$this->order->url_retour}</url_retour>
-<url_retour_ok xsi:nil="true">{$this->order->url_retour_ok}</url_retour_ok>
-<url_retour_err xsi:nil="true">{$this->order->url_retour_err}</url_retour_err>
-<acompte xsi:nil="true">{$this->order->acompte}</acompte>
-<numero_commande_ticketnet xsi:nil="true">{$this->order->numero_commande_ticketnet}</numero_commande_ticketnet>
-<frais_gestion_payeur xsi:nil="true">{$this->order->frais_gestion_payeur}</frais_gestion_payeur>
-<frais_port_payeur xsi:nil="true">{$this->order->frais_port_payeur}</frais_port_payeur>
-<remise_frais_port xsi:nil="true">{$this->order->remise_frais_port}</remise_frais_port>
-<numero_commande_distributeur xsi:nil="true">{$this->order->numero_commande_distributeur}</numero_commande_distributeur>
+<livraison_pays>{$this->order->livraison_pays}</livraison_pays>
+<url_retour>{$this->order->url_retour}</url_retour>
+<url_retour_ok>{$this->order->url_retour_ok}</url_retour_ok>
+<url_retour_err>{$this->order->url_retour_err}</url_retour_err>
+<acompte>{$this->order->acompte}</acompte>
+<numero_commande_ticketnet>{$this->order->numero_commande_ticketnet}</numero_commande_ticketnet>
+<frais_gestion_payeur>{$this->order->frais_gestion_payeur}</frais_gestion_payeur>
+<frais_port_payeur>{$this->order->frais_port_payeur}</frais_port_payeur>
+<remise_frais_port>{$this->order->remise_frais_port}</remise_frais_port>
+<numero_commande_distributeur>{$this->order->numero_commande_distributeur}</numero_commande_distributeur>
 </commande>
 <signature diffgr:id="signature1" msdata:rowOrder="3">
 <signature>{$this->expectedSignature}</signature>
@@ -154,19 +154,19 @@ EOT;
 <xs:sequence>
 <xs:element name="ce_id" type="xs:string" minOccurs="0"/>
 <xs:element name="ce_societe" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_civilite" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="ce_civilite" type="xs:string" minOccurs="0"/>
 <xs:element name="ce_nom" type="xs:string" minOccurs="0"/>
 <xs:element name="ce_prenom" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_telephone" type="xs:string" minOccurs="0" nillable="true"/>
-<xs:element name="ce_portable" type="xs:string" minOccurs="0" nillable="true"/>
-<xs:element name="ce_fax" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="ce_telephone" type="xs:string" minOccurs="0"/>
+<xs:element name="ce_portable" type="xs:string" minOccurs="0"/>
+<xs:element name="ce_fax" type="xs:string" minOccurs="0"/>
 <xs:element name="ce_email" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_adresse_nom" type="xs:string" minOccurs="0" nillable="true"/>
-<xs:element name="ce_adresse1" type="xs:string" minOccurs="0" nillable="true"/>
-<xs:element name="ce_adresse2" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="ce_adresse_nom" type="xs:string" minOccurs="0"/>
+<xs:element name="ce_adresse1" type="xs:string" minOccurs="0"/>
+<xs:element name="ce_adresse2" type="xs:string" minOccurs="0"/>
 <xs:element name="ce_codepostal" type="xs:string" minOccurs="0"/>
 <xs:element name="ce_ville" type="xs:string" minOccurs="0"/>
-<xs:element name="ce_pays" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="ce_pays" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
@@ -174,13 +174,13 @@ EOT;
 <xs:complexType>
 <xs:sequence>
 <xs:element name="id_partenaire" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_societe" type="xs:string" minOccurs="0" nillable="true"/>
-<xs:element name="utilisateurs_civilite" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="utilisateurs_societe" type="xs:string" minOccurs="0"/>
+<xs:element name="utilisateurs_civilite" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_nom" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_prenom" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_telephone" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_portable" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_fax" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="utilisateurs_fax" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_email" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_adresse_nom" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_adresse1" type="xs:string" minOccurs="0"/>
@@ -188,7 +188,7 @@ EOT;
 <xs:element name="utilisateurs_codepostal" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_ville" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_pays" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_date_naissance" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="utilisateurs_date_naissance" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
@@ -198,25 +198,25 @@ EOT;
 <xs:element name="nb_cheques_vacances" type="xs:string" minOccurs="0"/>
 <xs:element name="montant_total_cheques_vacances" type="xs:string" minOccurs="0"/>
 <xs:element name="mode_paiement" type="xs:string" minOccurs="0"/>
-<xs:element name="prix_livraison" type="xs:decimal" minOccurs="0"/>
+<xs:element name="prix_livraison" type="xs:string" minOccurs="0"/>
 <xs:element name="code_livraison" type="xs:string" minOccurs="0"/>
-<xs:element name="commentaire" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="commentaire" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_adresse_societe" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_adresse_nom" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_adresse1" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_adresse2" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_codepostal" type="xs:string" minOccurs="0"/>
 <xs:element name="livraison_ville" type="xs:string" minOccurs="0"/>
-<xs:element name="livraison_pays" type="xs:string" minOccurs="0" nillable="true"/>
-<xs:element name="url_retour" type="xs:string" minOccurs="0" nillable="true"/>
-<xs:element name="url_retour_ok" type="xs:string" minOccurs="0" nillable="true"/>
-<xs:element name="url_retour_err" type="xs:string" minOccurs="0" nillable="true"/>
-<xs:element name="acompte" type="xs:decimal" minOccurs="0" nillable="true"/>
-<xs:element name="numero_commande_ticketnet" type="xs:string" minOccurs="0" nillable="true"/>
-<xs:element name="frais_gestion_payeur" type="xs:string" minOccurs="0" nillable="true"/>
-<xs:element name="frais_port_payeur" type="xs:string" minOccurs="0" nillable="true"/>
-<xs:element name="remise_frais_port" type="xs:decimal" minOccurs="0" nillable="true"/>
-<xs:element name="numero_commande_distributeur" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="livraison_pays" type="xs:string" minOccurs="0"/>
+<xs:element name="url_retour" type="xs:string" minOccurs="0"/>
+<xs:element name="url_retour_ok" type="xs:string" minOccurs="0"/>
+<xs:element name="url_retour_err" type="xs:string" minOccurs="0"/>
+<xs:element name="acompte" type="xs:string" minOccurs="0"/>
+<xs:element name="numero_commande_ticketnet" type="xs:string" minOccurs="0"/>
+<xs:element name="frais_gestion_payeur" type="xs:string" minOccurs="0"/>
+<xs:element name="frais_port_payeur" type="xs:string" minOccurs="0"/>
+<xs:element name="remise_frais_port" type="xs:string" minOccurs="0"/>
+<xs:element name="numero_commande_distributeur" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>

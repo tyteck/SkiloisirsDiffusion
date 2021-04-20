@@ -145,7 +145,7 @@ EOT;
 <xs:element name="$expectedTableName">
 <xs:complexType>
 <xs:sequence>
-<xs:element name="{$datasetField->fieldName()}" type="{$datasetField->fieldType()}" minOccurs="{$datasetField->fieldMinOccurs()}" nillable="true"/>
+<xs:element name="{$datasetField->fieldName()}" type="{$datasetField->fieldType()}" minOccurs="{$datasetField->fieldMinOccurs()}"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
@@ -155,7 +155,7 @@ EOT;
 
         $expectedBody = <<<EOT
 <{$expectedTableName} diffgr:id="{$expectedTableName}1" msdata:rowOrder="0">
-<{$datasetField->fieldName()} xsi:nil="true">{$datasetField->fieldValue()}</{$datasetField->fieldName()}>
+<{$datasetField->fieldName()}>{$datasetField->fieldValue()}</{$datasetField->fieldName()}>
 </{$expectedTableName}>
 EOT;
         $this->assertEquals($expectedBody, $factory->renderBody());

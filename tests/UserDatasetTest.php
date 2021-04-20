@@ -31,13 +31,13 @@ class UserDatasetTest extends BaseTestCase
 <xs:complexType>
 <xs:sequence>
 <xs:element name="id_partenaire" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_societe" type="xs:string" minOccurs="0" nillable="true"/>
-<xs:element name="utilisateurs_civilite" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="utilisateurs_societe" type="xs:string" minOccurs="0"/>
+<xs:element name="utilisateurs_civilite" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_nom" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_prenom" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_telephone" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_portable" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_fax" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="utilisateurs_fax" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_email" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_adresse_nom" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_adresse1" type="xs:string" minOccurs="0"/>
@@ -45,7 +45,7 @@ class UserDatasetTest extends BaseTestCase
 <xs:element name="utilisateurs_codepostal" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_ville" type="xs:string" minOccurs="0"/>
 <xs:element name="utilisateurs_pays" type="xs:string" minOccurs="0"/>
-<xs:element name="utilisateurs_date_naissance" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="utilisateurs_date_naissance" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
@@ -59,13 +59,13 @@ EOT;
         $expectedBody = <<<EOT
 <utilisateur diffgr:id="utilisateur1" msdata:rowOrder="0">
 <id_partenaire>{$this->user->id_partenaire}</id_partenaire>
-<utilisateurs_societe xsi:nil="true">{$this->user->utilisateurs_societe}</utilisateurs_societe>
-<utilisateurs_civilite xsi:nil="true">{$this->user->utilisateurs_civilite}</utilisateurs_civilite>
+<utilisateurs_societe>{$this->user->utilisateurs_societe}</utilisateurs_societe>
+<utilisateurs_civilite>{$this->user->utilisateurs_civilite}</utilisateurs_civilite>
 <utilisateurs_nom>{$this->user->utilisateurs_nom}</utilisateurs_nom>
 <utilisateurs_prenom>{$this->user->utilisateurs_prenom}</utilisateurs_prenom>
 <utilisateurs_telephone>{$this->user->utilisateurs_telephone}</utilisateurs_telephone>
 <utilisateurs_portable>{$this->user->utilisateurs_portable}</utilisateurs_portable>
-<utilisateurs_fax xsi:nil="true">{$this->user->utilisateurs_fax}</utilisateurs_fax>
+<utilisateurs_fax>{$this->user->utilisateurs_fax}</utilisateurs_fax>
 <utilisateurs_email>{$this->user->utilisateurs_email}</utilisateurs_email>
 <utilisateurs_adresse_nom>{$this->user->utilisateurs_adresse_nom}</utilisateurs_adresse_nom>
 <utilisateurs_adresse1>{$this->user->utilisateurs_adresse1}</utilisateurs_adresse1>
