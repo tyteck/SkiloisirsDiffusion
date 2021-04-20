@@ -34,7 +34,7 @@ class UserDatasetTable extends DatasetTable
                 DatasetField::create('utilisateurs_codepostal', 'string', $user->utilisateurs_codepostal),
                 DatasetField::create('utilisateurs_ville', 'string', $user->utilisateurs_ville),
                 DatasetField::create('utilisateurs_pays', 'string', $user->utilisateurs_pays),
-                DatasetField::create('utilisateurs_date_naissance', 'dateTime', $user->utilisateurs_date_naissance),
+                DatasetField::create('utilisateurs_date_naissance', 'dateTime', $user->utilisateurs_date_naissance, 0, false),
             ]
         );
         return $this;

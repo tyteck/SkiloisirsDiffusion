@@ -123,7 +123,7 @@ class SkiLoisirsDiffusion
     /**
      * @return int order number newly created
      */
-    public function INSERTION_LIGNE_COMMANDE(int $orderNumber, InsertOrderLineDataset $insertLineOrder): string
+    public function INSERTION_LIGNE_COMMANDE(int $orderNumber, InsertOrderLineDataset $insertLineOrder): bool
     {
         $arrayParams = [
             'CE_ID' => $this->partenaireId,
@@ -131,16 +131,17 @@ class SkiLoisirsDiffusion
             'DS_DATA' => $insertLineOrder->dataset()
         ];
 
+        dump($arrayParams);
         $result = $this->soapClient->INSERTION_LIGNE_COMMANDE($arrayParams);
         $body = $this->toSimpleXml($result->INSERTION_LIGNE_COMMANDEResult->any);
 
         if ($body->NewDataSet->Commande->statut == 'false') {
-            dump($arrayParams, $body);
-
+            dump($body);
             throw new SLDGenericException($body->NewDataSet->Commande->message_erreur);
         }
 
-        return $body->NewDataSet->Commande->commandes_numero;
+        dump($body);
+        return true;
     }
 
     /**

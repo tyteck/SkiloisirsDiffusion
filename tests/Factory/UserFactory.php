@@ -26,7 +26,7 @@ class UserFactory
             'utilisateurs_codepostal' => $faker->postcode,
             'utilisateurs_ville' => $faker->city,
             'utilisateurs_pays' => 'France',
-            'utilisateurs_date_naissance' => Carbon::now()->subYears(rand(20, 50))->format('Y-m-d\Th:i:s'),
+            'utilisateurs_date_naissance' => null, //Carbon::now()->subYears(rand(20, 50))->format('Y-m-d\Th:i:s'),
         ];
     }
 }

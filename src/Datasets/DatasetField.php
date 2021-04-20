@@ -29,10 +29,10 @@ class DatasetField
     /** @var array $allowedFieldTypes */
     protected static $allowedFieldTypes = [
         'string' => 'xs:string',
-        'decimal' => 'xs:decimal',
-        'dateTime' => 'xs:dateTime',
-        'int32' => 'xs:int',
-        'int64' => 'xs:long',
+        'decimal' => 'xs:string', //'xs:decimal',
+        'dateTime' => 'xs:string', //'xs:dateTime',
+        'int32' => 'xs:string', //'xs:int',
+        'int64' => 'xs:string', //'xs:long',
     ];
 
     private function __construct(string $fieldName, string $fieldType, $fieldValue, int $fieldMinOccurs = 0, bool $fieldRequired = true)
@@ -92,7 +92,7 @@ class DatasetField
     public function renderSchema()
     {
         $result = "<xs:element name=\"{$this->fieldName()}\" type=\"{$this->fieldType()}\" minOccurs=\"{$this->fieldMinOccurs()}\"";
-        $result .= $this->fieldRequired() === false ? ' nillable="true"' : '';
+        //$result .= $this->fieldRequired() === false && $this->fieldType() !== 'xs:string' ? ' nillable="true"' : '';
         $result .= '/>';
         return $result;
     }
@@ -100,7 +100,7 @@ class DatasetField
     public function renderBody(): string
     {
         $result = "<{$this->fieldName()}";
-        $result .= $this->fieldRequired() === false ? ' xsi:nil="true"' : '';
+        //$result .= $this->fieldRequired() === false ? ' xsi:nil="true"' : '';
         $result .= ">{$this->fieldValue}</{$this->fieldName()}>";
         return $result;
     }

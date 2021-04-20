@@ -54,7 +54,7 @@ class UserDatatype
             'utilisateurs_codepostal',
             'utilisateurs_ville',
             'utilisateurs_pays',
-            'utilisateurs_date_naissance',
+            //'utilisateurs_date_naissance',
         ];
         array_map(function ($field) {
             if ($this->$field === null) {

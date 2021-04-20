@@ -39,7 +39,7 @@ class ArticleFactory
             'quantite' => $attributes['quantite'] ?? 1,
             'articles_prix' => (float)$attributes['articles_prix'] ?? $faker->randomFloat(2, 0, 30),
             'code_parent' => $attributes['code_parent'] ?? null,
-            'acompte' => $attributes['acompte'] ?? null,
+            'acompte' => $attributes['acompte'] ?? 0,
             'subvention_montant' => $attributes['subvention_montant'] ?? 0.25,
             'subvention_payeur' => $attributes['subvention_payeur'] ?? $subvention_payeurs[array_rand($subvention_payeurs)],
             'remise' => $attributes['remise'] ?? 3.0,

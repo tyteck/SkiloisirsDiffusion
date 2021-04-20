@@ -41,11 +41,17 @@ class InsertOrderLineDatasetTest extends BaseTestCase
 
         /** creating datatypes to be used */
         $this->user = UserDatatype::create(UserFactory::create());
-        $this->order = OrderDatatype::create(OrderFactory::create());
+        $this->order = OrderDatatype::create(OrderFactory::create(
+            [
+                'code_livraison' => 'LS20G',
+                'prix_livraison' => 3.5,
+            ]
+        ));
 
         $this->orderDataset = CreateOrderDataset::create($this->user, $this->order)->render();
+        $this->orderNumber = SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))->CREATION_COMMANDE($this->orderDataset);
 
-        $this->orderNumber = 24463; //SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))->CREATION_COMMANDE($this->orderDataset);
+        //$this->orderNumber = 24463;
 
         $this->article = ArticleDatatype::create(ArticleFactory::create(['code_article' => 'ALHAMBRA', 'articles_prix' => 6.5]));
         $this->ebillet = EbilletDatatype::create(EbilletFactory::create());
@@ -80,8 +86,8 @@ class InsertOrderLineDatasetTest extends BaseTestCase
     /** @test */
     public function insertion_ligne_commande_is_ok()
     {
-        SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))
-            ->INSERTION_LIGNE_COMMANDE($this->orderNumber, $this->insertOrderLineDataset);
+        $this->assertTrue(SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))
+            ->INSERTION_LIGNE_COMMANDE($this->orderNumber, $this->insertOrderLineDataset));
     }
 
     protected function expectedBody(): string
