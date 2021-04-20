@@ -109,7 +109,7 @@ class SkiLoisirsDiffusion
             'DS_DATA' => $createOrderDataset->dataset()
         ];
 
-        dump($arrayParams);
+        //dump($arrayParams);
         $result = $this->soapClient->CREATION_COMMANDE($arrayParams);
         $body = $this->toSimpleXml($result->CREATION_COMMANDEResult->any);
 
@@ -131,16 +131,16 @@ class SkiLoisirsDiffusion
             'DS_DATA' => $insertLineOrder->dataset()
         ];
 
-        dump($arrayParams);
+        //dump($arrayParams);
         $result = $this->soapClient->INSERTION_LIGNE_COMMANDE($arrayParams);
         $body = $this->toSimpleXml($result->INSERTION_LIGNE_COMMANDEResult->any);
 
         if ($body->NewDataSet->Commande->statut == 'false') {
-            dump($body);
+            //dump($body);
             throw new SLDGenericException($body->NewDataSet->Commande->message_erreur);
         }
 
-        dump($body);
+        //dump($body);
         return true;
     }
 
@@ -183,6 +183,6 @@ class SkiLoisirsDiffusion
         ];
 
         $result = $this->soapClient->TEST_DATASET($arrayParams);
-        dump($result);
+        //dump($result);
     }
 }
