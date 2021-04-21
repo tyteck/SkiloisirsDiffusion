@@ -13,5 +13,5 @@ before_script:
     - travis_retry composer update ${COMPOSER_FLAGS}
 
 script:
-    - cp .env-sample .env
+    - ./initEnvFile.sh
     - vendor/bin/phpunit
