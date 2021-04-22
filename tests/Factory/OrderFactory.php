@@ -15,7 +15,7 @@ class OrderFactory
         $prixLivraison = $attributes['prix_livraison'] ?? null;
 
         if ($codeLivraison === null || $prixLivraison === null) {
-            $deliveryModes = Livraisons::init(sldconfig('sld_domain_url'))->fromRemote()->deliveryModes();
+            $deliveryModes = self::deliveryModes();
             $randomIndex = rand(0, count($deliveryModes) - 1);
             $codeLivraison = $deliveryModes[$randomIndex]['code_livraison'];
             $prixLivraison = $deliveryModes[$randomIndex]['prix_livraison'];
@@ -45,5 +45,14 @@ class OrderFactory
             'remise_frais_port' => $attributes['remise_frais_port'] ?? null,
             'numero_commande_distributeur' => $attributes['numero_commande_distributeur'] ?? null,
         ];
+    }
+
+    public static function deliveryModes(): array
+    {
+        $delivery = Livraisons::init(sldconfig('sld_domain_url'));
+        if (sldconfig('use_real_data') == 1) {
+            return $delivery->fromRemote()->deliveryModes();
+        }
+        return $delivery->fromLocal()->deliveryModes();
     }
 }

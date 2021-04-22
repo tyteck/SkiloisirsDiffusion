@@ -54,14 +54,14 @@ class InsertOrderLineDatasetTest extends BaseTestCase
 
         $this->orderDataset = CreateOrderDataset::create($this->user, $this->order)->render();
 
-        /*
-        True call
-        $this->orderNumber = SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))->CREATION_COMMANDE($this->orderDataset);
-         */
-        $this->mocked = Mockery::mock(SkiLoisirsDiffusion::class)->makePartial();
-        $this->mocked->shouldReceive('CREATION_COMMANDE')->with($this->orderDataset)->once()->andReturn(25457);
-
-        $this->orderNumber = $this->mocked->CREATION_COMMANDE($this->orderDataset);
+        if (sldconfig('use_real_data') == 1) {
+            $this->orderNumber = SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))
+                ->CREATION_COMMANDE($this->orderDataset);
+        } else {
+            $this->mocked = Mockery::mock(SkiLoisirsDiffusion::class)->makePartial();
+            $this->mocked->shouldReceive('CREATION_COMMANDE')->with($this->orderDataset)->once()->andReturn(25457);
+            $this->orderNumber = $this->mocked->CREATION_COMMANDE($this->orderDataset);
+        }
 
         $this->article = ArticleDatatype::create(ArticleFactory::create(['code_article' => 'ALHAMBRA', 'articles_prix' => 6.5]));
         $this->ebillet = EbilletDatatype::create(EbilletFactory::create());
@@ -101,14 +101,14 @@ class InsertOrderLineDatasetTest extends BaseTestCase
     /** @test */
     public function insertion_ligne_commande_is_ok()
     {
-        /*
-        true call
-        $this->assertTrue(SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))
-            ->INSERTION_LIGNE_COMMANDE($this->orderNumber, $this->insertOrderLineDataset));
-        */
-        $this->mocked->shouldReceive('INSERTION_LIGNE_COMMANDE')->with($this->orderNumber, $this->insertOrderLineDataset)->once()->andReturn(true);
-
-        $this->assertTrue($this->mocked->INSERTION_LIGNE_COMMANDE($this->orderNumber, $this->insertOrderLineDataset));
+        if (sldconfig('use_real_data') == 1) {
+            $result = SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))
+                ->INSERTION_LIGNE_COMMANDE($this->orderNumber, $this->insertOrderLineDataset);
+        } else {
+            $this->mocked->shouldReceive('INSERTION_LIGNE_COMMANDE')->with($this->orderNumber, $this->insertOrderLineDataset)->once()->andReturn(true);
+            $result = $this->mocked->INSERTION_LIGNE_COMMANDE($this->orderNumber, $this->insertOrderLineDataset);
+        }
+        $this->assertTrue($result);
     }
 
     protected function expectedBody(): string

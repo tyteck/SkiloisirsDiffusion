@@ -63,19 +63,17 @@ class CreateOrderDatasetTest extends BaseTestCase
     /** @test */
     public function creation_commande_is_ok()
     {
-        $mocked = Mockery::mock(SkiLoisirsDiffusion::class)->makePartial();
-        $mocked->shouldReceive('create')->with(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'));
-        $mocked->shouldReceive('CREATION_COMMANDE')->with($this->orderDataset)->once()->andReturn(25457);
-        $orderNumber = $mocked->CREATION_COMMANDE($this->orderDataset);
+        if (sldconfig('use_real_data') == 1) {
+            $orderNumber = SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))
+                ->CREATION_COMMANDE($this->orderDataset);
+        } else {
+            $mocked = Mockery::mock(SkiLoisirsDiffusion::class)->makePartial();
+            $mocked->shouldReceive('create')->with(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'));
+            $mocked->shouldReceive('CREATION_COMMANDE')->with($this->orderDataset)->once()->andReturn(25457);
+            $orderNumber = $mocked->CREATION_COMMANDE($this->orderDataset);
+        }
 
         $this->assertGreaterThan(0, $orderNumber);
-
-        /** true call */
-        /*
-        SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))
-            ->CREATION_COMMANDE($this->orderDataset);
-            dump("Commande créée : {$orderNumber}");
-        */
     }
 
     protected function expectedBody(): string
