@@ -2,6 +2,7 @@
 
 namespace SkiLoisirsDiffusion\Tests;
 
+use Mockery;
 use SkiLoisirsDiffusion\Datasets\CreateOrderDataset;
 use SkiLoisirsDiffusion\Datatypes\OrderDatatype;
 use SkiLoisirsDiffusion\Datatypes\UserDatatype;
@@ -19,7 +20,7 @@ class CreateOrderDatasetTest extends BaseTestCase
     /** @var \SkiLoisirsDiffusion\Datasets\CreateOrderDataset $orderDataset */
     protected $orderDataset;
 
-    public function setUp() :void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -30,6 +31,11 @@ class CreateOrderDatasetTest extends BaseTestCase
         $this->expectedSignature = $this->makeSignatureFrom($this->user, $this->order, sldconfig('clef_secrete'));
 
         $this->orderDataset = CreateOrderDataset::create($this->user, $this->order)->render();
+    }
+
+    public function tearDown(): void
+    {
+        Mockery::close();
     }
 
     /** @test */
@@ -57,10 +63,19 @@ class CreateOrderDatasetTest extends BaseTestCase
     /** @test */
     public function creation_commande_is_ok()
     {
-        $orderNumber = SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))
-            ->CREATION_COMMANDE($this->orderDataset);
+        $mocked = Mockery::mock(SkiLoisirsDiffusion::class)->makePartial();
+        $mocked->shouldReceive('create')->with(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'));
+        $mocked->shouldReceive('CREATION_COMMANDE')->with($this->orderDataset)->once()->andReturn(25457);
+        $orderNumber = $mocked->CREATION_COMMANDE($this->orderDataset);
+
         $this->assertGreaterThan(0, $orderNumber);
-        //dump("Commande créée : {$orderNumber}");
+
+        /** true call */
+        /*
+        SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))
+            ->CREATION_COMMANDE($this->orderDataset);
+            dump("Commande créée : {$orderNumber}");
+        */
     }
 
     protected function expectedBody(): string
