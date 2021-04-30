@@ -15,7 +15,8 @@ class OrderFactory
         $prixLivraison = $attributes['prix_livraison'] ?? null;
 
         if ($codeLivraison === null || $prixLivraison === null) {
-            $deliveryModes = self::deliveryModes();
+            $delivery = Livraisons::init(sldconfig('sld_domain_url'));
+            $deliveryModes = $delivery->fromLocal()->deliveryModes();
             $randomIndex = rand(0, count($deliveryModes) - 1);
             $codeLivraison = $deliveryModes[$randomIndex]['code_livraison'];
             $prixLivraison = $deliveryModes[$randomIndex]['prix_livraison'];

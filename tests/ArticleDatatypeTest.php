@@ -43,7 +43,8 @@ class ArticleDatatypeTest extends BaseTestCase
 
     public function provide_invalid_data()
     {
-        return [
+        return
+        [
             [
                 [
                     'code_article' => null,

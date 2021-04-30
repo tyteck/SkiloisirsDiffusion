@@ -3,6 +3,7 @@
 namespace SkiLoisirsDiffusion\Tests;
 
 use SkiLoisirsDiffusion\DatasetTables\CeDatasetTable;
+use SkiLoisirsDiffusion\Datatypes\CeDatatype;
 
 class CEDatasetTest extends BaseTestCase
 {
@@ -12,7 +13,26 @@ class CEDatasetTest extends BaseTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->ceDatasetTable = CeDatasetTable::prepare()->withConfig();
+        $this->cedatatype = CeDatatype::create(
+            [
+                'ce_id' => sldconfig('sld_partenaire_id'),
+                'ce_societe' => sldconfig('ce_societe'),
+                'ce_civilite' => null,
+                'ce_nom' => sldconfig('ce_nom'),
+                'ce_prenom' => sldconfig('ce_prenom'),
+                'ce_telephone' => null,
+                'ce_portable' => null,
+                'ce_fax' => null,
+                'ce_email' => sldconfig('ce_email'),
+                'ce_adresse_nom' => null,
+                'ce_adresse1' => null,
+                'ce_adresse2' => null,
+                'ce_codepostal' => sldconfig('ce_codepostal'),
+                'ce_ville' => sldconfig('ce_ville'),
+                'ce_pays' => null,
+            ]
+        );
+        $this->ceDatasetTable = CeDatasetTable::prepare()->with($this->cedatatype);
     }
 
     /** @test */
@@ -46,6 +66,39 @@ EOT;
 
     /** @test */
     public function ce_dataset_body_is_ok()
+    {
+        $ce_id = sldconfig('sld_partenaire_id');
+        $ce_societe = sldconfig('ce_societe');
+        $ce_nom = sldconfig('ce_nom');
+        $ce_prenom = sldconfig('ce_prenom');
+        $ce_email = sldconfig('ce_email');
+        $ce_codepostal = sldconfig('ce_codepostal');
+        $ce_ville = sldconfig('ce_ville');
+        $expectedBody = <<<EOT
+<ce diffgr:id="ce1" msdata:rowOrder="0">
+<ce_id>{$ce_id}</ce_id>
+<ce_societe>{$ce_societe}</ce_societe>
+<ce_civilite></ce_civilite>
+<ce_nom>{$ce_nom}</ce_nom>
+<ce_prenom>{$ce_prenom}</ce_prenom>
+<ce_telephone></ce_telephone>
+<ce_portable></ce_portable>
+<ce_fax></ce_fax>
+<ce_email>{$ce_email}</ce_email>
+<ce_adresse_nom></ce_adresse_nom>
+<ce_adresse1></ce_adresse1>
+<ce_adresse2></ce_adresse2>
+<ce_codepostal>{$ce_codepostal}</ce_codepostal>
+<ce_ville>{$ce_ville}</ce_ville>
+<ce_pays></ce_pays>
+</ce>
+EOT;
+
+        $this->assertEquals($expectedBody, $this->ceDatasetTable->renderBody());
+    }
+
+    /** @test */
+    public function with_ce_datatype_dataset_body_is_ok()
     {
         $ce_id = sldconfig('sld_partenaire_id');
         $ce_societe = sldconfig('ce_societe');
