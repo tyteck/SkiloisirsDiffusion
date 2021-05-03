@@ -79,7 +79,7 @@ class InsertOrderLineDatasetTest extends BaseTestCase
             ]
         ));
 
-        $this->orderDataset = CreateOrderDataset::create($this->ce, $this->user, $this->order)->render();
+        $this->orderDataset = CreateOrderDataset::create($this->ce, $this->user, $this->order, sldconfig('clef_secrete'))->render();
 
         if (sldconfig('use_real_data') == 1) {
             $this->orderNumber = SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))

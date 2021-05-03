@@ -53,9 +53,9 @@ class CreateOrderDatasetTest extends BaseTestCase
         $this->user = UserDatatype::create(UserFactory::create());
         $this->order = OrderDatatype::create(OrderFactory::create());
 
-        $this->expectedSignature = $this->makeSignatureFrom($this->user, $this->order, sldconfig('clef_secrete'));
-
-        $this->orderDataset = CreateOrderDataset::create($this->ce, $this->user, $this->order)->render();
+        $secretKey = sldconfig('clef_secrete');
+        $this->expectedSignature = $this->makeSignatureFrom($this->user, $this->order, $secretKey);
+        $this->orderDataset = CreateOrderDataset::create($this->ce, $this->user, $this->order, $secretKey)->render();
     }
 
     public function tearDown(): void

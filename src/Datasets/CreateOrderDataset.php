@@ -24,7 +24,7 @@ class CreateOrderDataset extends MakeDataset
     /** @var \SkiLoisirsDiffusion\DatasetTables\SignatureDatasetTable */
     protected $signatureDataSetTable;
 
-    private function __construct(CeDatatype $ce, UserDatatype $user, OrderDatatype $order)
+    private function __construct(CeDatatype $ce, UserDatatype $user, OrderDatatype $order, string $secretKey)
     {
         parent::__construct();
 
@@ -36,7 +36,7 @@ class CreateOrderDataset extends MakeDataset
         $this->userDatasetTable = UserDatasetTable::prepare()->with($this->user);
         $this->orderDataSetTable = OrderDatasetTable::prepare()->with($this->order);
         $this->signatureDataSetTable = SignatureDatasetTable::prepare()
-            ->with($this->order, $this->user, sldconfig('clef_secrete'));
+            ->with($this->order, $this->user, $secretKey);
 
         $this->addDatasetTables(
             [
