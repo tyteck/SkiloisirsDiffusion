@@ -9,6 +9,7 @@ use SkiLoisirsDiffusion\DatasetTables\ArticleDatasetTable;
 use SkiLoisirsDiffusion\DatasetTables\EbilletDatasetTable;
 use SkiLoisirsDiffusion\DatasetTables\FraisGestionDatasetTable;
 use SkiLoisirsDiffusion\Datatypes\ArticleDatatype;
+use SkiLoisirsDiffusion\Datatypes\CeDatatype;
 use SkiLoisirsDiffusion\Datatypes\EbilletDatatype;
 use SkiLoisirsDiffusion\Datatypes\FraisGestionDatatype;
 use SkiLoisirsDiffusion\Datatypes\OrderDatatype;
@@ -23,10 +24,17 @@ use stdClass;
 
 class InsertOrderLineDatasetTest extends BaseTestCase
 {
+    /** @var \SkiLoisirsDiffusion\Datatypes\CeDatatype $ce */
+    protected $ce;
+    /** @var \SkiLoisirsDiffusion\Datatypes\UserDatatype $ce */
     protected $user;
+    /** @var \SkiLoisirsDiffusion\Datatypes\OrderDatatype $ce */
     protected $order;
+    /** @var int $orderNumber */
     protected $orderNumber;
+    /** @var string $expectedSignature */
     protected $expectedSignature;
+    /** @var array $datasetTables */
     protected $datasetTables = [];
 
     protected $article;
@@ -44,6 +52,25 @@ class InsertOrderLineDatasetTest extends BaseTestCase
         parent::setUp();
 
         /** creating datatypes to be used */
+        $this->ce = CeDatatype::create(
+            [
+                'ce_id' => sldconfig('sld_partenaire_id'),
+                'ce_societe' => sldconfig('ce_societe'),
+                'ce_civilite' => null,
+                'ce_nom' => sldconfig('ce_nom'),
+                'ce_prenom' => sldconfig('ce_prenom'),
+                'ce_telephone' => null,
+                'ce_portable' => null,
+                'ce_fax' => null,
+                'ce_email' => sldconfig('ce_email'),
+                'ce_adresse_nom' => null,
+                'ce_adresse1' => null,
+                'ce_adresse2' => null,
+                'ce_codepostal' => sldconfig('ce_codepostal'),
+                'ce_ville' => sldconfig('ce_ville'),
+                'ce_pays' => null,
+            ]
+        );
         $this->user = UserDatatype::create(UserFactory::create());
         $this->order = OrderDatatype::create(OrderFactory::create(
             [
@@ -52,7 +79,7 @@ class InsertOrderLineDatasetTest extends BaseTestCase
             ]
         ));
 
-        $this->orderDataset = CreateOrderDataset::create($this->user, $this->order)->render();
+        $this->orderDataset = CreateOrderDataset::create($this->ce, $this->user, $this->order)->render();
 
         if (sldconfig('use_real_data') == 1) {
             $this->orderNumber = SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))

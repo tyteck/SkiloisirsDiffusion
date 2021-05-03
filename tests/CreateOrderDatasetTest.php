@@ -4,6 +4,7 @@ namespace SkiLoisirsDiffusion\Tests;
 
 use Mockery;
 use SkiLoisirsDiffusion\Datasets\CreateOrderDataset;
+use SkiLoisirsDiffusion\Datatypes\CeDatatype;
 use SkiLoisirsDiffusion\Datatypes\OrderDatatype;
 use SkiLoisirsDiffusion\Datatypes\UserDatatype;
 use SkiLoisirsDiffusion\SkiLoisirsDiffusion;
@@ -13,24 +14,48 @@ use stdClass;
 
 class CreateOrderDatasetTest extends BaseTestCase
 {
+    /** @var \SkiLoisirsDiffusion\Datatypes\CeDatatype $ce */
+    protected $ce;
+    /** @var \SkiLoisirsDiffusion\Datatypes\UserDatatype $ce */
     protected $user;
+    /** @var \SkiLoisirsDiffusion\Datatypes\OrderDatatype $ce */
     protected $order;
-    protected $expectedSignature;
-
     /** @var \SkiLoisirsDiffusion\Datasets\CreateOrderDataset $orderDataset */
     protected $orderDataset;
+
+    /** @var string $expectedSignature */
+    protected $expectedSignature;
 
     public function setUp(): void
     {
         parent::setUp();
 
         /** creating datatypes to be used */
+        $this->ce = CeDatatype::create(
+            [
+                'ce_id' => sldconfig('sld_partenaire_id'),
+                'ce_societe' => sldconfig('ce_societe'),
+                'ce_civilite' => null,
+                'ce_nom' => sldconfig('ce_nom'),
+                'ce_prenom' => sldconfig('ce_prenom'),
+                'ce_telephone' => null,
+                'ce_portable' => null,
+                'ce_fax' => null,
+                'ce_email' => sldconfig('ce_email'),
+                'ce_adresse_nom' => null,
+                'ce_adresse1' => null,
+                'ce_adresse2' => null,
+                'ce_codepostal' => sldconfig('ce_codepostal'),
+                'ce_ville' => sldconfig('ce_ville'),
+                'ce_pays' => null,
+            ]
+        );
         $this->user = UserDatatype::create(UserFactory::create());
         $this->order = OrderDatatype::create(OrderFactory::create());
 
         $this->expectedSignature = $this->makeSignatureFrom($this->user, $this->order, sldconfig('clef_secrete'));
 
-        $this->orderDataset = CreateOrderDataset::create($this->user, $this->order)->render();
+        $this->orderDataset = CreateOrderDataset::create($this->ce, $this->user, $this->order)->render();
     }
 
     public function tearDown(): void

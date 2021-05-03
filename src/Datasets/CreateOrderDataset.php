@@ -6,6 +6,7 @@ use SkiLoisirsDiffusion\DatasetTables\CeDatasetTable;
 use SkiLoisirsDiffusion\DatasetTables\OrderDatasetTable;
 use SkiLoisirsDiffusion\DatasetTables\SignatureDatasetTable;
 use SkiLoisirsDiffusion\DatasetTables\UserDatasetTable;
+use SkiLoisirsDiffusion\Datatypes\CeDatatype;
 use SkiLoisirsDiffusion\Datatypes\OrderDatatype;
 use SkiLoisirsDiffusion\Datatypes\UserDatatype;
 
@@ -23,13 +24,15 @@ class CreateOrderDataset extends MakeDataset
     /** @var \SkiLoisirsDiffusion\DatasetTables\SignatureDatasetTable */
     protected $signatureDataSetTable;
 
-    private function __construct(UserDatatype $user, OrderDatatype $order)
+    private function __construct(CeDatatype $ce, UserDatatype $user, OrderDatatype $order)
     {
         parent::__construct();
+
+        $this->ce = $ce;
         $this->user = $user;
         $this->order = $order;
 
-        $this->ceDataSetTable = CeDatasetTable::prepare()->withConfig();
+        $this->ceDataSetTable = CeDatasetTable::prepare()->with($this->ce);
         $this->userDatasetTable = UserDatasetTable::prepare()->with($this->user);
         $this->orderDataSetTable = OrderDatasetTable::prepare()->with($this->order);
         $this->signatureDataSetTable = SignatureDatasetTable::prepare()

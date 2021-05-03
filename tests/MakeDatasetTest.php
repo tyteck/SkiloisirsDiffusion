@@ -8,6 +8,7 @@ use SkiLoisirsDiffusion\DatasetTables\ArticleDatasetTable;
 use SkiLoisirsDiffusion\DatasetTables\CeDatasetTable;
 use SkiLoisirsDiffusion\DatasetTables\EbilletDatasetTable;
 use SkiLoisirsDiffusion\Datatypes\ArticleDatatype;
+use SkiLoisirsDiffusion\Datatypes\CeDatatype;
 use SkiLoisirsDiffusion\Datatypes\EbilletDatatype;
 use SkiLoisirsDiffusion\Tests\BaseTestCase;
 use SkiLoisirsDiffusion\Tests\Factory\ArticleFactory;
@@ -16,6 +17,33 @@ use stdClass;
 
 class MakeDatasetTest extends BaseTestCase
 {
+    /** @var \SkiLoisirsDiffusion\Datatypes\CeDatatype $ce */
+    protected $ce;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->ce = CeDatatype::create(
+            [
+                'ce_id' => sldconfig('sld_partenaire_id'),
+                'ce_societe' => sldconfig('ce_societe'),
+                'ce_civilite' => null,
+                'ce_nom' => sldconfig('ce_nom'),
+                'ce_prenom' => sldconfig('ce_prenom'),
+                'ce_telephone' => null,
+                'ce_portable' => null,
+                'ce_fax' => null,
+                'ce_email' => sldconfig('ce_email'),
+                'ce_adresse_nom' => null,
+                'ce_adresse1' => null,
+                'ce_adresse2' => null,
+                'ce_codepostal' => sldconfig('ce_codepostal'),
+                'ce_ville' => sldconfig('ce_ville'),
+                'ce_pays' => null,
+            ]
+        );
+    }
+
     /** @test */
     public function schema_with_no_datatable_is_ok()
     {
@@ -250,12 +278,12 @@ EOT;
     public function adding_ce_dataset_table_is_ok()
     {
         /** adding single datasetTable */
-        $result = MakeDataset::init()->addDatasetTable(CeDatasetTable::prepare()->withConfig())->datasetTables();
+        $result = MakeDataset::init()->addDatasetTable(CeDatasetTable::prepare()->with($this->ce))->datasetTables();
         $this->assertIsArray($result);
         $this->assertEquals(1, count($result));
 
         /** adding many datasetTables */
-        $result = MakeDataset::init()->addDatasetTables([CeDatasetTable::prepare()->withConfig()])->datasetTables();
+        $result = MakeDataset::init()->addDatasetTables([CeDatasetTable::prepare()->with($this->ce)])->datasetTables();
         $this->assertIsArray($result);
         $this->assertEquals(1, count($result));
     }
