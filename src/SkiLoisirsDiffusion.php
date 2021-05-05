@@ -11,7 +11,6 @@ use SkiLoisirsDiffusion\Exceptions\SLDGenericException;
 use SkiLoisirsDiffusion\Exceptions\SLDPermissionDeniedException;
 use SkiLoisirsDiffusion\Exceptions\SLDServiceNotAvailableException;
 use SkiLoisirsDiffusion\Exceptions\TicketPlaceReservationException;
-use stdClass;
 
 class SkiLoisirsDiffusion
 {
@@ -176,13 +175,25 @@ class SkiLoisirsDiffusion
         );
     }
 
-    public function TEST_DATASET(stdClass $dataset)
+    /**
+     * @return int order number newly created
+     */
+    public function PASSATION_COMMANDE(int $orderNumber): bool
     {
         $arrayParams = [
-            'DS_DATA' => $dataset
+            'CE_ID' => $this->partenaireId,
+            'commandes_numero' => $orderNumber,
         ];
 
-        $result = $this->soapClient->TEST_DATASET($arrayParams);
-        //dump($result);
+        //dump($arrayParams);
+        $result = $this->soapClient->PASSATION_COMMANDE($arrayParams);
+        $body = $this->toSimpleXml($result->PASSATION_COMMANDEResult->any);
+        if ($body->NewDataSet->Commande->statut == 'false') {
+            //dump($body);
+            throw new SLDGenericException($body->NewDataSet->Commande->message_erreur);
+        }
+
+        //dump($body);
+        return true;
     }
 }

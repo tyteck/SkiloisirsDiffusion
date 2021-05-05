@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
 use SkiLoisirsDiffusion\Datasets\DatasetField;
 use SkiLoisirsDiffusion\DatasetTables\DatasetTable;
+use SkiLoisirsDiffusion\Datatypes\CeDatatype;
 use SkiLoisirsDiffusion\Datatypes\OrderDatatype;
 use SkiLoisirsDiffusion\Datatypes\UserDatatype;
 
@@ -102,6 +103,29 @@ class BaseTestCase extends TestCase
             );
         }
         return $result;
+    }
+
+    public function ceDatatypeFromConfig()
+    {
+        return CeDatatype::create(
+            [
+                'ce_id' => sldconfig('sld_partenaire_id'),
+                'ce_societe' => sldconfig('ce_societe'),
+                'ce_civilite' => null,
+                'ce_nom' => sldconfig('ce_nom'),
+                'ce_prenom' => sldconfig('ce_prenom'),
+                'ce_telephone' => null,
+                'ce_portable' => null,
+                'ce_fax' => null,
+                'ce_email' => sldconfig('ce_email'),
+                'ce_adresse_nom' => null,
+                'ce_adresse1' => null,
+                'ce_adresse2' => null,
+                'ce_codepostal' => sldconfig('ce_codepostal'),
+                'ce_ville' => sldconfig('ce_ville'),
+                'ce_pays' => null,
+            ]
+        );
     }
 
     public function createCeDatasetTable(): DatasetTable
