@@ -62,10 +62,10 @@ class PassationCommandeTest extends BaseTestCase
             ]
         ));
 
-        $this->SLDFactory = SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'));
         $this->orderDataset = CreateOrderDataset::create($this->ce, $this->user, $this->order, sldconfig('clef_secrete'))->render();
-
+        
         if (sldconfig('use_real_data') == 1) {
+            $this->SLDFactory = SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'));
             $this->orderNumber = $this->SLDFactory->CREATION_COMMANDE($this->orderDataset);
         } else {
             $this->mocked = Mockery::mock(SkiLoisirsDiffusion::class)->makePartial();

@@ -22,6 +22,8 @@ class CreateOrderDatasetTest extends BaseTestCase
     protected $order;
     /** @var \SkiLoisirsDiffusion\Datasets\CreateOrderDataset $orderDataset */
     protected $orderDataset;
+    /** @var \SkiLoisirsDiffusion\SkiLoisirsDiffusion $factory */
+    protected $factory;
 
     /** @var string $expectedSignature */
     protected $expectedSignature;
@@ -30,6 +32,9 @@ class CreateOrderDatasetTest extends BaseTestCase
     {
         parent::setUp();
 
+        if (sldconfig('use_real_data') == 1) {
+            $this->factory = SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'));
+        }
         /** creating datatypes to be used */
         $this->ce = CeDatatype::create(
             [
@@ -89,8 +94,12 @@ class CreateOrderDatasetTest extends BaseTestCase
     public function creation_commande_is_ok()
     {
         if (sldconfig('use_real_data') == 1) {
-            $orderNumber = SkiLoisirsDiffusion::create(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'))
-                ->CREATION_COMMANDE($this->orderDataset);
+            $orderNumber = $this->factory->CREATION_COMMANDE($this->orderDataset);
+            array_map(function ($key) {
+                $this->assertTrue(array_key_exists($key, $this->factory->input()));
+                $this->assertInstanceOf(stdClass::class, $this->factory->input()['DS_DATA']);
+            }, ['CE_ID', 'DS_DATA']);
+            $this->assertIsString($this->factory->rawResults());
         } else {
             $mocked = Mockery::mock(SkiLoisirsDiffusion::class)->makePartial();
             $mocked->shouldReceive('create')->with(sldconfig('sld_domain_url'), sldconfig('sld_partenaire_id'));

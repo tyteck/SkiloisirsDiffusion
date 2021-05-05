@@ -20,6 +20,12 @@ class SkiLoisirsDiffusion
     /** @var SoapClientNG $soapClient */
     protected $soapClient;
 
+    /** @var array $input use to store received parameters */
+    protected $input = [];
+
+    /** @var string $rawResults use to store raw query results from sld */
+    protected $rawResults;
+
     private function __construct(string $sldDomainUrl, string $partenaireId)
     {
         $this->partenaireId = $partenaireId;
@@ -43,10 +49,10 @@ class SkiLoisirsDiffusion
 
     public function GET_MODES_PAIEMENTS(): array
     {
-        $arrayParams = [
+        $this->input = [
             'partenaire_id' => $this->partenaireId,
         ];
-        $result = $this->soapClient->GET_MODES_PAIEMENTS($arrayParams);
+        $result = $this->soapClient->GET_MODES_PAIEMENTS($this->input);
 
         $body = $this->toSimpleXml($result->GET_MODES_PAIEMENTSResult->any);
 
@@ -103,14 +109,13 @@ class SkiLoisirsDiffusion
      */
     public function CREATION_COMMANDE(CreateOrderDataset $createOrderDataset): string
     {
-        $arrayParams = [
+        $this->input = [
             'CE_ID' => $this->partenaireId,
             'DS_DATA' => $createOrderDataset->dataset()
         ];
 
-        //dump($arrayParams);
-        $result = $this->soapClient->CREATION_COMMANDE($arrayParams);
-        $body = $this->toSimpleXml($result->CREATION_COMMANDEResult->any);
+        $this->rawResults = $this->soapClient->CREATION_COMMANDE($this->input);
+        $body = $this->toSimpleXml($this->rawResults->CREATION_COMMANDEResult->any);
 
         if ($body->NewDataSet->Commande->statut == 'false') {
             throw new SLDGenericException($body->NewDataSet->Commande->message_erreur);
@@ -124,15 +129,15 @@ class SkiLoisirsDiffusion
      */
     public function INSERTION_LIGNE_COMMANDE(int $orderNumber, InsertOrderLineDataset $insertLineOrder): bool
     {
-        $arrayParams = [
+        $this->input = [
             'CE_ID' => $this->partenaireId,
             'commandes_numero' => $orderNumber,
             'DS_DATA' => $insertLineOrder->dataset()
         ];
 
         //dump($arrayParams);
-        $result = $this->soapClient->INSERTION_LIGNE_COMMANDE($arrayParams);
-        $body = $this->toSimpleXml($result->INSERTION_LIGNE_COMMANDEResult->any);
+        $this->rawResults = $this->soapClient->INSERTION_LIGNE_COMMANDE($this->input);
+        $body = $this->toSimpleXml($this->rawResults->INSERTION_LIGNE_COMMANDEResult->any);
 
         if ($body->NewDataSet->Commande->statut == 'false') {
             //dump($body);
@@ -155,13 +160,13 @@ class SkiLoisirsDiffusion
      */
     public function ticketPlaceReservation(ArticleDatasetTable $articleDatasetTable, string $ticketnetOrderId = ''):string
     {
-        $arrayParams = [
+        $this->input = [
             'CE_ID' => $this->partenaireId,
             'numero_commande_ticketnet' => $ticketnetOrderId,
             'DS_DATA' => MakeDataset::init()->addDatasetTable($articleDatasetTable)->dataset()
         ];
 
-        $result = $this->soapClient->CREATION_COMMANDE($arrayParams);
+        $result = $this->soapClient->CREATION_COMMANDE($this->input);
         if (!$result->status) {
             throw new TicketPlaceReservationException("Reservation has failed with message {$result->message_erreur}");
         }
@@ -180,14 +185,14 @@ class SkiLoisirsDiffusion
      */
     public function PASSATION_COMMANDE(int $orderNumber): bool
     {
-        $arrayParams = [
+        $this->input = [
             'CE_ID' => $this->partenaireId,
             'commandes_numero' => $orderNumber,
         ];
 
         //dump($arrayParams);
-        $result = $this->soapClient->PASSATION_COMMANDE($arrayParams);
-        $body = $this->toSimpleXml($result->PASSATION_COMMANDEResult->any);
+        $this->rawResults = $this->soapClient->PASSATION_COMMANDE($this->input);
+        $body = $this->toSimpleXml($this->rawResults->PASSATION_COMMANDEResult->any);
         if ($body->NewDataSet->Commande->statut == 'false') {
             //dump($body);
             throw new SLDGenericException($body->NewDataSet->Commande->message_erreur);
@@ -195,5 +200,17 @@ class SkiLoisirsDiffusion
 
         //dump($body);
         return true;
+    }
+
+    public function input()
+    {
+        return $this->input;
+    }
+
+    public function rawResults()
+    {
+        ob_start();
+        var_dump($this->rawResults);
+        return ob_get_clean();
     }
 }
