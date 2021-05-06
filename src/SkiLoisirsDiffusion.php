@@ -202,9 +202,14 @@ class SkiLoisirsDiffusion
         return true;
     }
 
-    public function input()
+    public function input(bool $asString = false)
     {
-        return $this->input;
+        if (!$asString) {
+            return $this->input;
+        }
+        ob_start();
+        var_dump($this->input);
+        return ob_get_clean();
     }
 
     public function rawResults()
