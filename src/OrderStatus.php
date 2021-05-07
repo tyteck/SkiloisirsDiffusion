@@ -3,6 +3,7 @@
 namespace SkiLoisirsDiffusion;
 
 use SimpleXMLElement;
+use SkiLoisirsDiffusion\Exceptions\SLDGenericException;
 
 class OrderStatus
 {
@@ -66,5 +67,16 @@ class OrderStatus
     public function status()
     {
         return $this->status;
+    }
+
+    public function label(string $statusId)
+    {
+        if (!count($this->status)) {
+            $this->fromRemote();
+        }
+        if (!array_key_exists($statusId, $this->status)) {
+            throw new SLDGenericException("This order status {$statusId} does not exists.");
+        }
+        return $this->status[$statusId];
     }
 }
