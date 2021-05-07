@@ -218,4 +218,22 @@ class SkiLoisirsDiffusion
         var_dump($this->rawResults);
         return ob_get_clean();
     }
+
+    public function ETAT_COMMANDE(int $orderNumber): string
+    {
+        $this->input = [
+            'CE_ID' => $this->partenaireId,
+            'commandes_numero' => $orderNumber,
+        ];
+
+        $this->rawResults = $this->soapClient->ETAT_COMMANDE($this->input);
+        $body = $this->toSimpleXml($this->rawResults->ETAT_COMMANDEResult->any);
+
+        /** this one return a statut only when it fails. I keep it like the others for simplicity */
+        if ($body->NewDataSet->Commande->statut == 'false') {
+            throw new SLDGenericException($body->NewDataSet->Commande->message_erreur);
+        }
+
+        return (string)$body->NewDataSet->Commande->code_etat;
+    }
 }
