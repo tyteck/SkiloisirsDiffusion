@@ -4,11 +4,24 @@ namespace SkiLoisirsDiffusion\Tests;
 
 use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
+use SkiLoisirsDiffusion\Datasets\CreateOrderDataset;
 use SkiLoisirsDiffusion\Datasets\DatasetField;
+use SkiLoisirsDiffusion\Datasets\InsertOrderLineDataset;
+use SkiLoisirsDiffusion\DatasetTables\ArticleDatasetTable;
 use SkiLoisirsDiffusion\DatasetTables\DatasetTable;
+use SkiLoisirsDiffusion\DatasetTables\EbilletDatasetTable;
+use SkiLoisirsDiffusion\DatasetTables\FraisGestionDatasetTable;
+use SkiLoisirsDiffusion\Datatypes\ArticleDatatype;
 use SkiLoisirsDiffusion\Datatypes\CeDatatype;
+use SkiLoisirsDiffusion\Datatypes\EbilletDatatype;
+use SkiLoisirsDiffusion\Datatypes\FraisGestionDatatype;
 use SkiLoisirsDiffusion\Datatypes\OrderDatatype;
 use SkiLoisirsDiffusion\Datatypes\UserDatatype;
+use SkiLoisirsDiffusion\Tests\Factory\ArticleFactory;
+use SkiLoisirsDiffusion\Tests\Factory\EbilletFactory;
+use SkiLoisirsDiffusion\Tests\Factory\FraisGestionFactory;
+use SkiLoisirsDiffusion\Tests\Factory\OrderFactory;
+use SkiLoisirsDiffusion\Tests\Factory\UserFactory;
 
 class BaseTestCase extends TestCase
 {
@@ -160,5 +173,46 @@ class BaseTestCase extends TestCase
             'clef_secrete' => $clefSecrete,
         ];
         return generateSignature($createSignatureParameters);
+    }
+
+    public function getOrderDataSet()
+    {
+        /** creating datatypes to be used */
+        $ce = $this->ceDatatypeFromConfig();
+        $user = UserDatatype::create(UserFactory::create());
+        $order = OrderDatatype::create(OrderFactory::create(
+            [
+                'code_livraison' => 'LS20G',
+                'prix_livraison' => 3.5,
+            ]
+        ));
+
+        return CreateOrderDataset::create($ce, $user, $order, sldconfig('clef_secrete'))->render();
+    }
+
+    public function getInsertOrderLineDataset(string $orderNumber, ?string $codeArticle = 'ALHAMBRA', ?float $articlePrix = 6.5)
+    {
+        $article = ArticleDatatype::create(
+            ArticleFactory::create(['code_article' => $codeArticle, 'articles_prix' => $articlePrix])
+        );
+        $ebillet = EbilletDatatype::create(EbilletFactory::create());
+        $fraisGestion = FraisGestionDatatype::create(FraisGestionFactory::create(
+            [
+                'nb_ebc' => 1,
+                'prix_ebc' => 0.5,
+                'nb_frais_gestion' => 1,
+                'prix_frais_gestion' => 0.5
+            ]
+        ));
+
+        /** creating order */
+        $datasetTables = [];
+        $datasetTables[] = ArticleDatasetTable::prepare()->with($article);
+        $datasetTables[] = EbilletDatasetTable::prepare()->with($ebillet);
+        $datasetTables[] = FraisGestionDatasetTable::prepare()->with($fraisGestion);
+
+        return InsertOrderLineDataset::create($orderNumber)
+            ->addDatasetTables($datasetTables)
+            ->render();
     }
 }

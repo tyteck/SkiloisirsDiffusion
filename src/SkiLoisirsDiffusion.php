@@ -236,4 +236,21 @@ class SkiLoisirsDiffusion
 
         return (string)$body->NewDataSet->Commande->code_etat;
     }
+
+    public function GET_BILLETS(int $orderNumber): string
+    {
+        $this->input = [
+            'CE_ID' => $this->partenaireId,
+            'commandes_numero' => $orderNumber,
+        ];
+
+        $this->rawResults = $this->soapClient->GET_BILLETS($this->input);
+
+        $body = $this->toSimpleXml($this->rawResults->GET_BILLETSResult->any);
+        /** this one return a statut only when it fails. I keep it like the others for simplicity */
+        if ($body->NewDataSet->Commande->statut == 'false') {
+            throw new SLDGenericException($body->NewDataSet->Commande->message_erreur);
+        }
+        return (string)$body->NewDataSet->Billets->data;
+    }
 }
